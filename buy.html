@@ -1,0 +1,94 @@
+<head>
+    <script type="text/javascript" src='buy.js'> </script>
+    <link rel="stylesheet" href="styles.css">
+    <title>Cones of Dunshire</title><meta charset="utf-8"/>
+</head>
+    <div class = "split left" style = "width: 400px; margin-left: 10px">
+        <h1>Buy</h1>
+        <img src = "building-cost.png" style = "width: 75%"/>
+        <p id = "wood-cost"></p>
+        <div id = "wood"></div>
+        <p id = "stone-cost"></p>
+        <div id = "stone"></div>
+        <p id = "iron-cost"></p>
+        <div id = "iron"></div>
+        <div id = "continue"></div>
+    </div>
+    <div class = "split right">
+        </br></br>
+        <canvas id = "myCanvas" width="700" height="700"></canvas>
+    </div>
+    <footer style = "position: fixed;
+        left: 0;
+        bottom: 0;
+        width: 100%;
+        height: 20%">
+        <table>
+            <tr>
+                <td style = "width: 29%"><h2>RS</h2></th>
+                <td style = "width: 31%"><h2>Resources</h2></th>
+                <td style = "width: 33%"><h2>Army</h2></th>
+                <td style = "width: 33%"><h2>Cones</h2></th>
+            </tr>
+            <tr>
+                <td id = "Generic RS"></td>
+                <td>Wood: 0</td>
+                <td>30 soldiers</td>
+            </tr>
+            <tr>
+                <td id = "Buy RS"></td>
+                <td>Stone: 0</td>
+            </tr>
+            <tr>
+                <td id = "Build RS"></td>
+                <td>Iron: 0</td>
+            </tr>
+            <tr>
+                <td id = "Advance RS"></td>
+            </tr>
+        </table>
+    </footer>
+    <script>
+        sPageURL = window.location.search.substring(1);
+        var sURLVariables = sPageURL.split('&');
+        document.getElementById("Generic RS").innerHTML = "Generic RS: " + sURLVariables[0].split('=')[1];
+        document.getElementById("Buy RS").innerHTML = "Buy RS: " + sURLVariables[1].split('=')[1];
+        document.getElementById("Build RS").innerHTML = "Build RS: " + sURLVariables[2].split('=')[1];
+        document.getElementById("Advance RS").innerHTML = "Advance RS: " + sURLVariables[3].split('=')[1];
+        num1 = (5 * Math.random() + 1) | 0;
+        num2 = (5 * Math.random() + 1) | 0;
+        wood = ((num1 + num2) / 2 + 0.5) | 0;
+        document.getElementById("wood-cost").innerHTML = "Buy Wood (Brown). Cost: " + wood + " RS";
+        stone = (5 * Math.random() + 1) | 0;
+        document.getElementById("stone-cost").innerHTML = "Buy Stone (Black). Cost: " + stone + " RS";
+        num = 100 * Math.random();    
+        iron = (10 - Math.sqrt(num) + 1) | 0;//make iron cost more for a lessor amount of time at the beginning of the game
+        document.getElementById("iron-cost").innerHTML = "Buy Iron (White). Cost: " + iron + " RS";
+        dropdown = '<select id = "wood selection">';
+        for (i = 0; i <= (parseInt(sURLVariables[1].split('=')[1]) + parseInt(sURLVariables[0].split('=')[1])) / wood; i++){
+            dropdown += '<option value = "' + i + '">' + i + '</option>';
+        }
+        dropdown += '</select>';
+        document.getElementById("wood").innerHTML = dropdown;
+        dropdown = '<select id = "stone selection">';
+        for (i = 0; i <= (parseInt(sURLVariables[1].split('=')[1]) + parseInt(sURLVariables[0].split('=')[1])) / stone; i++){
+            dropdown += '<option value = "' + i + '">' + i + '</option>';
+        }
+        dropdown += '</select>';
+        document.getElementById("stone").innerHTML = dropdown;
+        dropdown = '<select id = "iron selection">';
+        for (i = 0; i <= (parseInt(sURLVariables[1].split('=')[1]) + parseInt(sURLVariables[0].split('=')[1])) / iron; i++){
+            dropdown += '<option value = "' + i + '">' + i + '</option>';
+        }
+        dropdown += '</select>';
+        document.getElementById("iron").innerHTML = dropdown;
+        generic = parseInt(sURLVariables[0].split('=')[1]);
+        buy =  parseInt(sURLVariables[1].split('=')[1]);
+        build =  parseInt(sURLVariables[2].split('=')[1]);
+        advance =  parseInt(sURLVariables[3].split('=')[1]);
+    
+        document.getElementById("continue").innerHTML = '<button onClick = "doit(' + generic + ', ' + buy + ', ' + build + ', ' + advance + ', ' + wood + ', ' + stone + ', ' + iron + ')"; style = "margin-top: 15px">Continue</button>';
+    </script>
+    <script type="text/javascript" src='space.js'> </script>
+    <script type="text/javascript" src='board.js'> </script>
+</body>

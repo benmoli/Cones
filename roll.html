@@ -1,0 +1,63 @@
+<head>
+    <script type="text/javascript" src='roll.js'> </script>
+    <link rel="stylesheet" href="styles.css">
+    <title>Cones of Dunshire</title><meta charset="utf-8"/>
+</head>
+<body>
+    <div class = "split left" style = "width: 400px; margin-left: 10px">
+        <h1>Roll</h1>
+        <button onClick = "preroll()">PreRoll</button>
+        <p id = "preroll title"></p>
+        <p id = "preroll roll"></p>
+        <p id = "preroll result"></p>
+        <div id = "small dice option"></div>
+        <p id = "small dice roll"></p>
+        <p id = "special dice amount"></p>
+        <div id = "special dice option"></div>
+        <p id = "yellow" style = "color: rgb(255, 217, 0)"></p>
+        <p id = "red" style = "color: red"></p>
+        <p id = "blue" style = "color: blue"></p>
+        <p id = "green" style = "color: green"></p>
+        <div id = "continue"></div>
+    </div>
+    <div class = "split right">
+        </br></br>
+        <canvas id = "myCanvas" width="700" height="700"></canvas>
+    </div>
+    <footer style = "position: fixed;
+        left: 0;
+        bottom: 0;
+        width: 100%;
+        height: 20%">
+        <table>
+            <tr>
+                <td style = "width: 29%"><h2>RS</h2></th>
+                <td style = "width: 31%"><h2>Resources</h2></th>
+                <td style = "width: 33%"><h2>Army</h2></th>
+                <td style = "width: 33%"><h2>Cones</h2></th>
+            </tr>
+            <tr>
+                <td>Generic RS: 0</td>
+                <td>Wood: 0</td>
+                <td>30 soldiers</td>
+            </tr>
+            <tr>
+                <td>Buy RS: 0</td>
+                <td>Stone: 0</td>
+            </tr>
+            <tr>
+                <td>Build RS: 0</td>
+                <td>Iron: 0</td>
+            </tr>
+            <tr>
+                <td>Advance RS: 0</td>
+            </tr>
+        </table>
+    </footer>
+    <script>
+        sPageURL = window.location.search.substring(1);
+        var sURLVariables = sPageURL.split('&');
+    </script>
+    <script type="text/javascript" src='space.js'> </script>
+    <script type="text/javascript" src='board.js'> </script>
+</body>

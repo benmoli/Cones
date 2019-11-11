@@ -1,0 +1,182 @@
+var c = document.getElementById("myCanvas");
+var ctx = c.getContext("2d");
+
+class Space {
+    index; i; j; height; color; xcoordinates = []; ycoordinates = []; building1; building2; building3;
+    constructor(index, row, col, height, color, player, building1, building2, building3, soldiers) {
+        this.soldiers = soldiers;
+        this.building1 = building1;
+        this.building2 = building2;
+        this.building3 = building3;
+        this.index = index;
+        this.i = row;
+        this.j = col;
+        this.height = height;
+        this.color = color;
+        this.xcoordinates[0] = (14 + 30 * i) * 1.9;
+        this.ycoordinates[0] = (21 - 10 * i + 20 * j) * Math.sqrt(3) * 1.9 + 35;
+        this.xcoordinates[1] = (4 + 30 * i) * 1.9;
+        this.ycoordinates[1] = (31 - 10 * i + 20 * j) * Math.sqrt(3) * 1.9 + 35;
+        this.xcoordinates[2] = (14 + 30 * i) * 1.9;
+        this.ycoordinates[2] = (41 - 10 * i + 20 * j) * Math.sqrt(3) * 1.9 + 35;
+        this.xcoordinates[3] = (34 + 30 * i) * 1.9;
+        this.ycoordinates[3] = (41 - 10 * i + 20 * j) * Math.sqrt(3) * 1.9 + 35;
+        this.xcoordinates[4] = (44 + 30 * i) * 1.9;
+        this.ycoordinates[4] = (31 - 10 * i + 20 * j) * Math.sqrt(3) * 1.9 + 35;
+        this.xcoordinates[5] = (34 + 30 * i) * 1.9;
+        this.ycoordinates[5] = (21 - 10 * i + 20 * j) * Math.sqrt(3) * 1.9 + 35;
+        //alert(this.xcoordinates[0]);
+        this.makePath();
+        this.draw();
+    }
+    makePath(){
+        ctx.beginPath();
+        ctx.moveTo(this.xcoordinates[0], this.ycoordinates[0]);
+        ctx.lineTo(this.xcoordinates[1], this.ycoordinates[1]);
+        ctx.lineTo(this.xcoordinates[2], this.ycoordinates[2]);
+        ctx.lineTo(this.xcoordinates[3], this.ycoordinates[3]);
+        ctx.lineTo(this.xcoordinates[4], this.ycoordinates[4]);
+        ctx.lineTo(this.xcoordinates[5], this.ycoordinates[5]);
+        ctx.lineTo(this.xcoordinates[0], this.ycoordinates[0]);
+        ctx.closePath();
+    }
+    draw(){
+        if (!(this.color === "white")){
+            ctx.fillStyle = this.color;
+            ctx.fill();
+            if (this.color === "yellow") ctx.fillStyle = "black";
+            else ctx.fillStyle = "white";
+            //ctx.fillText(i + ", " + j, (14 + 30 * i) * 1.9 + 4, (21 - 10 * i + 20 * j) * Math.sqrt(3) * 1.9 + 50);
+            if (height > 0) ctx.fillText("h=" + height, (14 + 30 * i) * 1.9 - 10, (21 - 10 * i + 20 * j) * Math.sqrt(3) * 1.9 + 66);
+            this.drawBuilding(this.building1, 1, this.xcoordinates[0], this.ycoordinates[0]);
+            this.drawBuilding(this.building2, 2, this.xcoordinates[0], this.ycoordinates[0]);
+            this.drawBuilding(this.building3, 3, this.xcoordinates[0], this.ycoordinates[0]);
+            this.drawSoldiers(this.soldiers, this.xcoordinates[0], this.ycoordinates[0]);
+        }
+        ctx.stroke();
+    }
+    select(){
+        this.makePath();
+        ctx.lineWidth = 5;
+        ctx.strokeStyle = "orange"; 
+        ctx.stroke();
+    }
+    buildMenu() {
+        if (this.color === "black" || this.color === "grey") {
+            alert("Cannot build on black spaces or mountain");
+            window.location.replace('build.html?GRS=' + generic + '&yellow=' + buy + '&red=' + build + '&blue=' + advance + '&wood=' + woodnum + '&stone=' + stonenum + '&iron=' + ironnum + '&board=' + sURLVariables[4].split('=')[1] + '&space=-1');
+        }
+        document.getElementById("building1").innerHTML = '<p>Building 1: ' + this.building1 + ' <button onClick = "upgradeBuilding(&quot;' + this.building1 + '&quot;, ' + this.index + ', 1)">^</button></p>';
+        document.getElementById("building2").innerHTML = '<p>Building 2: ' + this.building2 + ' <button onClick = "upgradeBuilding(&quot;' + this.building2 + '&quot;, ' + this.index + ', 2)">^</button></p>';
+        document.getElementById("building3").innerHTML = '<p>Building 3: ' + this.building3 + ' <button onClick = "upgradeBuilding(&quot;' + this.building3 + '&quot;, ' + this.index + ', 3)">^</button></p>';
+    }
+    drawBuilding(building, num, x, y) {
+        var base_image = new Image(5, 5);
+        if (building === "none") return;
+        if (building === "barracks") base_image.src = 'barracks.png';
+        if (building === "farm") base_image.src = 'farm.png';
+        if (building === "fort") {
+            base_image.src = 'fort.png';
+            y += 5;
+        }
+        if (building === "indcor") {
+            base_image.src = 'indcor.png';
+            y += 7;
+        }
+        if (building === "comcor") {
+            base_image.src = 'comcor.png';
+            y += 7;
+        }
+        if (building === "transhub") base_image.src = 'transhub.png';
+        base_image.onload = function(){
+            ctx.drawImage(base_image, x - 30 + 20 * num, y + 35);
+        }
+    }
+    drawSoldiers(num, x, y) {
+        if (num == 0) return;
+        var base_image = new Image(5, 5);
+        base_image.src = 'soldier.png';
+        base_image.onload = function(){
+            ctx.drawImage(base_image, x + 20, y + 1);
+        }
+        ctx.fillText(num, x + 44, y + 32);
+    }
+}
+function upgradeBuilding(building, index, num) {
+    wood = parseInt(sURLVariables[4].split('=')[1]);
+    stone = parseInt(sURLVariables[5].split('=')[1]);
+    iron = parseInt(sURLVariables[6].split('=')[1]);
+    rs = parseInt(sURLVariables[0].split('=')[1]);
+    buildRs = parseInt(sURLVariables[2].split('=')[1]);
+    totalRs = rs + buildRs;
+    //barracks
+    if (wood >= 1 && stone >= 1 && iron >= 2 && totalRs > 15 && building === "none"){
+        if (buildRs >= 15) buildRs -= 15;
+        else {
+            rs -= (15 - buildRs);
+            buildRs = 0;
+        }
+        wood--;
+        stone--;
+        iron -= 2;
+        window.location.replace("build.html?GRS=" + rs + "&yellow=" + sURLVariables[1].split('=')[1] + "&red=" + buildRs + "&blue=" + sURLVariables[3].split('=')[1] + "&wood=" + wood + "&stone=" + stone + "&iron=" + iron + "&board=" + boardState.substring(0, 5 * index + num) + "1" + boardState.substring(5 * index + num + 1, boardState.length) + "&space=" + index);
+    }
+    //farm
+    else if (wood >= 2 && stone >= 1 && totalRs > 10 && building === "barracks"){
+        if (buildRs >= 10) buildRs -= 10;
+        else {
+            rs -= (10 - buildRs);
+            buildRs = 0;
+        }
+        wood -= 2;
+        stone--;
+        window.location.replace("build.html?GRS=" + rs + "&yellow=" + sURLVariables[1].split('=')[1] + "&red=" + buildRs + "&blue=" + sURLVariables[3].split('=')[1] + "&wood=" + wood + "&stone=" + stone + "&iron=" + iron + "&board=" + boardState.substring(0, 5 * index + num) + "2" + boardState.substring(5 * index + num + 1, boardState.length) + "&space=" + index);
+    }
+    //fort
+    else if (wood >= 1 && stone >= 3 && totalRs > 15 && building === "farm"){
+        if (buildRs >= 15) buildRs -= 15;
+        else {
+            rs -= (15 - buildRs);
+            buildRs = 0;
+        }
+        wood--;
+        stone -= 3;
+        window.location.replace("build.html?GRS=" + rs + "&yellow=" + sURLVariables[1].split('=')[1] + "&red=" + buildRs + "&blue=" + sURLVariables[3].split('=')[1] + "&wood=" + wood + "&stone=" + stone + "&iron=" + iron + "&board=" + boardState.substring(0, 5 * index + num) + "3" + boardState.substring(5 * index + num + 1, boardState.length) + "&space=" + index);
+    }
+    //ind corr
+    else if (wood >= 1 && stone >= 2 && iron >= 1 && totalRs > 15 && building === "fort"){
+        if (buildRs >= 15) buildRs -= 15;
+        else {
+            rs -= (15 - buildRs);
+            buildRs = 0;
+        }
+        wood--;
+        stone -= 2;
+        iron--;
+        window.location.replace("build.html?GRS=" + rs + "&yellow=" + sURLVariables[1].split('=')[1] + "&red=" + buildRs + "&blue=" + sURLVariables[3].split('=')[1] + "&wood=" + wood + "&stone=" + stone + "&iron=" + iron + "&board=" + boardState.substring(0, 5 * index + num) + "4" + boardState.substring(5 * index + num + 1, boardState.length) + "&space=" + index);
+    }
+    //com corr
+    else if (wood >= 3 && iron >= 1 && totalRs > 15 && building === "indcor"){
+        if (buildRs >= 15) buildRs -= 15;
+        else {
+            rs -= (15 - buildRs);
+            buildRs = 0;
+        }
+        wood -= 3;
+        iron--;
+        window.location.replace("build.html?GRS=" + rs + "&yellow=" + sURLVariables[1].split('=')[1] + "&red=" + buildRs + "&blue=" + sURLVariables[3].split('=')[1] + "&wood=" + wood + "&stone=" + stone + "&iron=" + iron + "&board=" + boardState.substring(0, 5 * index + num) + "5" + boardState.substring(5 * index + num + 1, boardState.length) + "&space=" + index);
+    }
+    //trans hub
+    else if (wood >= 1 && iron >= 1 && totalRs > 10 && building === "comcor"){
+        if (buildRs >= 10) buildRs -= 10;
+        else {
+            rs -= (10 - buildRs);
+            buildRs = 0;
+        }
+        wood--;
+        iron--;
+        window.location.replace("build.html?GRS=" + rs + "&yellow=" + sURLVariables[1].split('=')[1] + "&red=" + buildRs + "&blue=" + sURLVariables[3].split('=')[1] + "&wood=" + wood + "&stone=" + stone + "&iron=" + iron + "&board=" + boardState.substring(0, 5 * index + num) + "6" + boardState.substring(5 * index + num + 1, boardState.length) + "&space=" + index);
+    }
+    else if (building === "transhub") alert("Cannot upgrade further");
+    else alert("Not enough RS or Resources");
+}
