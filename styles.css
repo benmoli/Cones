@@ -2,7 +2,7 @@ body {
     background-image: url("paper.jpg");
     background-color: #cccccc;
     font-family: cursive;
-    zoom: 85%;
+    /* zoom: 90%; */
 }
 .split {
     height: 100%;

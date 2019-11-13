@@ -4,22 +4,22 @@
 </head>
 <body>
     <div class = "split left" style = "width: 400px; margin-left: 10px">
-        <h1>Advance (Non-Mountain)</h1>
+        <h1 id = "player"></h1>
         <img src = "advance-controls.png" style = "width: 50%"/>
         <p>Use keys shown above to move 1 increment in the specified direction</p>
         <p>Costs 1 RS to move 1 soldier 1 space.</p>
-        <p>Initialize Soldiers
+        <p>Initialize 
         <select id = "init-soldiers">
             <option>1</option>
             <option>2</option>
             <option>3</option>
             <option>4</option>
             <option>5</option>
-        </select>
-        <button onClick = "initSoldiers(document.getElementById('init-soldiers').options[document.getElementById('init-soldiers').selectedIndex].value, 0);">Submit</button>
+        </select> Soldier(s) <!--at <div id = init-space></div>-->
+        <button onClick = "initSoldiers(document.getElementById('init-soldiers').options[document.getElementById('init-soldiers').selectedIndex].value);">Submit</button>
         </p>
         <div id = "soldier-amount"></div>
-    <!-- <button onClick = "window.location.replace('advance.html')">Continue</button> -->
+        <div id = "continue"></div>
     </div>
 
     <div class = "split right">
@@ -41,7 +41,7 @@
             <tr>
                 <td id = "Generic RS"></td>
                 <td id = "Wood"></td>
-                <td>30 soldiers</td/body>
+                <td id = "Soldiers"></td>
             </tr>
             <tr>
                 <td id = "Buy RS"></td>
@@ -59,6 +59,9 @@
     <script>
         sPageURL = window.location.search.substring(1);
         var sURLVariables = sPageURL.split('&');
+        turn = parseInt(sURLVariables[9].split('=')[1]) + 1;
+        player = (parseInt(sURLVariables[9].split('=')[1]) + 1) % 2 + 1;
+        document.getElementById("player").innerHTML = "Player " + player + " Advance (Non-Mountain)";
         document.getElementById("Generic RS").innerHTML = "Generic RS: " + sURLVariables[0].split('=')[1];
         document.getElementById("Buy RS").innerHTML = "Buy RS: " + sURLVariables[1].split('=')[1];
         document.getElementById("Build RS").innerHTML = "Build RS: " + sURLVariables[2].split('=')[1];
@@ -66,6 +69,16 @@
         document.getElementById("Wood").innerHTML = "Wood: " + sURLVariables[4].split('=')[1];
         document.getElementById("Stone").innerHTML = "Stone: " + sURLVariables[5].split('=')[1];
         document.getElementById("Iron").innerHTML = "Iron: " + sURLVariables[6].split('=')[1];
+        document.getElementById("Soldiers").innerHTML = sURLVariables[10].split('=')[1].substring(11 * (player - 1) + 3, 11 * (player - 1) + 6) + " soldiers";
+        //document.getElementById("init-space").innerHTML = "Init Space " + parseInt(sURLVariables[9].split('=')[1]) % 8;
+        document.getElementById("continue").innerHTML ='<a href = "roll.html?board=' + sURLVariables[7].split('=')[1] + '&space=-1&turn=' + turn + '&players=' + 
+        sURLVariables[10].split('=')[1].substring(0, 11 * ((parseInt(sURLVariables[9].split('=')[1]) + 1) % 2)) 
+        + sURLVariables[4].split('=')[1] 
+        + sURLVariables[5].split('=')[1]
+         + sURLVariables[6].split('=')[1]
+         + sURLVariables[10].split('=')[1].substring(11 * ((parseInt(sURLVariables[9].split('=')[1]) + 1) % 2) + 3, sURLVariables[10].split('=')[1].length)
+         + '">Next Turn</a>';
+        turn = parseInt(sURLVariables[9].split('=')[1]) + 1;
     </script>
     <script type="text/javascript" src='space.js'> </script>
     <script type="text/javascript" src='board.js'> </script>

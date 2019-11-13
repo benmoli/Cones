@@ -11,7 +11,7 @@ myCanvas.addEventListener('click', function(e) {
     for (i = 0; i < spaces.length; i++) {
         if (!(spaces[i].color === "white")) {
             if (x > spaces[i].xcoordinates[0] && x < spaces[i].xcoordinates[5] && y > spaces[i].ycoordinates[0] && y < spaces[i].ycoordinates[2]) {
-                window.location.replace(window.location.pathname.split("/").pop() + '?GRS=' + sURLVariables[0].split('=')[1] + '&yellow=' + sURLVariables[1].split('=')[1] + '&red=' + sURLVariables[2].split('=')[1] + '&blue=' + sURLVariables[3].split('=')[1] + '&wood=' + sURLVariables[4].split('=')[1] + '&stone=' + sURLVariables[5].split('=')[1] + '&iron=' + sURLVariables[6].split('=')[1]+ '&board=' + sURLVariables[7].split('=')[1] + '&space=' + i);
+                window.location.replace(window.location.pathname.split("/").pop() + '?GRS=' + sURLVariables[0].split('=')[1] + '&yellow=' + sURLVariables[1].split('=')[1] + '&red=' + sURLVariables[2].split('=')[1] + '&blue=' + sURLVariables[3].split('=')[1] + '&wood=' + sURLVariables[4].split('=')[1] + '&stone=' + sURLVariables[5].split('=')[1] + '&iron=' + sURLVariables[6].split('=')[1]+ '&board=' + sURLVariables[7].split('=')[1] + '&space=' + i + '&turn=' + sURLVariables[9].split('=')[1] + '&players=' + sURLVariables[10].split('=')[1]);
             }
         }
     }
@@ -69,7 +69,7 @@ function draw(){
 if (currentSpace != -1) select(currentSpace);
 function select(i) {
     if (window.location.pathname.split("/").pop() === "build.html") {
-        if (selected == -1) {
+        if (selected == -1 && spaces[i].player == (parseInt(sURLVariables[9].split('=')[1]) + 1) % 2 + 1) {
             spaces[i].select();
             selected = i;
             spaces[i].buildMenu();                
@@ -110,6 +110,9 @@ function select(i) {
                                 prev = array[0]; next = array[1]; moved = array[2];
                                 state = sURLVariables[7].split('=')[1].substring(0, 5 * asdf + 4) + next + sURLVariables[7].split('=')[1].substring(5 * asdf + 5, sURLVariables[7].split('=')[1].length);
                                 state = state.substring(0, 5 * i + 4) + prev + state.substring(5 * i + 5, state.length);
+                                playerNum = (parseInt(sURLVariables[9].split('=')[1]) + 1) % 2 + 1;
+                                state = state.substring(0, 5 * asdf) + playerNum + state.substring(5 * asdf + 1, state.length);
+                                if (state.charAt(5 * i + 4) === "0") state = state.substring(0, 5 * i) + "0" + state.substring(5 * i + 1, state.length);
                                 advRS = parseInt(sURLVariables[3].split('=')[1]);
                                 GRS = parseInt(sURLVariables[0].split('=')[1]);
                                 if (advRS >= moved) advRS -= moved;
@@ -121,7 +124,7 @@ function select(i) {
                                     alert("Not enough RS");
                                     return;
                                 }
-                                goTo = 'advance.html?GRS=' + GRS + '&yellow=' + sURLVariables[1].split('=')[1] + '&red=' + sURLVariables[2].split('=')[1] + '&blue=' + advRS + '&wood=' + sURLVariables[4].split('=')[1] + '&stone=' + sURLVariables[5].split('=')[1] + '&iron=' + sURLVariables[6].split('=')[1]+ '&board=' + state + '&space=' + asdf;
+                                goTo = 'advance.html?GRS=' + GRS + '&yellow=' + sURLVariables[1].split('=')[1] + '&red=' + sURLVariables[2].split('=')[1] + '&blue=' + advRS + '&wood=' + sURLVariables[4].split('=')[1] + '&stone=' + sURLVariables[5].split('=')[1] + '&iron=' + sURLVariables[6].split('=')[1]+ '&board=' + state + '&space=' + asdf + '&turn=' + sURLVariables[9].split('=')[1] + '&players=' + sURLVariables[10].split('=')[1] + '&turn=' + sURLVariables[9].split('=')[1] + '&players=' + sURLVariables[10].split('=')[1];
                                 window.location.replace(goTo);
                             } 
                         }
@@ -156,7 +159,16 @@ function moveSoldiers(prev, next, moving) {
     rtrn[2] = moved;
     return rtrn;
 }
-function initSoldiers(num, spaceIndex) {
+function initSoldiers(num) {
+    turn = sURLVariables[9].split('=')[1];
+    if (turn % 8 == 1) spaceIndex = 0;
+    if (turn % 8 == 2) spaceIndex = 3;
+    if (turn % 8 == 3) spaceIndex = 17;
+    if (turn % 8 == 4) spaceIndex = 46;
+    if (turn % 8 == 5) spaceIndex = 73;
+    if (turn % 8 == 6) spaceIndex = 79;
+    if (turn % 8 == 7) spaceIndex = 56;
+    if (turn % 8 == 0) spaceIndex = 27;
     if (num > 5 - spaces[spaceIndex].soldiers){
         alert("Too many soldiers on start space");
         return;
@@ -170,5 +182,12 @@ function initSoldiers(num, spaceIndex) {
         grs = grs - num + ars;
     }
     initNum = parseInt(num) + parseInt(spaces[spaceIndex].soldiers);
-    window.location.replace('advance.html?GRS=' + grs + '&yellow=' + sURLVariables[1].split('=')[1] + '&red=' + sURLVariables[2].split('=')[1] + '&blue=' + ars + '&wood=' + sURLVariables[4].split('=')[1] + '&stone=' + sURLVariables[5].split('=')[1] + '&iron=' + sURLVariables[6].split('=')[1]+ '&board=' + sURLVariables[7].split('=')[1].substring(0, 5 * spaceIndex + 4) + initNum + sURLVariables[7].split('=')[1].substring(5 * spaceIndex + 5, sURLVariables[7].split('=')[1].length) + '&space=' + sURLVariables[8].split('=')[1]);
+    playerNum = (parseInt(sURLVariables[9].split('=')[1]) + 1) % 2 + 1;
+    soldierNum = parseInt(sURLVariables[10].split('=')[1].substring(11 * (playerNum - 1) + 3, 11 * (playerNum - 1) + 6));
+    soldierNum -= num;
+    soldierString = "";
+    if (soldierNum < 100) soldierString += "0"
+    if (soldierNum < 10) soldierString += "0";
+    soldierString += soldierNum;
+    window.location.replace('advance.html?GRS=' + grs + '&yellow=' + sURLVariables[1].split('=')[1] + '&red=' + sURLVariables[2].split('=')[1] + '&blue=' + ars + '&wood=' + sURLVariables[4].split('=')[1] + '&stone=' + sURLVariables[5].split('=')[1] + '&iron=' + sURLVariables[6].split('=')[1]+ '&board=' + sURLVariables[7].split('=')[1].substring(0, 5 * spaceIndex) + playerNum + sURLVariables[7].split('=')[1].substring(5 * spaceIndex + 1, 5 * spaceIndex + 4) + initNum + sURLVariables[7].split('=')[1].substring(5 * spaceIndex + 5, sURLVariables[7].split('=')[1].length) + '&space=' + sURLVariables[8].split('=')[1] + '&turn=' + sURLVariables[9].split('=')[1] + '&players=' + sURLVariables[10].split('=')[1].substring(0, 11 * (playerNum - 1) + 3) + soldierString + sURLVariables[10].split('=')[1].substring(11 * (playerNum - 1) + 6,  sURLVariables[10].split('=')[1].length));
 }
