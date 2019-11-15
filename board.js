@@ -103,7 +103,7 @@ function select(i) {
         document.getElementById("soldier-amount").innerHTML = soldierMenu;
         badKey = false;
         if (selected == -1) {
-            spaces[i].select();makeM
+            spaces[i].select();
             selected = i;
             document.body.addEventListener("keyup", function(event) {
                 nextI = spaces[i].i;
@@ -122,7 +122,7 @@ function select(i) {
                             if (spaces[asdf].height != 0) alert("This part of the advance phase does not involve advancement on the mountain");
                             else {
                                 next = parseInt(sURLVariables[7].split('=')[1].charAt(5 * asdf + 4));
-                                prev = parseInt(sURLVariables[7].split('=')[1].charAt(5 * i + 4));
+                                272 insertions(+), 39 deletions(-) prev = parseInt(sURLVariables[7].split('=')[1].charAt(5 * i + 4));
                                 thisPlayer = parseInt(sURLVariables[7].split('=')[1].charAt(5 * i));
                                 nextPlayer = parseInt(sURLVariables[7].split('=')[1].charAt(5 * asdf));
                                 if (thisPlayer != nextPlayer && nextPlayer != 0) {
@@ -166,7 +166,7 @@ function setBuilding(building) {
     if (building == 3) return "fort";
     if (building == 4) return "indcor";
     if (building == 5) return "comcor";
-    if (building == 6) return "transhub";
+    if (building == 6) return " 272 insertions(+), 39 deletions(-)transhub";
 }
 function moveSoldiers(prev, next, moving) {
     moved = 0;
@@ -185,7 +185,7 @@ function moveSoldiers(prev, next, moving) {
 }
 function initSoldiers(num) {
     if (num > 5 - spaces[spaceIndex].soldiers){
-        alert("Too many soldiers on start space");
+        alert("Too many soldier 272 insertions(+), 39 deletions(-)s on start space");
         return;
     }
     grs = parseInt(sURLVariables[0].split('=')[1]);
