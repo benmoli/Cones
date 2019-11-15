@@ -1,0 +1,89 @@
+<head>
+    <link rel="stylesheet" href="styles.css">
+    <title>Cones of Dunshire</title><meta charset="utf-8"/>
+</head>
+<body style = "zoom: 150%">
+    <h1>Combat</h1>
+    <div class="row">
+        <div class="column">
+            <h2>Offending Player</h2>
+            <p id = "p1-soldiers"></p>
+            <button onClick = 
+                "offRoll = roll();
+                document.getElementById('off-roll').innerHTML = offRoll;"
+                >Roll</button>
+            <p id = "off-roll">
+        </div>
+        <div class="column">
+            <h2>Defending Player</h2>
+            <p id = "p2-soldiers"></p>
+            <div id = "def-roll-button"></div>
+            <p id = "def-roll"></p>
+        </div>
+    </div>
+    <p id = "result"></p>
+    <div id = "continue"></div>
+    <script>
+        sPageURL = window.location.search.substring(1);
+        var sURLVariables = sPageURL.split('&');
+        prevIndex = parseInt(sURLVariables[8].split('=')[1]);
+        nextIndex = parseInt(sURLVariables[11].split('=')[1]);
+        board = sURLVariables[7].split('=')[1];
+        leftSoldiers = parseInt(board.charAt(prevIndex * 5 + 4));
+        rightSoldiers = parseInt(board.charAt(nextIndex * 5 + 4));
+        document.getElementById("p1-soldiers").innerHTML = leftSoldiers + " troops";
+        document.getElementById("p2-soldiers").innerHTML = rightSoldiers + " troops";
+        offRoll = [];
+        defRoll = [];
+        function roll() {
+            rtrn = [];
+            for (i = 0; i < leftSoldiers && i < rightSoldiers; i++) {
+                rtrn[i] = (6 * Math.random() + 1) | 0;
+            }
+            document.getElementById('def-roll-button').innerHTML = `<button onClick = "defRoll = roll();
+                document.getElementById('def-roll').innerHTML = defRoll;
+                result();">Roll</button>`;
+            return rtrn.sort().reverse();
+        }
+        function result() {
+            rtrn = "";
+            nextLeft = leftSoldiers;
+            nextRight = rightSoldiers;
+            for (i = 0; i < offRoll.length; i++) {
+                if (offRoll[i] > defRoll[i]) {
+                    rtrn += offRoll[i] + " is more than " + defRoll[i];
+                    rtrn += ". Defense loses a soldier</p><p>";
+                    nextRight--;
+                }
+                else if (offRoll[i] < defRoll[i]) {
+                    rtrn += offRoll[i] + " is less than " + defRoll[i];
+                    rtrn += ". Offense loses a soldier</p><p>";
+                    nextLeft--;
+                }
+                //WHAT IF ALL DIcE ARE EQUAL
+                //Test file:///home/tcsuser/cones/advance.html?GRS=11&yellow=10&red=15&blue=0&wood=0&stone=0&iron=0&board=1000310002000000000010005100030000020005200000000000000000000000000000000000000200000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000020005000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000&space=46&turn=4&players=0001240000000013000000
+                else {
+                    rtrn += offRoll[i] + " equals " + defRoll[i];
+                    rtrn += ". Defense loses a soldier</p>";
+                    nextRight--;
+                }
+            }
+            document.getElementById("result").innerHTML = rtrn;
+            state = sURLVariables[7].split('=')[1].substring(0, 5 * prevIndex + 4) + nextLeft + sURLVariables[7].split('=')[1].substring(5 * prevIndex + 5, sURLVariables[7].split('=')[1].length);
+            state = state.substring(0, 5 * nextIndex + 4) + nextRight + state.substring(5 * nextIndex + 5, state.length);
+            if (nextRight == 0) {
+                state = state.substring(0, 5 * nextIndex + 4) + state.charAt(5 * prevIndex + 4) + state.substring(5 * nextIndex + 5, state.length);
+                state = state.substring(0, 5 * prevIndex + 4) + "0" + state.substring(5 * prevIndex + 5, state.length);
+                state = state.substring(0, 5 * nextIndex) + state.charAt(5 * prevIndex) + state.substring(5 * nextIndex + 1, state.length);
+                state = state.substring(0, 5 * prevIndex) + "0" + state.substring(5 * prevIndex + 1, state.length);
+                goTo = 'advance.html?GRS=' + sURLVariables[0].split('=')[1] + '&yellow=' + sURLVariables[1].split('=')[1] + '&red=' + sURLVariables[2].split('=')[1] + '&blue=' + sURLVariables[3].split('=')[1] + '&wood=' + sURLVariables[4].split('=')[1] + '&stone=' + sURLVariables[5].split('=')[1] + '&iron=' + sURLVariables[6].split('=')[1]+ '&board=' + state + '&space=' + sURLVariables[8].split('=')[1] + '&turn=' + sURLVariables[9].split('=')[1] + '&players=' + sURLVariables[10].split('=')[1];
+            }
+            else if (nextLeft == 0) {
+                state = state.substring(0, 5 * prevIndex) + "0" + state.substring(5 * prevIndex + 1, state.length);
+                goTo = 'advance.html?GRS=' + sURLVariables[0].split('=')[1] + '&yellow=' + sURLVariables[1].split('=')[1] + '&red=' + sURLVariables[2].split('=')[1] + '&blue=' + sURLVariables[3].split('=')[1] + '&wood=' + sURLVariables[4].split('=')[1] + '&stone=' + sURLVariables[5].split('=')[1] + '&iron=' + sURLVariables[6].split('=')[1]+ '&board=' + state + '&space=' + sURLVariables[8].split('=')[1] + '&turn=' + sURLVariables[9].split('=')[1] + '&players=' + sURLVariables[10].split('=')[1];
+            } 
+            else goTo = 'combat.html?GRS=' + sURLVariables[0].split('=')[1] + '&yellow=' + sURLVariables[1].split('=')[1] + '&red=' + sURLVariables[2].split('=')[1] + '&blue=' + sURLVariables[3].split('=')[1] + '&wood=' + sURLVariables[4].split('=')[1] + '&stone=' + sURLVariables[5].split('=')[1] + '&iron=' + sURLVariables[6].split('=')[1]+ '&board=' + state + '&space=' + sURLVariables[8].split('=')[1] + '&turn=' + sURLVariables[9].split('=')[1] + '&players=' + sURLVariables[10].split('=')[1] + '&next=' + sURLVariables[11].split('=')[1];
+            document.getElementById("continue").innerHTML = '<button onClick= window.location.replace("' + goTo + '")>Continue</button>';
+        }
+    </script>
+</body>

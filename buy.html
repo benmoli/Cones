@@ -1,5 +1,6 @@
 <head>
     <script type="text/javascript" src='buy.js'> </script>
+    <script type="text/javascript" src='audio.js'> </script>
     <link rel="stylesheet" href="styles.css">
     <title>Cones of Dunshire</title><meta charset="utf-8"/>
 </head>
@@ -70,19 +71,19 @@
         num = 100 * Math.random();    
         iron = (10 - Math.sqrt(num) + 1) | 0;//make iron cost more for a lessor amount of time at the beginning of the game
         document.getElementById("iron-cost").innerHTML = "Buy Iron (White). Cost: " + iron + " RS";
-        dropdown = '<select id = "wood selection">';
+        dropdown = '<select id = "wood selection" onClick = "play(`benny.wav`)">';
         for (i = 0; i <= (parseInt(sURLVariables[1].split('=')[1]) + parseInt(sURLVariables[0].split('=')[1])) / wood; i++){
             dropdown += '<option value = "' + i + '">' + i + '</option>';
         }
         dropdown += '</select>';
         document.getElementById("wood").innerHTML = dropdown;
-        dropdown = '<select id = "stone selection">';
+        dropdown = '<select id = "stone selection" onClick = "play(`benny.wav`)">';
         for (i = 0; i <= (parseInt(sURLVariables[1].split('=')[1]) + parseInt(sURLVariables[0].split('=')[1])) / stone; i++){
             dropdown += '<option value = "' + i + '">' + i + '</option>';
         }
         dropdown += '</select>';
         document.getElementById("stone").innerHTML = dropdown;
-        dropdown = '<select id = "iron selection">';
+        dropdown = '<select id = "iron selection" onClick = "play(`benny.wav`)">';
         for (i = 0; i <= (parseInt(sURLVariables[1].split('=')[1]) + parseInt(sURLVariables[0].split('=')[1])) / iron; i++){
             dropdown += '<option value = "' + i + '">' + i + '</option>';
         }

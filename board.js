@@ -1,9 +1,23 @@
 var c = document.getElementById("myCanvas");
-if (window.location.pathname.split("/").pop() === "roll.html") currentSpace = parseInt(sURLVariables[1].split('=')[1]);
-else if (window.location.pathname.split("/").pop() === "buy.html") currentSpace = parseInt(sURLVariables[5].split('=')[1]);
-else if (window.location.pathname.split("/").pop() === "build.html") currentSpace = parseInt(sURLVariables[8].split('=')[1]);
-else if (window.location.pathname.split("/").pop() === "advance.html") currentSpace = parseInt(sURLVariables[8].split('=')[1]);
+if (window.location.pathname.split("/").pop() === "roll.html"){ currentSpace = parseInt(sURLVariables[1].split('=')[1]); turn = sURLVariables[2].split('=')[1]; }
+else if (window.location.pathname.split("/").pop() === "buy.html"){ currentSpace = parseInt(sURLVariables[5].split('=')[1]); turn = sURLVariables[6].split('=')[1]; }
+else if (window.location.pathname.split("/").pop() === "build.html"){ currentSpace = parseInt(sURLVariables[8].split('=')[1]); turn = sURLVariables[9].split('=')[1]; }
+else if (window.location.pathname.split("/").pop() === "advance.html"){ currentSpace = parseInt(sURLVariables[8].split('=')[1]); turn = sURLVariables[9].split('=')[1]; }
+else if (window.location.pathname.split("/").pop() === "advance2.html"){
+    currentSpace = parseInt(sURLVariables[8].split('=')[1]);
+    turn = sURLVariables[9].split('=')[1];
+}
 selected = -1;
+
+if (turn % 8 == 1) spaceIndex = 0;
+if (turn % 8 == 2) spaceIndex = 3;
+if (turn % 8 == 3) spaceIndex = 17;
+if (turn % 8 == 4) spaceIndex = 46;
+if (turn % 8 == 5) spaceIndex = 73;
+if (turn % 8 == 6) spaceIndex = 70;
+if (turn % 8 == 7) spaceIndex = 56;
+if (turn % 8 == 0) spaceIndex = 27;
+
 myCanvas.addEventListener('click', function(e) {
     var rect = myCanvas.getBoundingClientRect();
     var x = e.pageX - .375 * self.innerWidth;
@@ -35,6 +49,8 @@ if (root === "roll.html") var boardState = sURLVariables[0].split('=')[1];
 else if (root === "buy.html") var boardState = sURLVariables[4].split('=')[1];
 else var boardState = sURLVariables[7].split('=')[1];
 draw();
+if (window.location.pathname.split("/").pop() === "advance2.html") mountainMoves();
+spaces[spaceIndex].drawInit();
 function draw(){
     for (j = 0; j < 10; j++) {
         row = 0;
@@ -62,12 +78,13 @@ function draw(){
             // }
             spaces[index] = new Space(index, i, j, height, colors[index], player, building1, building2, building3, soldiers);
             index++;
-            row++;           
+            row++;
         }
     }
 }
 if (currentSpace != -1) select(currentSpace);
 function select(i) {
+    if (spaces[i].player != (parseInt(sURLVariables[9].split('=')[1]) + 1) % 2 + 1) return;
     if (window.location.pathname.split("/").pop() === "build.html") {
         if (selected == -1 && spaces[i].player == (parseInt(sURLVariables[9].split('=')[1]) + 1) % 2 + 1) {
             spaces[i].select();
@@ -86,7 +103,7 @@ function select(i) {
         document.getElementById("soldier-amount").innerHTML = soldierMenu;
         badKey = false;
         if (selected == -1) {
-            spaces[i].select();
+            spaces[i].select();makeM
             selected = i;
             document.body.addEventListener("keyup", function(event) {
                 nextI = spaces[i].i;
@@ -106,6 +123,13 @@ function select(i) {
                             else {
                                 next = parseInt(sURLVariables[7].split('=')[1].charAt(5 * asdf + 4));
                                 prev = parseInt(sURLVariables[7].split('=')[1].charAt(5 * i + 4));
+                                thisPlayer = parseInt(sURLVariables[7].split('=')[1].charAt(5 * i));
+                                nextPlayer = parseInt(sURLVariables[7].split('=')[1].charAt(5 * asdf));
+                                if (thisPlayer != nextPlayer && nextPlayer != 0) {
+                                    goTo = 'combat.html?' + sPageURL + '&next=' + asdf;
+                                    window.location.replace(goTo);
+                                    return;
+                                }
                                 array = moveSoldiers(prev, next, parseInt(toMove));
                                 prev = array[0]; next = array[1]; moved = array[2];
                                 state = sURLVariables[7].split('=')[1].substring(0, 5 * asdf + 4) + next + sURLVariables[7].split('=')[1].substring(5 * asdf + 5, sURLVariables[7].split('=')[1].length);
@@ -122,9 +146,9 @@ function select(i) {
                                 }
                                 else {
                                     alert("Not enough RS");
-                                    return;
+                                    window.location.reload();
                                 }
-                                goTo = 'advance.html?GRS=' + GRS + '&yellow=' + sURLVariables[1].split('=')[1] + '&red=' + sURLVariables[2].split('=')[1] + '&blue=' + advRS + '&wood=' + sURLVariables[4].split('=')[1] + '&stone=' + sURLVariables[5].split('=')[1] + '&iron=' + sURLVariables[6].split('=')[1]+ '&board=' + state + '&space=' + asdf + '&turn=' + sURLVariables[9].split('=')[1] + '&players=' + sURLVariables[10].split('=')[1] + '&turn=' + sURLVariables[9].split('=')[1] + '&players=' + sURLVariables[10].split('=')[1];
+                                goTo = 'advance.html?GRS=' + GRS + '&yellow=' + sURLVariables[1].split('=')[1] + '&red=' + sURLVariables[2].split('=')[1] + '&blue=' + advRS + '&wood=' + sURLVariables[4].split('=')[1] + '&stone=' + sURLVariables[5].split('=')[1] + '&iron=' + sURLVariables[6].split('=')[1]+ '&board=' + state + '&space=' + asdf + '&turn=' + sURLVariables[9].split('=')[1] + '&players=' + sURLVariables[10].split('=')[1];
                                 window.location.replace(goTo);
                             } 
                         }
@@ -160,15 +184,6 @@ function moveSoldiers(prev, next, moving) {
     return rtrn;
 }
 function initSoldiers(num) {
-    turn = sURLVariables[9].split('=')[1];
-    if (turn % 8 == 1) spaceIndex = 0;
-    if (turn % 8 == 2) spaceIndex = 3;
-    if (turn % 8 == 3) spaceIndex = 17;
-    if (turn % 8 == 4) spaceIndex = 46;
-    if (turn % 8 == 5) spaceIndex = 73;
-    if (turn % 8 == 6) spaceIndex = 79;
-    if (turn % 8 == 7) spaceIndex = 56;
-    if (turn % 8 == 0) spaceIndex = 27;
     if (num > 5 - spaces[spaceIndex].soldiers){
         alert("Too many soldiers on start space");
         return;
@@ -190,4 +205,23 @@ function initSoldiers(num) {
     if (soldierNum < 10) soldierString += "0";
     soldierString += soldierNum;
     window.location.replace('advance.html?GRS=' + grs + '&yellow=' + sURLVariables[1].split('=')[1] + '&red=' + sURLVariables[2].split('=')[1] + '&blue=' + ars + '&wood=' + sURLVariables[4].split('=')[1] + '&stone=' + sURLVariables[5].split('=')[1] + '&iron=' + sURLVariables[6].split('=')[1]+ '&board=' + sURLVariables[7].split('=')[1].substring(0, 5 * spaceIndex) + playerNum + sURLVariables[7].split('=')[1].substring(5 * spaceIndex + 1, 5 * spaceIndex + 4) + initNum + sURLVariables[7].split('=')[1].substring(5 * spaceIndex + 5, sURLVariables[7].split('=')[1].length) + '&space=' + sURLVariables[8].split('=')[1] + '&turn=' + sURLVariables[9].split('=')[1] + '&players=' + sURLVariables[10].split('=')[1].substring(0, 11 * (playerNum - 1) + 3) + soldierString + sURLVariables[10].split('=')[1].substring(11 * (playerNum - 1) + 6,  sURLVariables[10].split('=')[1].length));
+}
+function mountainMoves() {
+    rtrn = "";
+    playerNum = (parseInt(sURLVariables[9].split('=')[1]) + 1) % 2 + 1;
+    for (j = 20; j < 53; j++) {
+        for (k = j - 10; k < j + 10; k++) {
+            if (spaces[j].height > 0 && playerNum == parseInt(spaces[k].player)) {
+                if (j == k) continue;
+                if (spaces[k].height <= spaces[j].height + 1 && spaces[k].height >= spaces[j].height - 1 
+                    && spaces[k].i <= spaces[j].i + 1 && spaces[k].i >= spaces[j].i - 1  
+                    && spaces[k].j <= spaces[j].j + 1 && spaces[k].j >= spaces[j].j - 1
+                    && !(spaces[k].j < spaces[j].j && spaces[k].i > spaces[j].i)
+                    && !(spaces[k].j > spaces[j].j && spaces[k].i < spaces[j].i)) {
+                    rtrn += k + " to " + j + "\n";
+                }
+            }
+        }
+    }
+    alert(rtrn);
 }

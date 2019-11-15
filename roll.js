@@ -13,6 +13,7 @@ function preroll() {
     document.getElementById("preroll roll").innerHTML = roll1 + " + " + roll2 + " + " + roll3 + " = " + sum + " total dice";
     document.getElementById("preroll result").innerHTML = "roll up to " + smallDiceNum + " small dice"
     document.getElementById("small dice option").innerHTML = dropdown;
+    play("brrrap.wav");
 }
 function smallDiceRoll(sum) {
     total = 0;
@@ -35,6 +36,7 @@ function smallDiceRoll(sum) {
     dropdown += '</select><button onClick = "specialDiceRoll(' + total + ')">Roll!</button>';
     document.getElementById("special dice amount").innerHTML = "roll up to " + specialDiceNum + " special dice"
     document.getElementById("special dice option").innerHTML = dropdown;
+    play("brrrap.wav");
 }
 function specialDiceRoll(genericRS) {
     red = 0;
@@ -55,4 +57,5 @@ function specialDiceRoll(genericRS) {
     document.getElementById("green").innerHTML = green + " green = " + 3 * green + " Generic RS";
     GRS = genericRS + green * 3;
     document.getElementById("continue").innerHTML = '<a href = "buy.html?GRS=' + GRS + '&yellow=' + 5 * yellow + '&red=' + 5 * red + '&blue=' + 5 * blue + '&board=' + sURLVariables[0].split('=')[1] + '&space=-1&turn=' + sURLVariables[2].split('=')[1] + '&players=' + sURLVariables[3].split('=')[1] + '">Continue</a>';
+    play("brrrap.wav");
 }

@@ -48,15 +48,8 @@ class Space {
             if (this.color === "yellow") ctx.fillStyle = "black";
             else ctx.fillStyle = "white";
             if (player > 0) ctx.fillText("P" + this.player, (14 + 30 * i) * 1.9 + 4, (21 - 10 * i + 20 * j) * Math.sqrt(3) * 1.9 + 50);
-            if (height > 0) ctx.fillText("h=" + height, (14 + 30 * i) * 1.9 - 10, (21 - 10 * i + 20 * j) * Math.sqrt(3) * 1.9 + 66);
-            if (this.index == 0) ctx.fillText("init=1", (14 + 30 * i) * 1.9 - 10, (21 - 10 * i + 20 * j) * Math.sqrt(3) * 1.9 + 66);
-            if (this.index == 3) ctx.fillText("init=2", (14 + 30 * i) * 1.9 - 10, (21 - 10 * i + 20 * j) * Math.sqrt(3) * 1.9 + 66);
-            if (this.index == 17) ctx.fillText("init=3", (14 + 30 * i) * 1.9 - 10, (21 - 10 * i + 20 * j) * Math.sqrt(3) * 1.9 + 66);
-            if (this.index == 46) ctx.fillText("init=4", (14 + 30 * i) * 1.9 - 10, (21 - 10 * i + 20 * j) * Math.sqrt(3) * 1.9 + 66);
-            if (this.index == 73) ctx.fillText("init=5", (14 + 30 * i) * 1.9 - 10, (21 - 10 * i + 20 * j) * Math.sqrt(3) * 1.9 + 66);
-            if (this.index == 70) ctx.fillText("init=6", (14 + 30 * i) * 1.9 - 10, (21 - 10 * i + 20 * j) * Math.sqrt(3) * 1.9 + 66);
-            if (this.index == 56) ctx.fillText("init=7", (14 + 30 * i) * 1.9 - 10, (21 - 10 * i + 20 * j) * Math.sqrt(3) * 1.9 + 66);
-            if (this.index == 27) ctx.fillText("init=8", (14 + 30 * i) * 1.9 - 10, (21 - 10 * i + 20 * j) * Math.sqrt(3) * 1.9 + 66);
+            if (height > 0) ctx.fillText("height " + height, (14 + 30 * i) * 1.9 + 1, (21 - 10 * i + 20 * j) * Math.sqrt(3) * 1.9 + 95);
+            ctx.fillText(index, (14 + 30 * i) * 1.9 - 7, (21 - 10 * i + 20 * j) * Math.sqrt(3) * 1.9 + 66);
             this.drawBuilding(this.building1, 1, this.xcoordinates[0], this.ycoordinates[0]);
             this.drawBuilding(this.building2, 2, this.xcoordinates[0], this.ycoordinates[0]);
             this.drawBuilding(this.building3, 3, this.xcoordinates[0], this.ycoordinates[0]);
@@ -68,6 +61,12 @@ class Space {
         this.makePath();
         ctx.lineWidth = 5;
         ctx.strokeStyle = "orange"; 
+        ctx.stroke();
+    }
+    drawInit(){
+        this.makePath();
+        ctx.lineWidth = 5;
+        ctx.strokeStyle = "#FFBBBB"; 
         ctx.stroke();
     }
     buildMenu() {

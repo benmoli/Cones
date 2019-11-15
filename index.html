@@ -3,8 +3,27 @@
     <title>Cones of Dunshire</title><meta charset="utf-8"/>
 </head>
 <body style = "zoom: 200%">
+    <!-- <audio id = "audio">
+        <source src="background-music.mp3" type="audio/mpeg">
+    </audio> -->
     <h1>Cones of Dunshire Demo</h1>
-    <p>Roll to determine how many dice to roll. Players can roll at most 10 small dice and at most 6 special dice. Next dice roll determines RS that can be used for buying, bulding, and advancing. Special dice are rolled to get RS that can only be specifically used for one of these phases. Players can buy resources to build that have a randomly generated cost. Players then build with resources and additional RS. In the advance phase, players intialize players on the board and can advance to spaces with a maximum army of 5 troops per space. This is everything that is implemented in the game so far. If the game doesn't fit the screen, zoom appropriately. Advancement on mountain (spaces with h values) has not been implemented yet.</p>
+    <p>Roll to determine how many dice to roll. Players can roll at most 10 small dice and at most 6 special dice. Next dice roll determines RS that can be used for buying, bulding, and advancing. Special dice are rolled to get RS that can only be specifically used for one of these phases. Players can buy resources with RS and Buy RS to build civilizations. Resources  have a randomly generated RS cost. Players then build with resources and additional RS. In the advance phase, players intialize players on the board and can advance to spaces with a maximum army of 5 troops per space. When a player attempts to move soldiers to a space in which there are other soldiers from a different player, combat ensues. The offender and defender roll an amount of dice that is equal to the number of a soldiers on the space that belong to the player with the least number of soldiers in combat. Dice are sorted in descending order and each die is compared to the die of the opponent that is in the same postion in the list. Whichever dice roll has that player lose one soldier in combat. If the die are equal, the defending player loses a soldier. This is repeated until one of the players no longer has soldiers in combat. The space outlined in pink is where the current player can initialize soldiers this turn. This is everything that is implemented in the game so far. If the game doesn't fit the screen, zoom appropriately. Advancement on mountain (spaces with h values) has not been implemented yet.</p>
     <p>Rules to later implement are <a href = "http://www.cephalofair.com/wp-content/uploads/2014/06/CoDRules.pdf">here</a></p>
     <button onClick = "window.location.replace('roll.html?board=0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000&space=-1&turn=1&players=0001500000000015000000')">Start!</button>
+    <div id = "play"></div>
+    <script>
+        window.onload = function() {
+            var context = new AudioContext();
+        }
+        var audio = new Audio("background-music.mp3");
+        // var x = document.getElementById("audio");
+        // var promise = x.play();
+        // function playAudio() { 
+        //     x.play(); 
+        // }     
+        context.resume().then(() => {
+            audio.play();
+            console.log('Playback resumed successfully');
+        });
+    </script>
 </body>
