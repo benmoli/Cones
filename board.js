@@ -122,7 +122,7 @@ function select(i) {
                             if (spaces[asdf].height != 0) alert("This part of the advance phase does not involve advancement on the mountain");
                             else {
                                 next = parseInt(sURLVariables[7].split('=')[1].charAt(5 * asdf + 4));
-                                272 insertions(+), 39 deletions(-) prev = parseInt(sURLVariables[7].split('=')[1].charAt(5 * i + 4));
+                                prev = parseInt(sURLVariables[7].split('=')[1].charAt(5 * i + 4));
                                 thisPlayer = parseInt(sURLVariables[7].split('=')[1].charAt(5 * i));
                                 nextPlayer = parseInt(sURLVariables[7].split('=')[1].charAt(5 * asdf));
                                 if (thisPlayer != nextPlayer && nextPlayer != 0) {
