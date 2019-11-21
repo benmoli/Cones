@@ -49,7 +49,7 @@ if (root === "roll.html") var boardState = sURLVariables[0].split('=')[1];
 else if (root === "buy.html") var boardState = sURLVariables[4].split('=')[1];
 else var boardState = sURLVariables[7].split('=')[1];
 draw();
-if (window.location.pathname.split("/").pop() === "advance2.html") mountainMoves();
+if (window.location.pathname.split("/").pop() === "advance2.html") document.getElementById("moves").innerHTML = mountainMoves();
 spaces[spaceIndex].drawInit();
 function draw(){
     for (j = 0; j < 10; j++) {
@@ -84,9 +84,9 @@ function draw(){
 }
 if (currentSpace != -1) select(currentSpace);
 function select(i) {
-    if (spaces[i].player != (parseInt(sURLVariables[9].split('=')[1]) + 1) % 2 + 1) return;
+    if (spaces[i].player != (parseInt(sURLVariables[9].split('=')[1]) -  1) % 2 + 1) return;
     if (window.location.pathname.split("/").pop() === "build.html") {
-        if (selected == -1 && spaces[i].player == (parseInt(sURLVariables[9].split('=')[1]) + 1) % 2 + 1) {
+        if (selected == -1 && spaces[i].player == (parseInt(sURLVariables[9].split('=')[1]) -  1) % 2 + 1) {
             spaces[i].select();
             selected = i;
             spaces[i].buildMenu();                
@@ -134,7 +134,7 @@ function select(i) {
                                 prev = array[0]; next = array[1]; moved = array[2];
                                 state = sURLVariables[7].split('=')[1].substring(0, 5 * asdf + 4) + next + sURLVariables[7].split('=')[1].substring(5 * asdf + 5, sURLVariables[7].split('=')[1].length);
                                 state = state.substring(0, 5 * i + 4) + prev + state.substring(5 * i + 5, state.length);
-                                playerNum = (parseInt(sURLVariables[9].split('=')[1]) + 1) % 2 + 1;
+                                playerNum = (parseInt(sURLVariables[9].split('=')[1]) -  1) % 2 + 1;
                                 state = state.substring(0, 5 * asdf) + playerNum + state.substring(5 * asdf + 1, state.length);
                                 if (state.charAt(5 * i + 4) === "0") state = state.substring(0, 5 * i) + "0" + state.substring(5 * i + 1, state.length);
                                 advRS = parseInt(sURLVariables[3].split('=')[1]);
@@ -146,7 +146,7 @@ function select(i) {
                                 }
                                 else {
                                     alert("Not enough RS");
-                                    window.location.reload();
+                                    return;
                                 }
                                 goTo = 'advance.html?GRS=' + GRS + '&yellow=' + sURLVariables[1].split('=')[1] + '&red=' + sURLVariables[2].split('=')[1] + '&blue=' + advRS + '&wood=' + sURLVariables[4].split('=')[1] + '&stone=' + sURLVariables[5].split('=')[1] + '&iron=' + sURLVariables[6].split('=')[1]+ '&board=' + state + '&space=' + asdf + '&turn=' + sURLVariables[9].split('=')[1] + '&players=' + sURLVariables[10].split('=')[1];
                                 window.location.replace(goTo);
@@ -183,45 +183,166 @@ function moveSoldiers(prev, next, moving) {
     rtrn[2] = moved;
     return rtrn;
 }
-function initSoldiers(num) {
-    if (num > 5 - spaces[spaceIndex].soldiers){
-        alert("Too many soldier 272 insertions(+), 39 deletions(-)s on start space");
-        return;
-    }
+function initSoldiers(num, p) {
     grs = parseInt(sURLVariables[0].split('=')[1]);
     ars = parseInt(sURLVariables[3].split('=')[1]);
     total = grs + ars;
-    if (num > total) alert("Not enough RS");
+    if (num > total) {
+        alert("Not enough RS");
+        return;
+    } 
     else if (num <= ars) ars -= num;
     else {
         grs = grs - num + ars;
     }
     initNum = parseInt(num) + parseInt(spaces[spaceIndex].soldiers);
-    playerNum = (parseInt(sURLVariables[9].split('=')[1]) + 1) % 2 + 1;
+    playerNum = (parseInt(sURLVariables[9].split('=')[1]) -  1) % 2 + 1;
     soldierNum = parseInt(sURLVariables[10].split('=')[1].substring(11 * (playerNum - 1) + 3, 11 * (playerNum - 1) + 6));
     soldierNum -= num;
     soldierString = "";
     if (soldierNum < 100) soldierString += "0"
     if (soldierNum < 10) soldierString += "0";
     soldierString += soldierNum;
+    if (spaces[spaceIndex].player != p && spaces[spaceIndex].player != 0) {
+        var state = sURLVariables[7].split('=')[1];
+        left = num;
+        right = spaces[spaceIndex].soldiers;
+        while (left > 0 && right > 0) {
+            rando = Math.random();
+            if (rando > 0.583333333) left--;
+            else right--;
+        }
+        toDisplay = "Auto Combat from at " + spaceIndex + "\n";
+        if (left == 0) {
+            toDisplay += "Defense wins with " + right + " soldiers";
+            state = state.substring(0, 5 * spaceIndex + 4) + right + state.substring(5 * spaceIndex + 5, state.length);
+        }
+        else {
+            toDisplay += "Offense wins with " + left + " soldiers";
+            state = state.substring(0, 5 * spaceIndex + 4) + left + state.substring(5 * spaceIndex + 5, state.length);
+            state = state.substring(0, 5 * spaceIndex) + p + state.substring(5 * spaceIndex + 1, state.length);
+        }
+        alert(toDisplay);
+        window.location.replace('advance.html?GRS=' + grs + '&yellow=' + sURLVariables[1].split('=')[1] + '&red=' + sURLVariables[2].split('=')[1] + '&blue=' + ars + '&wood=' + sURLVariables[4].split('=')[1] + '&stone=' + sURLVariables[5].split('=')[1] + '&iron=' + sURLVariables[6].split('=')[1]+ '&board=' + state + '&space=' + sURLVariables[8].split('=')[1] + '&turn=' + sURLVariables[9].split('=')[1] + '&players=' + sURLVariables[10].split('=')[1].substring(0, 11 * (playerNum - 1) + 3) + soldierString + sURLVariables[10].split('=')[1].substring(11 * (playerNum - 1) + 6,  sURLVariables[10].split('=')[1].length));
+        return;
+    }
+    if (num > 5 - spaces[spaceIndex].soldiers){
+        alert("Too many soldiers on start space");
+        return;
+    }                
     window.location.replace('advance.html?GRS=' + grs + '&yellow=' + sURLVariables[1].split('=')[1] + '&red=' + sURLVariables[2].split('=')[1] + '&blue=' + ars + '&wood=' + sURLVariables[4].split('=')[1] + '&stone=' + sURLVariables[5].split('=')[1] + '&iron=' + sURLVariables[6].split('=')[1]+ '&board=' + sURLVariables[7].split('=')[1].substring(0, 5 * spaceIndex) + playerNum + sURLVariables[7].split('=')[1].substring(5 * spaceIndex + 1, 5 * spaceIndex + 4) + initNum + sURLVariables[7].split('=')[1].substring(5 * spaceIndex + 5, sURLVariables[7].split('=')[1].length) + '&space=' + sURLVariables[8].split('=')[1] + '&turn=' + sURLVariables[9].split('=')[1] + '&players=' + sURLVariables[10].split('=')[1].substring(0, 11 * (playerNum - 1) + 3) + soldierString + sURLVariables[10].split('=')[1].substring(11 * (playerNum - 1) + 6,  sURLVariables[10].split('=')[1].length));
 }
 function mountainMoves() {
     rtrn = "";
-    playerNum = (parseInt(sURLVariables[9].split('=')[1]) + 1) % 2 + 1;
-    for (j = 20; j < 53; j++) {
-        for (k = j - 10; k < j + 10; k++) {
-            if (spaces[j].height > 0 && playerNum == parseInt(spaces[k].player)) {
+    playerNum = (parseInt(sURLVariables[9].split('=')[1]) -  1) % 2 + 1;
+    for (j = 11; j < 63; j++) {
+        for (k = 11; k < 63; k++) {
+            if ((spaces[j].height > 0 || spaces[k].height > 0) && playerNum == parseInt(spaces[k].player)) {
                 if (j == k) continue;
                 if (spaces[k].height <= spaces[j].height + 1 && spaces[k].height >= spaces[j].height - 1 
                     && spaces[k].i <= spaces[j].i + 1 && spaces[k].i >= spaces[j].i - 1  
                     && spaces[k].j <= spaces[j].j + 1 && spaces[k].j >= spaces[j].j - 1
                     && !(spaces[k].j < spaces[j].j && spaces[k].i > spaces[j].i)
-                    && !(spaces[k].j > spaces[j].j && spaces[k].i < spaces[j].i)) {
-                    rtrn += k + " to " + j + "\n";
+                    && !(spaces[k].j > spaces[j].j && spaces[k].i < spaces[j].i)
+                    && spaces[j].color !== "white") {
+                    rtrn += '<div></div><p>Move <select id = "move' + spaces[k].index + 'to' + spaces[j].index + '" value = >';
+                    for (l = 0; l <= spaces[k].soldiers; l++) {
+                        rtrn += '<option value = "' + l + '">' + l + '</option>';
+                    }
+                    rtrn += '</select> soldiers from ' + spaces[k].index + ' to ' + spaces[j].index + '</p>';
+                    //rtrn += spaces[k].soldiers + " soldiers from " + k + " to " + j + "\n";
                 }
             }
         }
     }
-    alert(rtrn);
+    return rtrn;
+}
+
+function checkForCones(player) {
+    rtrn = new Array(4).fill(false);
+    dragon = 0
+    lavaWorm = 0
+    minotaur = 0
+    kraken = 0
+    if (sURLVariables[10].split('=')[1].charAt(11 * ((parseInt(sURLVariables[9].split('=')[1]) -  1) % 2) + 10) == '1') {
+        for (i = 0; i < 4; i++){
+            for (j = 0; j < spaces.length; j++){
+                if (player == spaces[j].player ) {
+                    if (i == 0 && spaces[j].color === "green") {
+                        if (spaces[j].building1 !== "none" && spaces[j].building2 !== "none" && spaces[j].building3 !== "none") {
+                            dragon[i] += 2;
+                        }
+                        if (spaces[j].building1 === "indcor" || spaces[j].building2 === "indcor" || spaces[j].building3 === "indcor") {
+                            lavaWorm[i]++;
+                        }
+                        if (spaces[j].building1 === "comcor" || spaces[j].building2 === "comcor" || spaces[j].building3 === "comcor") {
+                            minotaur[i]++;
+                        }
+                        if (spaces[j].building1 === "barracks" || spaces[j].building2 === "barracks" || spaces[j].building3 === "barracks") {
+                            kraken[i]++;
+                        }
+                    }
+                    if (i == 1 && spaces[j].color === "blue") {
+                        if (spaces[j].building1 !== "none" && spaces[j].building2 !== "none" && spaces[j].building3 !== "none") {
+                            dragon[i]++;
+                        }
+                        if (spaces[j].building1 === "indcor" || spaces[j].building2 === "indcor" || spaces[j].building3 === "indcor") {
+                            lavaWorm[i]++;
+                        }
+                        if (spaces[j].building1 === "comcor" || spaces[j].building2 === "comcor" || spaces[j].building3 === "comcor") {
+                            minotaur[i]++;
+                        }
+                        if (spaces[j].building1 === "barracks" || spaces[j].building2 === "barracks" || spaces[j].building3 === "barracks") {
+                            kraken[i] += 2;
+                        }
+                    }
+                    if (i == 2 && spaces[j].color === "red") {
+                        if (spaces[j].building1 !== "none" && spaces[j].building2 !== "none" && spaces[j].building3 !== "none") {
+                            dragon[i]++;
+                        }
+                        if (spaces[j].building1 === "indcor" || spaces[j].building2 === "indcor" || spaces[j].building3 === "indcor") {
+                            lavaWorm[i] += 2;
+                        }
+                        if (spaces[j].building1 === "comcor" || spaces[j].building2 === "comcor" || spaces[j].building3 === "comcor") {
+                            minotaur[i]++;
+                        }
+                        if (spaces[j].building1 === "barracks" || spaces[j].building2 === "barracks" || spaces[j].building3 === "barracks") {
+                            kraken[i]++;
+                        }
+                    }
+                    if (i == 3 && spaces[j].color === "yellow") {
+                        if (spaces[j].building1 !== "none" && spaces[j].building2 !== "none" && spaces[j].building3 !== "none") {
+                            dragon[i]++;
+                        }
+                        if (spaces[j].building1 === "indcor" || spaces[j].building2 === "indcor" || spaces[j].building3 === "indcor") {
+                            lavaWorm[i]++;
+                        }
+                        if (spaces[j].building1 === "comcor" || spaces[j].building2 === "comcor" || spaces[j].building3 === "comcor") {
+                            minotaur[i] += 2;
+                        }
+                        if (spaces[j].building1 === "barracks" || spaces[j].building2 === "barracks" || spaces[j].building3 === "barracks") {
+                            kraken[i]++;
+                        }
+                    }
+                }
+            }
+        }
+    }
+    if (dragon >= 6) rtrn[0] = true;
+    if (lavaWorm >= 6) rtrn[1] = true;
+    if (minotaur >= 6) rtrn[2] = true;
+    if (minotaur >= 6) rtrn[3] = true;
+    return rtrn;
+}
+function soldiersOnBoard(p) {
+    rtrn = 0;
+    for (a = 0; a < spaces.length; a++) {
+        if (spaces[a].player == p) rtrn += parseInt(spaces[a].soldiers);
+    }
+    return rtrn;
+}
+
+function checkMountain(p) {
+    if (spaces[32].player == p || spaces[41].player == p) return true;
+    else return false;
 }

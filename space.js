@@ -2,9 +2,10 @@ var c = document.getElementById("myCanvas");
 var ctx = c.getContext("2d");
 
 class Space {
-    index; i; j; height; color; xcoordinates = []; ycoordinates = []; building1; building2; building3;
+    index; i; j; height; color; xcoordinates = []; ycoordinates = []; building1; building2; building3; prefix;
     constructor(index, row, col, height, color, player, building1, building2, building3, soldiers) {
         this.player = player;
+        this.prefix = "p" + this.player;
         this.soldiers = soldiers;
         this.building1 = building1;
         this.building2 = building2;
@@ -48,7 +49,7 @@ class Space {
             if (this.color === "yellow") ctx.fillStyle = "black";
             else ctx.fillStyle = "white";
             if (player > 0) ctx.fillText("P" + this.player, (14 + 30 * i) * 1.9 + 4, (21 - 10 * i + 20 * j) * Math.sqrt(3) * 1.9 + 50);
-            if (height > 0) ctx.fillText("height " + height, (14 + 30 * i) * 1.9 + 1, (21 - 10 * i + 20 * j) * Math.sqrt(3) * 1.9 + 95);
+            if (height > 0) ctx.fillText("height " + height, (14 + 30 * i) * 1.9, (21 - 10 * i + 20 * j) * Math.sqrt(3) * 1.9 + 95);
             ctx.fillText(index, (14 + 30 * i) * 1.9 - 7, (21 - 10 * i + 20 * j) * Math.sqrt(3) * 1.9 + 66);
             this.drawBuilding(this.building1, 1, this.xcoordinates[0], this.ycoordinates[0]);
             this.drawBuilding(this.building2, 2, this.xcoordinates[0], this.ycoordinates[0]);
@@ -81,21 +82,21 @@ class Space {
     drawBuilding(building, num, x, y) {
         var base_image = new Image(5, 5);
         if (building === "none") return;
-        if (building === "barracks") base_image.src = 'barracks.png';
-        if (building === "farm") base_image.src = 'farm.png';
+        if (building === "barracks") base_image.src = this.prefix + 'barracks.png';
+        if (building === "farm") base_image.src = this.prefix + 'farm.png';
         if (building === "fort") {
-            base_image.src = 'fort.png';
+            base_image.src = this.prefix + 'fort.png';
             y += 5;
         }
         if (building === "indcor") {
-            base_image.src = 'indcor.png';
+            base_image.src = this.prefix + 'indcor.png';
             y += 7;
         }
         if (building === "comcor") {
-            base_image.src = 'comcor.png';
+            base_image.src = this.prefix + 'comcor.png';
             y += 7;
         }
-        if (building === "transhub") base_image.src = 'transhub.png';
+        if (building === "transhub") base_image.src = this.prefix + 'transhub.png';
         base_image.onload = function(){
             ctx.drawImage(base_image, x - 30 + 20 * num, y + 35);
         }
@@ -103,7 +104,7 @@ class Space {
     drawSoldiers(num, x, y) {
         if (num == 0) return;
         var base_image = new Image(5, 5);
-        base_image.src = 'soldier.png';
+        base_image.src = this.prefix + 'soldier.png';
         base_image.onload = function(){
             ctx.drawImage(base_image, x + 20, y + 1);
         }

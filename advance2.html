@@ -1,12 +1,13 @@
 <head>
     <link rel="stylesheet" href="styles.css">
+    <script type="text/javascript" src='cones.js'> </script>
     <title>Cones of Dunshire</title><meta charset="utf-8"/>
 </head>
 <body>
     <div class = "split left" style = "width: 400px; margin-left: 10px">
         <h1 id = "player"></h1>
-        
-        <div id = "continue"></div>
+        <div style = "overflow: scroll; width: 100%; height: 60%;" id = "moves"></div>
+        <button id = "continue" onClick = "doMountainMoves()">Next Turn</button>
     </div>
 
     <div class = "split right">
@@ -29,10 +30,12 @@
                 <td id = "Generic RS"></td>
                 <td id = "Wood"></td>
                 <td id = "Soldiers"></td>
+                <td id = "cones"></td>
             </tr>
             <tr>
                 <td id = "Buy RS"></td>
                 <td id = "Stone"></td>
+                <td id = "Soldiers Total"></td>
             </tr>
             <tr>
                 <td id = "Build RS"></td>
@@ -47,7 +50,7 @@
         sPageURL = window.location.search.substring(1);
         var sURLVariables = sPageURL.split('&');
         turn = parseInt(sURLVariables[9].split('=')[1]) + 1;
-        player = (parseInt(sURLVariables[9].split('=')[1]) + 1) % 2 + 1;
+        player = (parseInt(sURLVariables[9].split('=')[1]) - 1) % 2 + 1;
         document.getElementById("player").innerHTML = "Player " + player + " Mountain Advance";
         document.getElementById("Generic RS").innerHTML = "Generic RS: " + sURLVariables[0].split('=')[1];
         document.getElementById("Buy RS").innerHTML = "Buy RS: " + sURLVariables[1].split('=')[1];
@@ -56,16 +59,90 @@
         document.getElementById("Wood").innerHTML = "Wood: " + sURLVariables[4].split('=')[1];
         document.getElementById("Stone").innerHTML = "Stone: " + sURLVariables[5].split('=')[1];
         document.getElementById("Iron").innerHTML = "Iron: " + sURLVariables[6].split('=')[1];
-        document.getElementById("Soldiers").innerHTML = sURLVariables[10].split('=')[1].substring(11 * (player - 1) + 3, 11 * (player - 1) + 6) + " soldiers";
-        document.getElementById("continue").innerHTML ='<a href = "roll.html?board=' + sURLVariables[7].split('=')[1] + '&space=-1&turn=' + turn + '&players=' + 
-        sURLVariables[10].split('=')[1].substring(0, 11 * ((parseInt(sURLVariables[9].split('=')[1]) + 1) % 2)) 
-        + sURLVariables[4].split('=')[1] 
-        + sURLVariables[5].split('=')[1]
-         + sURLVariables[6].split('=')[1]
-         + sURLVariables[10].split('=')[1].substring(11 * ((parseInt(sURLVariables[9].split('=')[1]) + 1) % 2) + 3, sURLVariables[10].split('=')[1].length)
-         + '">Next Turn</a>';
-        turn = parseInt(sURLVariables[9].split('=')[1]) + 1;
+        document.getElementById("Soldiers").innerHTML = sURLVariables[10].split('=')[1].substring(11 * (player - 1) + 3, 11 * (player - 1) + 6) + " soldiers remaining";
+        var soldierNum = parseInt(sURLVariables[10].split('=')[1].substring(11 * (player - 1) + 3, 11 * (player - 1) + 6));
+        document.getElementById("cones").innerHTML = coneDivs(9);
     </script>
     <script type="text/javascript" src='space.js'> </script>
     <script type="text/javascript" src='board.js'> </script>
+    <script>
+        player = (parseInt(sURLVariables[9].split('=')[1]) - 1) % 2 + 1;
+        totalSoldierNum = soldiersOnBoard(player) + soldierNum;
+        document.getElementById("Soldiers Total").innerHTML = totalSoldierNum + "/150 soldiers total";
+        function doMountainMoves() {
+            grs = parseInt(sURLVariables[0].split('=')[1]);
+            ars = parseInt(sURLVariables[3].split('=')[1]);
+            total = grs + ars;
+            var state = sURLVariables[7].split('=')[1];
+            var containerDiv = document.getElementById("moves");
+            var innerDivs = containerDiv.getElementsByTagName("SELECT");
+            for (var i = 0; i < innerDivs.length; i++)
+            {
+                var toMove = parseInt(document.getElementById(innerDivs[i].id).options[document.getElementById(innerDivs[i].id).selectedIndex].value);
+                if (toMove == 0) continue;
+                if (total < toMove) {
+                    alert("Not enough RS");
+                    return;
+                }
+                from = parseInt(innerDivs[i].id.substring(4, 6));
+                to = parseInt(innerDivs[i].id.substring(8, 10));
+                fromSoldiers = parseInt(state.charAt(5 * from + 4));
+                toSoldiers = parseInt(state.charAt(5 * to + 4));
+                newFrom = fromSoldiers - toMove;
+                newTo = toSoldiers + toMove;
+                nextSoldiers = 0;
+                playerMove = "";
+                playerMove = state.charAt(5 * from);
+                if (newTo > 5 && state.charAt(5 * to) == state.charAt(5 * from)){
+                    alert("Only 5 soldiers per space");
+                    return;
+                }
+                if (state.charAt(5 * to) != state.charAt(5 * from) && state.charAt(5 * to) != '0') {
+                    left = toMove;
+                    right = parseInt(state.charAt(5 * to + 4));
+                    while (left > 0 && right > 0) {
+                        rando = Math.random();
+                        if (rando > 0.583333333) left--;
+                        else right--;
+                    }
+                    toDisplay = "Auto Combat from " + from + " to " + to + "\n";
+                    if (left == 0) {
+                        toDisplay += "Player " + state.charAt(5 * to) + " wins with " + right + " soldiers";
+                        state = state.substring(0, 5 * from + 4) + newFrom + state.substring(5 * from + 5, state.length);
+                        state = state.substring(0, 5 * to + 4) + right + state.substring(5 * to + 5, state.length);
+                        if (newFrom == 0) state = state.substring(0, 5 * from) + "0" + state.substring(5 * from + 1, state.length);
+                    }
+                    else {
+                        toDisplay += "Player " + state.charAt(5 * from) + " wins with " + left + " soldiers";
+                        state = state.substring(0, 5 * from + 4) + newFrom + state.substring(5 * from + 5, state.length);
+                        state = state.substring(0, 5 * to + 4) + left + state.substring(5 * to + 5, state.length);
+                        state = state.substring(0, 5 * to) + state.charAt(5 * from) + state.substring(5 * to + 1, state.length);
+                        if (newFrom == 0) state = state.substring(0, 5 * from) + "0" + state.substring(5 * from + 1, state.length);
+                    }
+                    alert(toDisplay);
+                }
+                else {
+                    state = state.substring(0, 5 * from + 4) + newFrom + state.substring(5 * from + 5, state.length);
+                    state = state.substring(0, 5 * to + 4) + newTo + state.substring(5 * to + 5, state.length);
+                    state = state.substring(0, 5 * to) + playerMove + state.substring(5 * to + 1, state.length);
+                    if (newFrom == 0) state = state.substring(0, 5 * from) + "0" + state.substring(5 * from + 1, state.length);
+                }
+            }
+            turn = parseInt(sURLVariables[9].split('=')[1]) + 1;
+            if (totalSoldierNum > 144) soldierNum += 150 - totalSoldierNum;
+            else soldierNum += 5;
+            soldierString = "";
+            if (soldierNum < 100) soldierString += "0"
+            if (soldierNum < 10) soldierString += "0";
+            soldierString += soldierNum;
+            players = sURLVariables[10].split('=')[1].substring(0, 11 * ((parseInt(sURLVariables[9].split('=')[1]) -  1) % 2)) 
+            + sURLVariables[4].split('=')[1] 
+            + sURLVariables[5].split('=')[1]
+            + sURLVariables[6].split('=')[1]
+            + soldierString
+            + sURLVariables[10].split('=')[1].substring(11 * ((parseInt(sURLVariables[9].split('=')[1]) -  1) % 2) + 6, sURLVariables[10].split('=')[1].length);
+            
+            window.location.replace('roll.html?board=' + state + '&space=-1&turn=' + turn + '&players=' + players);
+        }    
+    </script>
 </body>

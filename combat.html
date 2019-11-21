@@ -43,7 +43,7 @@
             document.getElementById('def-roll-button').innerHTML = `<button onClick = "defRoll = roll();
                 document.getElementById('def-roll').innerHTML = defRoll;
                 result();">Roll</button>`;
-            return rtrn.sort().reverse();
+            return rtrn;
         }
         function result() {
             rtrn = "";
@@ -64,8 +64,8 @@
                 //Test file:///home/tcsuser/cones/advance.html?GRS=11&yellow=10&red=15&blue=0&wood=0&stone=0&iron=0&board=1000310002000000000010005100030000020005200000000000000000000000000000000000000200000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000020005000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000&space=46&turn=4&players=0001240000000013000000
                 else {
                     rtrn += offRoll[i] + " equals " + defRoll[i];
-                    rtrn += ". Defense loses a soldier</p>";
-                    nextRight--;
+                    rtrn += ". Offense loses a soldier</p>";
+                    nextLeft--;
                 }
             }
             document.getElementById("result").innerHTML = rtrn;
