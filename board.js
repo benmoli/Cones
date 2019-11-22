@@ -60,7 +60,6 @@ function draw(){
                 continue;
             //if (index == 30 || index == 42) i++;
             //ctx.lineWidth = 10;
-            alert(sPageURL);
             spaceState = boardState.substring(index * 5, index * 5 + 5);
             player = spaceState[0];
             building1 = setBuilding(spaceState[1]);
