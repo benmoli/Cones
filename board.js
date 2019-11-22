@@ -60,6 +60,7 @@ function draw(){
                 continue;
             //if (index == 30 || index == 42) i++;
             //ctx.lineWidth = 10;
+            alert(sPageURL);
             spaceState = boardState.substring(index * 5, index * 5 + 5);
             player = spaceState[0];
             building1 = setBuilding(spaceState[1]);
@@ -331,7 +332,7 @@ function checkForCones(player) {
     if (dragon >= 6) rtrn[0] = true;
     if (lavaWorm >= 6) rtrn[1] = true;
     if (minotaur >= 6) rtrn[2] = true;
-    if (minotaur >= 6) rtrn[3] = true;
+    if (kraken >= 6) rtrn[3] = true;
     return rtrn;
 }
 function soldiersOnBoard(p) {
