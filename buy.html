@@ -7,13 +7,19 @@
 </head>
     <div class = "split left" style = "width: 400px; margin-left: 10px">
         <h1 id = "player"></h1>
-        <img src = "building-cost.png" style = "width: 75%"/>
+        <img src = "building-cost.png" style = "width: 90%"/>
+        <p>Green (Dragon) - Hexes with at least 2 types of buildings on them</p>
+        <p>Red (Lava Worm) - Hexes with forts on them</p>
+        <p>Yellow (Minotaur) - Hexes with farms on them</p>
+        <p>Blue (Kraken) - Hexes with Barracks on them</p>
+        </br>
         <p id = "wood-cost"></p>
         <div id = "wood"></div>
         <p id = "stone-cost"></p>
         <div id = "stone"></div>
         <p id = "iron-cost"></p>
         <div id = "iron"></div>
+        </br>
         <div id = "continue"></div>
     </div>
     <div class = "split right">
@@ -68,7 +74,7 @@
         var wood = 999;
         var stone = 0;
         var iron = 0;
-        while (wood + stone + iron > 12 || wood + stone + iron < 5) {
+        while (wood + stone + iron > 12 || wood + stone + iron < 6) {
             num1 = (5 * Math.random() + 1) | 0;
             num2 = (5 * Math.random() + 1) | 0;
             wood = ((num1 + num2) / 2 + 0.5) | 0;

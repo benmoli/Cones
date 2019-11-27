@@ -73,11 +73,20 @@ class Space {
     buildMenu() {
         if (this.color === "black" || this.color === "grey") {
             alert("Cannot build on black spaces or mountain");
-            window.location.replace('build.html?GRS=' + generic + '&yellow=' + buy + '&red=' + build + '&blue=' + advance + '&wood=' + woodnum + '&stone=' + stonenum + '&iron=' + ironnum + '&board=' + sURLVariables[4].split('=')[1] + '&space=-1');
+            window.location.href = ('build.html?GRS=' + generic + '&yellow=' + buy + '&red=' + build + '&blue=' + advance + '&wood=' + woodnum + '&stone=' + stonenum + '&iron=' + ironnum + '&board=' + sURLVariables[4].split('=')[1] + '&space=-1');
         }
-        document.getElementById("building1").innerHTML = '<p>Building 1: ' + this.building1 + ' <button onClick = "upgradeBuilding(&quot;' + this.building1 + '&quot;, ' + this.index + ', 1)">^</button></p>';
-        document.getElementById("building2").innerHTML = '<p>Building 2: ' + this.building2 + ' <button onClick = "upgradeBuilding(&quot;' + this.building2 + '&quot;, ' + this.index + ', 2)">^</button></p>';
-        document.getElementById("building3").innerHTML = '<p>Building 3: ' + this.building3 + ' <button onClick = "upgradeBuilding(&quot;' + this.building3 + '&quot;, ' + this.index + ', 3)">^</button></p>';
+        var building1String = '<p>Building 1: ' + this.building1;
+        var building2String = '<p>Building 2: ' + this.building2;
+        var building3String = '<p>Building 3: ' + this.building3;
+        if (this.building1 !== "fort") building1String += '<button onClick = "upgradeBuilding(&quot;' + this.building1 + '&quot;, ' + this.index + ', 1)">^</button>';
+        building1String += '</p>';
+        if (this.building2 !== "fort") building2String += '<button onClick = "upgradeBuilding(&quot;' + this.building2 + '&quot;, ' + this.index + ', 2)">^</button>';
+        building2String += '</p>';
+        if (this.building3 !== "fort") building3String += '<button onClick = "upgradeBuilding(&quot;' + this.building3 + '&quot;, ' + this.index + ', 3)">^</button>';
+        building3String += '</p>';
+        document.getElementById("building1").innerHTML = building1String;
+        document.getElementById("building2").innerHTML = building2String;
+        document.getElementById("building3").innerHTML = building3String;
     }
     drawBuilding(building, num, x, y) {
         var base_image = new Image(5, 5);
@@ -119,7 +128,7 @@ function upgradeBuilding(building, index, num) {
     buildRs = parseInt(sURLVariables[2].split('=')[1]);
     totalRs = rs + buildRs;
     //barracks
-    if (wood >= 1 && stone >= 1 && iron >= 2 && totalRs > 15 && building === "none"){
+    if (wood >= 1 && stone >= 1 && iron >= 2 && totalRs >= 15 && building === "none"){
         if (buildRs >= 15) buildRs -= 15;
         else {
             rs -= (15 - buildRs);
@@ -128,7 +137,7 @@ function upgradeBuilding(building, index, num) {
         wood--;
         stone--;
         iron -= 2;
-        window.location.replace("build.html?GRS=" + rs + "&yellow=" + sURLVariables[1].split('=')[1] + "&red=" + buildRs + "&blue=" + sURLVariables[3].split('=')[1] + "&wood=" + wood + "&stone=" + stone + "&iron=" + iron + "&board=" + boardState.substring(0, 5 * index + num) + "1" + boardState.substring(5 * index + num + 1, boardState.length) + "&space=" + index + '&turn=' + sURLVariables[9].split('=')[1] + '&players=' + sURLVariables[10].split('=')[1]);
+        window.location.href = ("build.html?GRS=" + rs + "&yellow=" + sURLVariables[1].split('=')[1] + "&red=" + buildRs + "&blue=" + sURLVariables[3].split('=')[1] + "&wood=" + wood + "&stone=" + stone + "&iron=" + iron + "&board=" + boardState.substring(0, 5 * index + num) + "1" + boardState.substring(5 * index + num + 1, boardState.length) + "&space=" + index + '&turn=' + sURLVariables[9].split('=')[1] + '&players=' + sURLVariables[10].split('=')[1]);
     }
     //farm
     else if (wood >= 2 && stone >= 1 && totalRs > 10 && building === "barracks"){
@@ -139,10 +148,10 @@ function upgradeBuilding(building, index, num) {
         }
         wood -= 2;
         stone--;
-        window.location.replace("build.html?GRS=" + rs + "&yellow=" + sURLVariables[1].split('=')[1] + "&red=" + buildRs + "&blue=" + sURLVariables[3].split('=')[1] + "&wood=" + wood + "&stone=" + stone + "&iron=" + iron + "&board=" + boardState.substring(0, 5 * index + num) + "2" + boardState.substring(5 * index + num + 1, boardState.length) + "&space=" + index + '&turn=' + sURLVariables[9].split('=')[1] + '&players=' + sURLVariables[10].split('=')[1]);
+        window.location.href = ("build.html?GRS=" + rs + "&yellow=" + sURLVariables[1].split('=')[1] + "&red=" + buildRs + "&blue=" + sURLVariables[3].split('=')[1] + "&wood=" + wood + "&stone=" + stone + "&iron=" + iron + "&board=" + boardState.substring(0, 5 * index + num) + "2" + boardState.substring(5 * index + num + 1, boardState.length) + "&space=" + index + '&turn=' + sURLVariables[9].split('=')[1] + '&players=' + sURLVariables[10].split('=')[1]);
     }
     //fort
-    else if (wood >= 1 && stone >= 3 && totalRs > 15 && building === "farm"){
+    else if (wood >= 1 && stone >= 3 && totalRs >= 15 && building === "farm"){
         if (buildRs >= 15) buildRs -= 15;
         else {
             rs -= (15 - buildRs);
@@ -150,42 +159,42 @@ function upgradeBuilding(building, index, num) {
         }
         wood--;
         stone -= 3;
-        window.location.replace("build.html?GRS=" + rs + "&yellow=" + sURLVariables[1].split('=')[1] + "&red=" + buildRs + "&blue=" + sURLVariables[3].split('=')[1] + "&wood=" + wood + "&stone=" + stone + "&iron=" + iron + "&board=" + boardState.substring(0, 5 * index + num) + "3" + boardState.substring(5 * index + num + 1, boardState.length) + "&space=" + index + '&turn=' + sURLVariables[9].split('=')[1] + '&players=' + sURLVariables[10].split('=')[1]);
+        window.location.href = ("build.html?GRS=" + rs + "&yellow=" + sURLVariables[1].split('=')[1] + "&red=" + buildRs + "&blue=" + sURLVariables[3].split('=')[1] + "&wood=" + wood + "&stone=" + stone + "&iron=" + iron + "&board=" + boardState.substring(0, 5 * index + num) + "3" + boardState.substring(5 * index + num + 1, boardState.length) + "&space=" + index + '&turn=' + sURLVariables[9].split('=')[1] + '&players=' + sURLVariables[10].split('=')[1]);
     }
-    //ind corr
-    else if (wood >= 1 && stone >= 2 && iron >= 1 && totalRs > 15 && building === "fort"){
-        if (buildRs >= 15) buildRs -= 15;
-        else {
-            rs -= (15 - buildRs);
-            buildRs = 0;
-        }
-        wood--;
-        stone -= 2;
-        iron--;
-        window.location.replace("build.html?GRS=" + rs + "&yellow=" + sURLVariables[1].split('=')[1] + "&red=" + buildRs + "&blue=" + sURLVariables[3].split('=')[1] + "&wood=" + wood + "&stone=" + stone + "&iron=" + iron + "&board=" + boardState.substring(0, 5 * index + num) + "4" + boardState.substring(5 * index + num + 1, boardState.length) + "&space=" + index + '&turn=' + sURLVariables[9].split('=')[1] + '&players=' + sURLVariables[10].split('=')[1]);
-    }
-    //com corr
-    else if (wood >= 3 && iron >= 1 && totalRs > 15 && building === "indcor"){
-        if (buildRs >= 15) buildRs -= 15;
-        else {
-            rs -= (15 - buildRs);
-            buildRs = 0;
-        }
-        wood -= 3;
-        iron--;
-        window.location.replace("build.html?GRS=" + rs + "&yellow=" + sURLVariables[1].split('=')[1] + "&red=" + buildRs + "&blue=" + sURLVariables[3].split('=')[1] + "&wood=" + wood + "&stone=" + stone + "&iron=" + iron + "&board=" + boardState.substring(0, 5 * index + num) + "5" + boardState.substring(5 * index + num + 1, boardState.length) + "&space=" + index + '&turn=' + sURLVariables[9].split('=')[1] + '&players=' + sURLVariables[10].split('=')[1]);
-    }
-    //trans hub
-    else if (wood >= 1 && iron >= 1 && totalRs > 10 && building === "comcor"){
-        if (buildRs >= 10) buildRs -= 10;
-        else {
-            rs -= (10 - buildRs);
-            buildRs = 0;
-        }
-        wood--;
-        iron--;
-        window.location.replace("build.html?GRS=" + rs + "&yellow=" + sURLVariables[1].split('=')[1] + "&red=" + buildRs + "&blue=" + sURLVariables[3].split('=')[1] + "&wood=" + wood + "&stone=" + stone + "&iron=" + iron + "&board=" + boardState.substring(0, 5 * index + num) + "6" + boardState.substring(5 * index + num + 1, boardState.length) + "&space=" + index + '&turn=' + sURLVariables[9].split('=')[1] + '&players=' + sURLVariables[10].split('=')[1]);
-    }
-    else if (building === "transhub") alert("Cannot upgrade further");
+    // //ind corr
+    // else if (wood >= 1 && stone >= 2 && iron >= 1 && totalRs >= 15 && building === "fort"){
+    //     if (buildRs >= 15) buildRs -= 15;
+    //     else {
+    //         rs -= (15 - buildRs);
+    //         buildRs = 0;
+    //     }
+    //     wood--;
+    //     stone -= 2;
+    //     iron--;
+    //     window.location.href = ("build.html?GRS=" + rs + "&yellow=" + sURLVariables[1].split('=')[1] + "&red=" + buildRs + "&blue=" + sURLVariables[3].split('=')[1] + "&wood=" + wood + "&stone=" + stone + "&iron=" + iron + "&board=" + boardState.substring(0, 5 * index + num) + "4" + boardState.substring(5 * index + num + 1, boardState.length) + "&space=" + index + '&turn=' + sURLVariables[9].split('=')[1] + '&players=' + sURLVariables[10].split('=')[1]);
+    // }
+    // //com corr
+    // else if (wood >= 3 && iron >= 1 && totalRs >= 15 && building === "indcor"){
+    //     if (buildRs >= 15) buildRs -= 15;
+    //     else {
+    //         rs -= (15 - buildRs);
+    //         buildRs = 0;
+    //     }
+    //     wood -= 3;
+    //     iron--;
+    //     window.location.href = ("build.html?GRS=" + rs + "&yellow=" + sURLVariables[1].split('=')[1] + "&red=" + buildRs + "&blue=" + sURLVariables[3].split('=')[1] + "&wood=" + wood + "&stone=" + stone + "&iron=" + iron + "&board=" + boardState.substring(0, 5 * index + num) + "5" + boardState.substring(5 * index + num + 1, boardState.length) + "&space=" + index + '&turn=' + sURLVariables[9].split('=')[1] + '&players=' + sURLVariables[10].split('=')[1]);
+    // }
+    // //trans hub
+    // else if (wood >= 1 && iron >= 1 && totalRs >= 10 && building === "comcor"){
+    //     if (buildRs >= 10) buildRs -= 10;
+    //     else {
+    //         rs -= (10 - buildRs);
+    //         buildRs = 0;
+    //     }
+    //     wood--;
+    //     iron--;
+    //     window.location.href = ("build.html?GRS=" + rs + "&yellow=" + sURLVariables[1].split('=')[1] + "&red=" + buildRs + "&blue=" + sURLVariables[3].split('=')[1] + "&wood=" + wood + "&stone=" + stone + "&iron=" + iron + "&board=" + boardState.substring(0, 5 * index + num) + "6" + boardState.substring(5 * index + num + 1, boardState.length) + "&space=" + index + '&turn=' + sURLVariables[9].split('=')[1] + '&players=' + sURLVariables[10].split('=')[1]);
+    // }
+    // else if (building === "transhub") alert("Cannot upgrade further");
     else alert("Not enough RS or Resources");
 }

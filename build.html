@@ -7,17 +7,25 @@
 <body>
     <div class = "split left" style = "width: 400px; margin-left: 10px">
         <h1 id = "player"></h1>
-        <img src = "building-cost.png" style = "width: 75%"/>
+        <img src = "building-cost.png" style = "width: 90%"/>
         <p>Click the center of a hex to build on it.</p>
+        </br>
+        <p>Green (Dragon) - Hexes with at least 2 types of buildings on them</p>
+        <p>Red (Lava Worm) - Hexes with forts on them</p>
+        <p>Yellow (Minotaur) - Hexes with farms on them</p>
+        <p>Blue (Kraken) - Hexes with Barracks on them</p>
+        </br>
         <div id = "building1"></div>
         <div id = "building2"></div>
         <div id = "building3"></div>
-        <button onClick = "cones = checkForCones(player); 
+        </br>
+        <button onClick = "cones = checkForCones((parseInt(sURLVariables[9].split('=')[1]) -  1) % 2 + 1); 
         function setCone(index) {
             if (cones[index] || sURLVariables[10].split('=')[1].charAt( 11 * ((parseInt(sURLVariables[9].split('=')[1]) -  1) % 2) + 6 + index) == '1') return '1';
             else return '0';
         }
-            window.location.replace('advance.html?GRS=' + sURLVariables[0].split('=')[1] + '&yellow=' + sURLVariables[1].split('=')[1] + '&red=' + sURLVariables[2].split('=')[1] + '&blue=' + sURLVariables[3].split('=')[1] + '&wood=' + sURLVariables[4].split('=')[1] + '&stone=' + sURLVariables[5].split('=')[1] + '&iron=' + sURLVariables[6].split('=')[1]+ '&board=' + sURLVariables[7].split('=')[1] + '&space=-1&turn=' + sURLVariables[9].split('=')[1] +
+        if (setCone(0) + setCone(1) + setCone(2) + setCone(3) === '1111') window.location.href = ('endgame.html?player=' + (parseInt(sURLVariables[9].split('=')[1]) -  1) % 2 + 1);
+        else window.location.href = ('advance.html?GRS=' + sURLVariables[0].split('=')[1] + '&yellow=' + sURLVariables[1].split('=')[1] + '&red=' + sURLVariables[2].split('=')[1] + '&blue=' + sURLVariables[3].split('=')[1] + '&wood=' + sURLVariables[4].split('=')[1] + '&stone=' + sURLVariables[5].split('=')[1] + '&iron=' + sURLVariables[6].split('=')[1]+ '&board=' + sURLVariables[7].split('=')[1] + '&space=-1&turn=' + sURLVariables[9].split('=')[1] +
          '&players=' + sURLVariables[10].split('=')[1].substring(0, 11 * ((parseInt(sURLVariables[9].split('=')[1]) -  1) % 2) + 6) + setCone(0) + setCone(1) + setCone(2) + setCone(3) + sURLVariables[10].split('=')[1].substring(11 * ((parseInt(sURLVariables[9].split('=')[1]) -  1) % 2) + 10, sURLVariables[10].split('=')[1].length))">Continue</button>
     </div>
     <div class = "split right">

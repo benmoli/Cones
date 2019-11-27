@@ -1,0 +1,164 @@
+<head>
+    <link rel="stylesheet" href="styles.css">
+    <title>Cones of Dunshire</title>
+    <meta charset="utf-8" />
+    <script type="text/javascript" src='cones.js'> </script>
+</head>
+
+<body>
+    <div class="split left" style="width: 400px; margin-left: 10px">
+        <h1 id="player"></h1>
+        <button onClick="playCard()">Buy Action Card (12 RS)</button>
+        <div id="continue"></div>
+    </div>
+
+    <div class="split right">
+        </br></br>
+        <canvas id="myCanvas" width="700" height="700"></canvas>
+    </div>
+    <footer style="position: fixed;
+            left: 0;
+            bottom: 0;
+            width: 100%;
+            height: 20%">
+        <table>
+            <tr>
+                <td style="width: 29%">
+                    <h2>RS</h2>
+                    </th>
+                <td style="width: 31%">
+                    <h2>Resources</h2>
+                    </th>
+                <td style="width: 33%">
+                    <h2>Army</h2>
+                    </th>
+                <td style="width: 33%">
+                    <h2>Cones</h2>
+                    </th>
+            </tr>
+            <tr>
+                <td id="Generic RS"></td>
+                <td id="Wood"></td>
+                <td id="Soldiers"></td>
+                <td id="cones"></td>
+            </tr>
+            <tr>
+                <td id="Buy RS"></td>
+                <td id="Stone"></td>
+            </tr>
+            <tr>
+                <td id="Build RS"></td>
+                <td id="Iron"></td>
+            </tr>
+            <tr>
+                <td id="Advance RS"></td>
+            </tr>
+        </table>
+    </footer>
+    <script>
+        sPageURL = window.location.search.substring(1);
+        var sURLVariables = sPageURL.split('&');
+        var buy = sURLVariables[1].split('=')[1];
+        var build = sURLVariables[2].split('=')[1];
+        var advance = sURLVariables[3].split('=')[1];
+        player = (parseInt(sURLVariables[9].split('=')[1]) -  1) % 2 + 1;
+        document.getElementById("player").innerHTML = "Player " + player + " Action";
+        document.getElementById("Generic RS").innerHTML = "Generic RS: " + sURLVariables[0].split('=')[1];
+        document.getElementById("Buy RS").innerHTML = "Buy RS: " + sURLVariables[1].split('=')[1];
+        document.getElementById("Build RS").innerHTML = "Build RS: " + sURLVariables[2].split('=')[1];
+        document.getElementById("Advance RS").innerHTML = "Advance RS: " + sURLVariables[3].split('=')[1];
+        document.getElementById("Wood").innerHTML = "Wood: " + sURLVariables[4].split('=')[1];
+        document.getElementById("Stone").innerHTML = "Stone: " + sURLVariables[5].split('=')[1];
+        document.getElementById("Iron").innerHTML = "Iron: " + sURLVariables[6].split('=')[1];
+        document.getElementById("Soldiers").innerHTML = sURLVariables[10].split('=')[1].substring(11 * (player - 1) + 3, 11 * (player - 1) + 6) + " soldiers";
+        document.getElementById("cones").innerHTML = coneDivs(9);
+        generic = parseInt(sURLVariables[0].split('=')[1]);
+        buy =  parseInt(sURLVariables[1].split('=')[1]);
+        build =  parseInt(sURLVariables[2].split('=')[1]);
+        advance =  parseInt(sURLVariables[3].split('=')[1]);
+        cWood = parseInt(sURLVariables[7].split('=')[1].charAt(11 * (player - 1)));
+        cStone = parseInt(sURLVariables[7].split('=')[1].charAt(11 * (player - 1) + 1));
+        cIron = parseInt(sURLVariables[7].split('=')[1].charAt(11 * (player - 1) + 2));
+    </script>
+    <script type="text/javascript" src='space.js'> </script>
+    <script type="text/javascript" src='board.js'> </script>
+    <script>
+         function playCard() {
+            if (generic < 12) {
+                alert("Not enough RS!");
+                return;
+            }
+            generic -= 12;
+            player = (parseInt(sURLVariables[9].split('=')[1]) -  1) % 2 + 1;
+            state = sURLVariables[7].split('=')[1];
+            rando = Math.random();
+            if (rando > 0.92) {
+                var num = 0;
+                for (c = 0; c < 3; c++) {
+                    roll = Math.random() * 6 + 1 | 0;
+                    if (roll > num) num = roll;
+                }
+                alert("Frostbite\nSoldiers on mountain get frostbite and die. Smallest height in which frostbite occurs is determined by the highest number of 3 dice roll. (Roll was " + num + ")");
+                var toDelete = frostBite(num);
+                for (d = 0; d < 74; d++) {
+                    if (toDelete[d]) {
+                        state = state.substring(0, 5 * d) + '0' + state.substring(5 * d + 1, state.length);
+                        state = state.substring(0, 5 * d + 4) + '0' + state.substring(5 * d + 5, state.length);
+                    }
+                }
+                window.location.href = ('action.html?GRS=' + generic + '&yellow=' + buy + '&red=' + build + '&blue=' + advance + '&wood=' + sURLVariables[4].split('=')[1] + '&stone=' + sURLVariables[5].split('=')[1] + '&iron=' + sURLVariables[6].split('=')[1] + '&board=' + state + '&space=-1&turn=' + sURLVariables[9].split('=')[1] + '&players=' + sURLVariables[10].split('=')[1]);
+            }
+            else if (rando > 0.88) {
+                alert("Plague\nAll farms become diseased and are destroyed");
+                state = sURLVariables[7].split('=')[1];
+                for (i = 0; i < 74; i++) {
+                    for (j = 1; j < 4; j++) {
+                        if (state.charAt(5 * i + j) == '2') {
+                            state = state.substring(0 , 5 * i + j) + '0' + state.substring(5 * i + j + 1, state.length);
+                        }
+                    }
+                }
+                window.location.href = ('action.html?GRS=' + generic + '&yellow=' + buy + '&red=' + build + '&blue=' + advance + '&wood=' + sURLVariables[4].split('=')[1] + '&stone=' + sURLVariables[5].split('=')[1] + '&iron=' + sURLVariables[6].split('=')[1] + '&board=' + state + '&space=-1&turn=' + sURLVariables[9].split('=')[1] + '&players=' + sURLVariables[10].split('=')[1]);
+            } 
+            else if (rando > 0.68){
+                wood = sURLVariables[4].split('=')[1];
+                stone = sURLVariables[5].split('=')[1];
+                iron = sURLVariables[6].split('=')[1];
+                var resource = prompt("Year of plenty\nMax out one of your resources\nPlease enter the name of the resource you would like to max out");
+                while (resource.toLowerCase() != "wood" && resource.toLowerCase() != "stone" && resource.toLowerCase() != "iron") {
+                    resource = prompt("Invalid entry!\nPlease enter the name of the resource you would like to max out");
+                    if (resource == null) alert("null");
+                }
+                if (resource === "wood") wood = 9;
+                if (resource === "stone") stone = 9;
+                if (resource === "iron") iron = 9;
+                window.location.href = ('action.html?GRS=' + generic + '&yellow=' + buy + '&red=' + build + '&blue=' + advance + '&wood=' + wood + '&stone=' + stone + '&iron=' + iron + '&board=' + sURLVariables[7].split('=')[1] + '&space=-1&turn=' + sURLVariables[9].split('=')[1] + '&players=' + sURLVariables[10].split('=')[1]);
+            } 
+            else if (rando > 0.38) {
+                alert("Recruitment Season\nGain 10 soldiers (max total soldiers including on board is 150 per player)");
+                players = sURLVariables[10].split('=')[1];
+                if (parseInt(players.substring(11 * (player - 1) + 3, 11 * (player - 1) + 6)) + soldiersOnBoard(player) > 140) insert = 150 - soldiersOnBoard(player);
+                else insert = parseInt(players.substring(11 * (player - 1) + 3, 11 * (player - 1) + 6)) + 10;
+                if (insert < 100) stringInsert = "0" + insert;
+                else stringInsert = insert;
+                players = players.substring(0, 11 * (player - 1) + 3) + stringInsert + players.substring(11 * (player - 1) + 6, players.length);
+                window.location.href = ('action.html?GRS=' + generic + '&yellow=' + buy + '&red=' + build + '&blue=' + advance + '&wood=' + sURLVariables[4].split('=')[1] + '&stone=' + sURLVariables[5].split('=')[1] + '&iron=' + sURLVariables[6].split('=')[1] + '&board=' + sURLVariables[7].split('=')[1] + '&space=-1&turn=' + sURLVariables[9].split('=')[1] + '&players=' + players);
+            }
+            else if (rando > 0.08) {
+                alert("Universal Currency\nAll RS becomes Generic RS");
+                generic += buy + build + advance;
+                buy = 0;
+                build = 0;
+                advance = 0;
+                window.location.href = ('action.html?GRS=' + generic + '&yellow=' + buy + '&red=' + build + '&blue=' + advance + '&wood=' + sURLVariables[4].split('=')[1] + '&stone=' + sURLVariables[5].split('=')[1] + '&iron=' + sURLVariables[6].split('=')[1] + '&board=' + sURLVariables[7].split('=')[1] + '&space=-1&turn=' + sURLVariables[9].split('=')[1] + '&players=' + sURLVariables[10].split('=')[1]);
+            }
+            else if (rando > 0.02) {
+                alert("Enlightenment\nPlayer receives the cone of decision");
+                players = sURLVariables[10].split('=')[1];
+                players = players.substring(0, 11 * (player - 1) + 10) + '1' + players.substring(11 * (player - 1) + 11, players.length);
+                window.location.href = ('action.html?GRS=' + generic + '&yellow=' + buy + '&red=' + build + '&blue=' + advance + '&wood=' + sURLVariables[4].split('=')[1] + '&stone=' + sURLVariables[5].split('=')[1] + '&iron=' + sURLVariables[6].split('=')[1] + '&board=' + sURLVariables[7].split('=')[1] + '&space=-1&turn=' + sURLVariables[9].split('=')[1] + '&players=' + players);
+            }
+            else alert("Dragon");
+        }
+    </script>
+</body>

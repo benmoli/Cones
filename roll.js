@@ -59,8 +59,10 @@ function specialDiceRoll(genericRS) {
     player = (parseInt(sURLVariables[2].split('=')[1]) - 1) % 2 + 1;
     players = sURLVariables[3].split('=')[1];
     if (checkMountain(player)) {
-        players = players.substring(0, 11 * ((parseInt(sURLVariables[2].split('=')[1]) -  1) % 2) + 10) + "1" + players.substring(11 * ((parseInt(sURLVariables[2].split('=')[1]) -  1) % 2) + 11, players.length);
-        players = players.substring(0, 11 * ((parseInt(sURLVariables[2].split('=')[1])) % 2) + 10) + "0" + players.substring(11 * ((parseInt(sURLVariables[2].split('=')[1]) % 2) + 11), players.length);
+        if (player == 1) otherPlayer = 2;
+        else otherPlayer = 1;
+        if (!checkMountain(otherPlayer)) players = players.substring(0, 11 * ((parseInt(sURLVariables[2].split('=')[1]) -  1) % 2) + 10) + "1" + players.substring(11 * ((parseInt(sURLVariables[2].split('=')[1]) -  1) % 2) + 11, players.length);
+        players = players.substring(0, 11 * ((parseInt(sURLVariables[2].split('=')[1])) % 2) + 10) + "0" + players.substring(11 * ((parseInt(sURLVariables[2].split('=')[1])) % 2) + 11, players.length);
         //CHANGE THIS FOR MORE THAN 2 PLAYERS
     }
     document.getElementById("continue").innerHTML = '<a href = "buy.html?GRS=' + GRS + '&yellow=' + 5 * yellow + '&red=' + 5 * red + '&blue=' + 5 * blue + '&board=' + sURLVariables[0].split('=')[1] + '&space=-1&turn=' + sURLVariables[2].split('=')[1] + '&players=' + players + '">Continue</a>';
