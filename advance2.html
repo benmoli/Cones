@@ -44,6 +44,9 @@
             <tr>
                 <td id = "Advance RS"></td>
             </tr>
+            <tr>
+                <td id = "Action RS"></td>
+            </tr>
         </table>
     </footer>
     <script>
@@ -56,6 +59,7 @@
         document.getElementById("Buy RS").innerHTML = "Buy RS: " + sURLVariables[1].split('=')[1];
         document.getElementById("Build RS").innerHTML = "Build RS: " + sURLVariables[2].split('=')[1];
         document.getElementById("Advance RS").innerHTML = "Advance RS: " + sURLVariables[3].split('=')[1];
+        document.getElementById("Action RS").innerHTML = "Action RS: " + sURLVariables[11].split('=')[1];
         document.getElementById("Wood").innerHTML = "Wood: " + sURLVariables[4].split('=')[1];
         document.getElementById("Stone").innerHTML = "Stone: " + sURLVariables[5].split('=')[1];
         document.getElementById("Iron").innerHTML = "Iron: " + sURLVariables[6].split('=')[1];
@@ -66,8 +70,9 @@
     <script type="text/javascript" src='space.js'> </script>
     <script type="text/javascript" src='board.js'> </script>
     <script>
-        totalSoldierNum = soldiersOnBoard(player) + soldierNum;
+        totalSoldierNum = soldiersOnBoard((parseInt(sURLVariables[9].split('=')[1]) - 1) % 2 + 1) + soldierNum;
         document.getElementById("Soldiers Total").innerHTML = totalSoldierNum + "/150 soldiers total";
+        function check(toCheck) {return toCheck;}
         function doMountainMoves() {
             grs = parseInt(sURLVariables[0].split('=')[1]);
             ars = parseInt(sURLVariables[3].split('=')[1]);
@@ -75,64 +80,70 @@
             var state = sURLVariables[7].split('=')[1];
             var containerDiv = document.getElementById("moves");
             var innerDivs = containerDiv.getElementsByTagName("SELECT");
-            for (var i = 0; i < innerDivs.length; i++)
-            {
-                try {
+            var count = 0;
+            done = Array(innerDivs.length).fill(false);
+            while (!done.every(check)) {
+                var allDivs = 0;
+                for (var i = 0; i < innerDivs.length; i++) {
+                    if (done[i]) continue;
                     var toMove = parseInt(document.getElementById(innerDivs[i].id).options[document.getElementById(innerDivs[i].id).selectedIndex].value);
-                }
-                catch (error) {
-                    console.log("Error at div " + i);
-                }
-                if (toMove == 0) continue;
-                if (total < toMove) {
-                    alert("Not enough RS");
-                    return;
-                }
-                from = parseInt(innerDivs[i].id.substring(4, 6));
-                to = parseInt(innerDivs[i].id.substring(8, 10));
-                fromSoldiers = parseInt(state.charAt(5 * from + 4));
-                toSoldiers = parseInt(state.charAt(5 * to + 4));
-                newFrom = fromSoldiers - toMove;
-                newTo = toSoldiers + toMove;
-                nextSoldiers = 0;
-                playerMove = "";
-                playerMove = state.charAt(5 * from);
-                if (newTo > 5 && state.charAt(5 * to) == state.charAt(5 * from)){
-                    innerDivs[innerDivs.length] = innerDivs[i];
-                    continue;
-                }
-                if (state.charAt(5 * to) != state.charAt(5 * from) && state.charAt(5 * to) != '0') {
-                    left = toMove;
-                    right = parseInt(state.charAt(5 * to + 4));
-                    while (left > 0 && right > 0) {
-                        rando = Math.random();
-                        if (rando > 0.583333333) left--;
-                        else right--;
+                    allDivs += toMove;
+                    if (toMove == 0){
+                        done[i] = true;
+                        continue;
                     }
-                    toDisplay = "Auto Combat from " + from + " to " + to + "\n";
-                    if (left == 0) {
-                        toDisplay += "Player " + state.charAt(5 * to) + " wins with " + right + " soldiers";
-                        state = state.substring(0, 5 * from + 4) + newFrom + state.substring(5 * from + 5, state.length);
-                        state = state.substring(0, 5 * to + 4) + right + state.substring(5 * to + 5, state.length);
-                        if (newFrom == 0) state = state.substring(0, 5 * from) + "0" + state.substring(5 * from + 1, state.length);
+                    if (total < allDivs) {
+                        alert("Not enough RS");
+                        return;
+                    }
+                    from = parseInt(innerDivs[i].id.substring(4, 6));
+                    to = parseInt(innerDivs[i].id.substring(8, 10));
+                    fromSoldiers = parseInt(state.charAt(5 * from + 4));
+                    toSoldiers = parseInt(state.charAt(5 * to + 4));
+                    newFrom = fromSoldiers - toMove;
+                    newTo = toSoldiers + toMove;
+                    nextSoldiers = 0;
+                    playerMove = "";
+                    playerMove = state.charAt(5 * from);
+                    if (newTo > 5 && state.charAt(5 * to) == state.charAt(5 * from)){
+                        continue;
+                    }
+                    if (state.charAt(5 * to) != state.charAt(5 * from) && state.charAt(5 * to) != '0') {
+                        left = toMove;
+                        right = parseInt(state.charAt(5 * to + 4));
+                        while (left > 0 && right > 0) {
+                            rando = Math.random();
+                            if (rando > 0.583333333) left--;
+                            else right--;
+                        }
+                        toDisplay = "Auto Combat from " + from + " to " + to + "\n";
+                        if (left == 0) {
+                            toDisplay += "Player " + state.charAt(5 * to) + " wins with " + right + " soldiers";
+                            state = state.substring(0, 5 * from + 4) + newFrom + state.substring(5 * from + 5, state.length);
+                            state = state.substring(0, 5 * to + 4) + right + state.substring(5 * to + 5, state.length);
+                            if (newFrom == 0) state = state.substring(0, 5 * from) + "0" + state.substring(5 * from + 1, state.length);
+                        }
+                        else {
+                            toDisplay += "Player " + state.charAt(5 * from) + " wins with " + left + " soldiers";
+                            state = state.substring(0, 5 * from + 4) + newFrom + state.substring(5 * from + 5, state.length);
+                            state = state.substring(0, 5 * to + 4) + left + state.substring(5 * to + 5, state.length);
+                            state = state.substring(0, 5 * to) + state.charAt(5 * from) + state.substring(5 * to + 1, state.length);
+                            if (newFrom == 0) state = state.substring(0, 5 * from) + "0" + state.substring(5 * from + 1, state.length);
+                        }
+                        alert(toDisplay);
                     }
                     else {
-                        toDisplay += "Player " + state.charAt(5 * from) + " wins with " + left + " soldiers";
                         state = state.substring(0, 5 * from + 4) + newFrom + state.substring(5 * from + 5, state.length);
-                        state = state.substring(0, 5 * to + 4) + left + state.substring(5 * to + 5, state.length);
-                        state = state.substring(0, 5 * to) + state.charAt(5 * from) + state.substring(5 * to + 1, state.length);
+                        state = state.substring(0, 5 * to + 4) + newTo + state.substring(5 * to + 5, state.length);
+                        state = state.substring(0, 5 * to) + playerMove + state.substring(5 * to + 1, state.length);
                         if (newFrom == 0) state = state.substring(0, 5 * from) + "0" + state.substring(5 * from + 1, state.length);
                     }
-                    alert(toDisplay);
+                    done[i] = true;
                 }
-                else {
-                    state = state.substring(0, 5 * from + 4) + newFrom + state.substring(5 * from + 5, state.length);
-                    state = state.substring(0, 5 * to + 4) + newTo + state.substring(5 * to + 5, state.length);
-                    state = state.substring(0, 5 * to) + playerMove + state.substring(5 * to + 1, state.length);
-                    if (newFrom == 0) state = state.substring(0, 5 * from) + "0" + state.substring(5 * from + 1, state.length);
-                }
-                if (i == 150) continue;
+                count++;
+                if (count == 150) alert(done);
             }
+            //alert(count);
             turn = parseInt(sURLVariables[9].split('=')[1]) + 1;
             if (totalSoldierNum > 146) soldierNum += 150 - totalSoldierNum;
             else soldierNum += 5;

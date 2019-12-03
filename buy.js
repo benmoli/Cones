@@ -18,6 +18,6 @@ function doit(generic, buy, build, advance, wood, stone, iron, cWood, cStone, cI
             alert("Can't have more than 9 of a resource");
             return;
         }
-        window.location.href = ('build.html?GRS=' + generic + '&yellow=' + buy + '&red=' + build + '&blue=' + advance + '&wood=' + woodnum + '&stone=' + stonenum + '&iron=' + ironnum + '&board=' + sURLVariables[4].split('=')[1] + '&space=-1&turn=' + sURLVariables[6].split('=')[1] + '&players=' + sURLVariables[7].split('=')[1]);
+        window.location.href = ('action.html?GRS=' + generic + '&yellow=' + buy + '&red=' + build + '&blue=' + advance + '&wood=' + woodnum + '&stone=' + stonenum + '&iron=' + ironnum + '&board=' + sURLVariables[4].split('=')[1] + '&space=-1&turn=' + sURLVariables[6].split('=')[1] + '&players=' + sURLVariables[7].split('=')[1] + '&green=' + sURLVariables[8].split('=')[1]);
     }
 }

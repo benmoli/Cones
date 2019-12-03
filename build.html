@@ -26,7 +26,7 @@
         }
         if (setCone(0) + setCone(1) + setCone(2) + setCone(3) === '1111') window.location.href = ('endgame.html?player=' + (parseInt(sURLVariables[9].split('=')[1]) -  1) % 2 + 1);
         else window.location.href = ('advance.html?GRS=' + sURLVariables[0].split('=')[1] + '&yellow=' + sURLVariables[1].split('=')[1] + '&red=' + sURLVariables[2].split('=')[1] + '&blue=' + sURLVariables[3].split('=')[1] + '&wood=' + sURLVariables[4].split('=')[1] + '&stone=' + sURLVariables[5].split('=')[1] + '&iron=' + sURLVariables[6].split('=')[1]+ '&board=' + sURLVariables[7].split('=')[1] + '&space=-1&turn=' + sURLVariables[9].split('=')[1] +
-         '&players=' + sURLVariables[10].split('=')[1].substring(0, 11 * ((parseInt(sURLVariables[9].split('=')[1]) -  1) % 2) + 6) + setCone(0) + setCone(1) + setCone(2) + setCone(3) + sURLVariables[10].split('=')[1].substring(11 * ((parseInt(sURLVariables[9].split('=')[1]) -  1) % 2) + 10, sURLVariables[10].split('=')[1].length))">Continue</button>
+         '&players=' + sURLVariables[10].split('=')[1].substring(0, 11 * ((parseInt(sURLVariables[9].split('=')[1]) -  1) % 2) + 6) + setCone(0) + setCone(1) + setCone(2) + setCone(3) + sURLVariables[10].split('=')[1].substring(11 * ((parseInt(sURLVariables[9].split('=')[1]) -  1) % 2) + 10, sURLVariables[10].split('=')[1].length)) + '&green=' + sURLVariables[11].split('=')[1]">Continue</button>
     </div>
     <div class = "split right">
         </br></br>
@@ -61,6 +61,9 @@
             <tr>
                 <td id = "Advance RS"></td>
             </tr>
+            <tr>
+                <td id = "Action RS"></td>
+            </tr>
         </table>
     </footer>
 
@@ -76,6 +79,7 @@
         document.getElementById("Buy RS").innerHTML = "Buy RS: " + sURLVariables[1].split('=')[1];
         document.getElementById("Build RS").innerHTML = "Build RS: " + sURLVariables[2].split('=')[1];
         document.getElementById("Advance RS").innerHTML = "Advance RS: " + sURLVariables[3].split('=')[1];
+        document.getElementById("Action RS").innerHTML = "Action RS: " + sURLVariables[11].split('=')[1];
         document.getElementById("Wood").innerHTML = "Wood: " + sURLVariables[4].split('=')[1];
         document.getElementById("Stone").innerHTML = "Stone: " + sURLVariables[5].split('=')[1];
         document.getElementById("Iron").innerHTML = "Iron: " + sURLVariables[6].split('=')[1];

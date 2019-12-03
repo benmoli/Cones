@@ -55,6 +55,9 @@
             <tr>
                 <td id = "Advance RS"></td>
             </tr>
+            <tr>
+                <td id = "Action RS"></td>
+            </tr>
         </table>
     </footer>
     <script>
@@ -64,6 +67,7 @@
         document.getElementById("Buy RS").innerHTML = "Buy RS: " + sURLVariables[1].split('=')[1];
         document.getElementById("Build RS").innerHTML = "Build RS: " + sURLVariables[2].split('=')[1];
         document.getElementById("Advance RS").innerHTML = "Advance RS: " + sURLVariables[3].split('=')[1];
+        document.getElementById("Action RS").innerHTML = "Action RS: " + sURLVariables[8].split('=')[1];
         player = (parseInt(sURLVariables[6].split('=')[1]) -  1) % 2 + 1;
         document.getElementById("player").innerHTML = "Player " + player + " Buy";
         document.getElementById("Wood").innerHTML = "Wood: " + sURLVariables[7].split('=')[1].charAt(11 * (player - 1));

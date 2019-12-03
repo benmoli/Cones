@@ -54,8 +54,8 @@ function specialDiceRoll(genericRS) {
     document.getElementById("yellow").innerHTML = yellow + " yellow = " + 5 * yellow + " Buy RS";
     document.getElementById("red").innerHTML = red + " red = " + 5 * red + " Build RS";
     document.getElementById("blue").innerHTML = blue + " blue = " + 5 * blue + " Advance RS";
-    document.getElementById("green").innerHTML = green + " green = " + 3 * green + " Generic RS";
-    GRS = genericRS + green * 3;
+    document.getElementById("green").innerHTML = green + " green = " + 5 * green + " Action RS";
+    GRS = genericRS;
     player = (parseInt(sURLVariables[2].split('=')[1]) - 1) % 2 + 1;
     players = sURLVariables[3].split('=')[1];
     if (checkMountain(player)) {
@@ -65,6 +65,6 @@ function specialDiceRoll(genericRS) {
         players = players.substring(0, 11 * ((parseInt(sURLVariables[2].split('=')[1])) % 2) + 10) + "0" + players.substring(11 * ((parseInt(sURLVariables[2].split('=')[1])) % 2) + 11, players.length);
         //CHANGE THIS FOR MORE THAN 2 PLAYERS
     }
-    document.getElementById("continue").innerHTML = '<a href = "buy.html?GRS=' + GRS + '&yellow=' + 5 * yellow + '&red=' + 5 * red + '&blue=' + 5 * blue + '&board=' + sURLVariables[0].split('=')[1] + '&space=-1&turn=' + sURLVariables[2].split('=')[1] + '&players=' + players + '">Continue</a>';
+    document.getElementById("continue").innerHTML = '<a href = "buy.html?GRS=' + GRS + '&yellow=' + 5 * yellow + '&red=' + 5 * red + '&blue=' + 5 * blue + '&board=' + sURLVariables[0].split('=')[1] + '&space=-1&turn=' + sURLVariables[2].split('=')[1] + '&players=' + players + '&green=' + 5 * green + '">Continue</a>';
     play("brrrap.wav");
 }
