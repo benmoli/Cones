@@ -83,11 +83,11 @@ class Space {
         var building1String = '<p>Building 1: ' + this.building1;
         var building2String = '<p>Building 2: ' + this.building2;
         var building3String = '<p>Building 3: ' + this.building3;
-        if (this.building1 !== "fort") building1String += '<button onClick = "upgradeBuilding(&quot;' + this.building1 + '&quot;, ' + this.index + ', 1)">^</button>';
+        if (this.building1 !== "indcor") building1String += '<button onClick = "upgradeBuilding(&quot;' + this.building1 + '&quot;, ' + this.index + ', 1)">^</button>';
         building1String += '</p>';
-        if (this.building2 !== "fort") building2String += '<button onClick = "upgradeBuilding(&quot;' + this.building2 + '&quot;, ' + this.index + ', 2)">^</button>';
+        if (this.building2 !== "indcor") building2String += '<button onClick = "upgradeBuilding(&quot;' + this.building2 + '&quot;, ' + this.index + ', 2)">^</button>';
         building2String += '</p>';
-        if (this.building3 !== "fort") building3String += '<button onClick = "upgradeBuilding(&quot;' + this.building3 + '&quot;, ' + this.index + ', 3)">^</button>';
+        if (this.building3 !== "indcor") building3String += '<button onClick = "upgradeBuilding(&quot;' + this.building3 + '&quot;, ' + this.index + ', 3)">^</button>';
         building3String += '</p>';
         document.getElementById("building1").innerHTML = building1String;
         document.getElementById("building2").innerHTML = building2String;
@@ -103,13 +103,8 @@ class Space {
             y += 5;
         }
         if (building === "indcor") {
-            base_image.src = this.prefix + 'indcor.png';var base_image = new Image(5, 5);
-            base_image.src = this.prefix + 'soldier.png';
-            base_image.onload = function(){
-                ctx.drawImage(base_image, x + 20, y + 1);
-            }
-            ctx.fillText(num, x + 44, y + 32);
-                y += 7;
+            base_image.src = this.prefix + 'indcor.png';
+            y += 7;
         }
         if (building === "comcor") {
             base_image.src = this.prefix + 'comcor.png';
@@ -143,6 +138,7 @@ function upgradeBuilding(building, index, num) {
     iron = parseInt(sURLVariables[6].split('=')[1]);
     rs = parseInt(sURLVariables[0].split('=')[1]);
     buildRs = parseInt(sURLVariables[2].split('=')[1]);
+    if (challenge) buildRs += 5;
     totalRs = rs + buildRs;
     //barracks
     if (wood >= 1 && stone >= 1 && iron >= 2 && totalRs >= 15 && building === "none"){
@@ -202,16 +198,16 @@ function upgradeBuilding(building, index, num) {
     //     window.location.href = ("build.html?GRS=" + rs + "&yellow=" + sURLVariables[1].split('=')[1] + "&red=" + buildRs + "&blue=" + sURLVariables[3].split('=')[1] + "&wood=" + wood + "&stone=" + stone + "&iron=" + iron + "&board=" + boardState.substring(0, 5 * index + num) + "5" + boardState.substring(5 * index + num + 1, boardState.length) + "&space=" + index + '&turn=' + sURLVariables[9].split('=')[1] + '&players=' + sURLVariables[10].split('=')[1]);
     // }
     // //trans hub
-    // else if (wood >= 1 && iron >= 1 && totalRs >= 10 && building === "comcor"){
-    //     if (buildRs >= 10) buildRs -= 10;
-    //     else {
-    //         rs -= (10 - buildRs);
-    //         buildRs = 0;
-    //     }
-    //     wood--;
-    //     iron--;
-    //     window.location.href = ("build.html?GRS=" + rs + "&yellow=" + sURLVariables[1].split('=')[1] + "&red=" + buildRs + "&blue=" + sURLVariables[3].split('=')[1] + "&wood=" + wood + "&stone=" + stone + "&iron=" + iron + "&board=" + boardState.substring(0, 5 * index + num) + "6" + boardState.substring(5 * index + num + 1, boardState.length) + "&space=" + index + '&turn=' + sURLVariables[9].split('=')[1] + '&players=' + sURLVariables[10].split('=')[1]);
-    // }
+    else if (wood >= 1 && iron >= 1 && totalRs >= 10 && building === "fort"){
+        if (buildRs >= 10) buildRs -= 10;
+        else {
+            rs -= (10 - buildRs);
+            buildRs = 0;
+        }
+        wood--;
+        iron--;
+        window.location.href = ("build.html?GRS=" + rs + "&yellow=" + sURLVariables[1].split('=')[1] + "&red=" + buildRs + "&blue=" + sURLVariables[3].split('=')[1] + "&wood=" + wood + "&stone=" + stone + "&iron=" + iron + "&board=" + boardState.substring(0, 5 * index + num) + "4" + boardState.substring(5 * index + num + 1, boardState.length) + "&space=" + index + '&turn=' + sURLVariables[9].split('=')[1] + '&players=' + sURLVariables[10].split('=')[1]) + '&green=' + sURLVariables[11].split('=')[1];
+    }
     // else if (building === "transhub") alert("Cannot upgrade further");
     else alert("Not enough RS or Resources");
 }

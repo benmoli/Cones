@@ -24,7 +24,7 @@ function smallDiceRoll(sum) {
         display += roll;
         if (i != document.getElementById("small selection").options[document.getElementById("small selection").selectedIndex].value - 1)
             display += " + "
-        else display += " = " + total + " Generic RS";
+        else display += " =</br>" + total + " Generic RS";
     }
     document.getElementById("small dice roll").innerHTML = display;
     if (sum - document.getElementById("small selection").options[document.getElementById("small selection").selectedIndex].value > 6) specialDiceNum = 6;

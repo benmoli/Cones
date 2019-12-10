@@ -26,9 +26,12 @@
     <script>
         sPageURL = window.location.search.substring(1);
         var sURLVariables = sPageURL.split('&');
+        if (sURLVariables[10].split('=')[1].charAt( 11 * ((parseInt(sURLVariables[9].split('=')[1]) - 1) % 2) + 9) == '2') challenge = true;
+        else challenge = false;
         prevIndex = parseInt(sURLVariables[8].split('=')[1]);
         nextIndex = parseInt(sURLVariables[12].split('=')[1]);
         board = sURLVariables[7].split('=')[1];
+        
         toMove = parseInt(board.charAt(prevIndex * 5 + 4));
         leftSoldiers = parseInt(board.charAt(prevIndex * 5 + 4));
         rightSoldiers = parseInt(board.charAt(nextIndex * 5 + 4));
@@ -49,6 +52,11 @@
             return rtrn;
         }
         function result() {
+            if (challenge) {
+                for (d = 0; d < offRoll.length; d++){
+                    offRoll[d]++;
+                }
+            }
             rtrn = "";
             nextLeft = leftSoldiers;
             nextRight = rightSoldiers;
@@ -97,7 +105,7 @@
             state = sURLVariables[7].split('=')[1];
             while (leftSoldiers > 0 && rightSoldiers> 0) {
                 rando = Math.random();
-                if (rando > 0.583333333) leftSoldiers--;
+                if ((!challenge && rando > 0.583333333) || (challenge && rando < 0.583333333)) leftSoldiers--;
                 else rightSoldiers--;
             }
             toDisplay = "Auto Combat from " + prevIndex + " to " + nextIndex + "\n";

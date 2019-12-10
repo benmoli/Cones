@@ -54,6 +54,8 @@
         var sURLVariables = sPageURL.split('&');
         turn = parseInt(sURLVariables[9].split('=')[1]) + 1;
         player = (parseInt(sURLVariables[9].split('=')[1]) - 1) % 2 + 1;
+        if (sURLVariables[10].split('=')[1].charAt( 11 * (player - 1) + 9) == '2') challenge = true;
+        else challenge = false;
         document.getElementById("player").innerHTML = "Player " + player + " Mountain Advance";
         document.getElementById("Generic RS").innerHTML = "Generic RS: " + sURLVariables[0].split('=')[1];
         document.getElementById("Buy RS").innerHTML = "Buy RS: " + sURLVariables[1].split('=')[1];
@@ -71,7 +73,7 @@
     <script type="text/javascript" src='board.js'> </script>
     <script>
         totalSoldierNum = soldiersOnBoard((parseInt(sURLVariables[9].split('=')[1]) - 1) % 2 + 1) + soldierNum;
-        document.getElementById("Soldiers Total").innerHTML = totalSoldierNum + "/150 soldiers total";
+        document.getElementById("Soldiers Total").innerHTML = totalSoldierNum + "/80 soldiers total";
         function check(toCheck) {return toCheck;}
         function doMountainMoves() {
             grs = parseInt(sURLVariables[0].split('=')[1]);
@@ -113,7 +115,7 @@
                         right = parseInt(state.charAt(5 * to + 4));
                         while (left > 0 && right > 0) {
                             rando = Math.random();
-                            if (rando > 0.583333333) left--;
+                            if ((!challenge && rando > 0.583333333) || (challenge && rando < 0.583333333)) left--;
                             else right--;
                         }
                         toDisplay = "Auto Combat from " + from + " to " + to + "\n";
@@ -141,12 +143,12 @@
                     done[i] = true;
                 }
                 count++;
-                if (count == 150) alert(done);
+                if (count == 150) break;
             }
             //alert(count);
             turn = parseInt(sURLVariables[9].split('=')[1]) + 1;
-            if (totalSoldierNum > 146) soldierNum += 150 - totalSoldierNum;
-            else soldierNum += 5;
+            if (totalSoldierNum > 77) soldierNum += 80 - totalSoldierNum;
+            else soldierNum += 4;
             soldierString = "";
             if (soldierNum < 100) soldierString += "0";
             if (soldierNum < 10) soldierString += "0";
@@ -157,8 +159,17 @@
             + sURLVariables[6].split('=')[1]
             + soldierString
             + sURLVariables[10].split('=')[1].substring(11 * ((parseInt(sURLVariables[9].split('=')[1]) -  1) % 2) + 6, sURLVariables[10].split('=')[1].length);
-            
-            window.location.href = 'roll.html?board=' + state + '&space=-1&turn=' + turn + '&players=' + players;
+            goToChallenge = false;
+            for (x = 6; x < 10; x++) {
+                if (players.charAt(11 * (parseInt(sURLVariables[2].split('=')[1]) % 2) + x) == '2'){
+                    players = players.substring(0, 11 * (parseInt(sURLVariables[2].split('=')[1]) % 2) + x) + "1" + players.substring(11 * (parseInt(sURLVariables[2].split('=')[1]) % 2) + x + 1, players.length);
+                    goToChallenge = true;
+                } 
+                else if (players.charAt(11 * (parseInt(sURLVariables[2].split('=')[1]) % 2) + x) == '1') goToChallenge = true;
+            }
+            if (goToChallenge) page = "challenge";
+            else page = "roll";
+            window.location.href = page + '.html?board=' + state + '&space=-1&turn=' + turn + '&players=' + players;
         }    
     </script>
 </body>

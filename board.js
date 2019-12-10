@@ -1,5 +1,6 @@
 var c = document.getElementById("myCanvas");
 if (window.location.pathname.split("/").pop() === "roll.html"){ currentSpace = parseInt(sURLVariables[1].split('=')[1]); turn = sURLVariables[2].split('=')[1]; }
+else if (window.location.pathname.split("/").pop() === "challenge.html"){ currentSpace = parseInt(sURLVariables[1].split('=')[1]); turn = sURLVariables[2].split('=')[1]; }
 else if (window.location.pathname.split("/").pop() === "buy.html"){ currentSpace = parseInt(sURLVariables[5].split('=')[1]); turn = sURLVariables[6].split('=')[1]; }
 else if (window.location.pathname.split("/").pop() === "build.html"){ currentSpace = parseInt(sURLVariables[8].split('=')[1]); turn = sURLVariables[9].split('=')[1]; }
 else if (window.location.pathname.split("/").pop() === "advance.html"){ currentSpace = parseInt(sURLVariables[8].split('=')[1]); turn = sURLVariables[9].split('=')[1]; }
@@ -44,6 +45,7 @@ spaces = [];
 index = 0;
 root = window.location.pathname.split("/").pop();
 if (root === "roll.html") var boardState = sURLVariables[0].split('=')[1];
+else if (root === "challenge.html") var boardState = sURLVariables[0].split('=')[1];
 else if (root === "buy.html") var boardState = sURLVariables[4].split('=')[1];
 else var boardState = sURLVariables[7].split('=')[1];
 draw();
@@ -237,14 +239,14 @@ function initSoldiers(num, p) {
             state = state.substring(0, 5 * spaceIndex) + p + state.substring(5 * spaceIndex + 1, state.length);
         }
         alert(toDisplay);
-        window.location.href = ('advance.html?GRS=' + grs + '&yellow=' + sURLVariables[1].split('=')[1] + '&red=' + sURLVariables[2].split('=')[1] + '&blue=' + ars + '&wood=' + sURLVariables[4].split('=')[1] + '&stone=' + sURLVariables[5].split('=')[1] + '&iron=' + sURLVariables[6].split('=')[1]+ '&board=' + state + '&space=' + sURLVariables[8].split('=')[1] + '&turn=' + sURLVariables[9].split('=')[1] + '&players=' + sURLVariables[10].split('=')[1].substring(0, 11 * (playerNum - 1) + 3) + soldierString + sURLVariables[10].split('=')[1].substring(11 * (playerNum - 1) + 6,  sURLVariables[10].split('=')[1].length) + '&green=' + sURLVariables[11].split('=')[1]);
+        window.location.href = ('advance.html?GRS=' + grs + '&yellow=' + sURLVariables[1].split('=')[1] + '&red=' + sURLVariables[2].split('=')[1] + '&blue=' + ars + '&wood=' + sURLVariables[4].split('=')[1] + '&stone=' + sURLVariables[5].split('=')[1] + '&iron=' + sURLVariables[6].split('=')[1]+ '&board=' + state + '&space=' + spaceIndex + '&turn=' + sURLVariables[9].split('=')[1] + '&players=' + sURLVariables[10].split('=')[1].substring(0, 11 * (playerNum - 1) + 3) + soldierString + sURLVariables[10].split('=')[1].substring(11 * (playerNum - 1) + 6,  sURLVariables[10].split('=')[1].length) + '&green=' + sURLVariables[11].split('=')[1]);
         return;
     }
     if (num > 5 - spaces[spaceIndex].soldiers){
         alert("Too many soldiers on start space");
         return;
     }                
-    window.location.href = ('advance.html?GRS=' + grs + '&yellow=' + sURLVariables[1].split('=')[1] + '&red=' + sURLVariables[2].split('=')[1] + '&blue=' + ars + '&wood=' + sURLVariables[4].split('=')[1] + '&stone=' + sURLVariables[5].split('=')[1] + '&iron=' + sURLVariables[6].split('=')[1]+ '&board=' + sURLVariables[7].split('=')[1].substring(0, 5 * spaceIndex) + playerNum + sURLVariables[7].split('=')[1].substring(5 * spaceIndex + 1, 5 * spaceIndex + 4) + initNum + sURLVariables[7].split('=')[1].substring(5 * spaceIndex + 5, sURLVariables[7].split('=')[1].length) + '&space=' + sURLVariables[8].split('=')[1] + '&turn=' + sURLVariables[9].split('=')[1] + '&players=' + sURLVariables[10].split('=')[1].substring(0, 11 * (playerNum - 1) + 3) + soldierString + sURLVariables[10].split('=')[1].substring(11 * (playerNum - 1) + 6,  sURLVariables[10].split('=')[1].length) + '&green=' + sURLVariables[11].split('=')[1]);
+    window.location.href = ('advance.html?GRS=' + grs + '&yellow=' + sURLVariables[1].split('=')[1] + '&red=' + sURLVariables[2].split('=')[1] + '&blue=' + ars + '&wood=' + sURLVariables[4].split('=')[1] + '&stone=' + sURLVariables[5].split('=')[1] + '&iron=' + sURLVariables[6].split('=')[1]+ '&board=' + sURLVariables[7].split('=')[1].substring(0, 5 * spaceIndex) + playerNum + sURLVariables[7].split('=')[1].substring(5 * spaceIndex + 1, 5 * spaceIndex + 4) + initNum + sURLVariables[7].split('=')[1].substring(5 * spaceIndex + 5, sURLVariables[7].split('=')[1].length) + '&space=' + spaceIndex + '&turn=' + sURLVariables[9].split('=')[1] + '&players=' + sURLVariables[10].split('=')[1].substring(0, 11 * (playerNum - 1) + 3) + soldierString + sURLVariables[10].split('=')[1].substring(11 * (playerNum - 1) + 6,  sURLVariables[10].split('=')[1].length) + '&green=' + sURLVariables[11].split('=')[1]);
 }
 function mountainMoves() {
     rtrn = "";
