@@ -74,8 +74,8 @@
     <script>
         var state = sURLVariables[7].split('=')[1];
         players = sURLVariables[10].split('=')[1];
-        max = 160 / (players.length / 11);
-        if (state.length < 150) max /= 2;
+        max = 240 / (players.length / 11);
+        if (state.length < 150) max /= 2.5;
         totalSoldierNum = soldiersOnBoard((parseInt(sURLVariables[9].split('=')[1]) - 1) % (sURLVariables[10].split('=')[1].length / 11) + 1) + soldierNum;
         document.getElementById("Soldiers Total").innerHTML = totalSoldierNum + "/" + max + " soldiers total";
         function check(toCheck) {return toCheck;}
@@ -152,8 +152,8 @@
             //alert(count);
             turn = parseInt(sURLVariables[9].split('=')[1]) + 1;
             players = sURLVariables[10].split('=')[1];
-            max = 160 / (players.length / 11);
-            if (state.length < 150) max /= 2;
+            max = 240 / (players.length / 11);
+            if (state.length < 150) max /= 2.5;
             if (totalSoldierNum > max - 4) soldierNum += max - totalSoldierNum;
             else soldierNum += 4;
             soldierString = "";
