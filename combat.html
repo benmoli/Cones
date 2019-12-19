@@ -26,10 +26,10 @@
     <script>
         sPageURL = window.location.search.substring(1);
         var sURLVariables = sPageURL.split('&');
-        if (sURLVariables[10].split('=')[1].charAt( 11 * ((parseInt(sURLVariables[9].split('=')[1]) - 1) % 2) + 9) == '2') challenge = true;
+        if (sURLVariables[10].split('=')[1].charAt( 11 * ((parseInt(sURLVariables[9].split('=')[1]) - 1) % (sURLVariables[10].split('=')[1].length / 11)) + 9) == '2') challenge = true;
         else challenge = false;
         prevIndex = parseInt(sURLVariables[8].split('=')[1]);
-        nextIndex = parseInt(sURLVariables[12].split('=')[1]);
+        nextIndex = parseInt(sURLVariables[14].split('=')[1]);
         board = sURLVariables[7].split('=')[1];
         
         toMove = parseInt(board.charAt(prevIndex * 5 + 4));
@@ -41,7 +41,7 @@
         document.getElementById("p2-soldiers").innerHTML = rightSoldiers + " troops";
         offRoll = [];
         defRoll = [];
-        function roll() {
+        function roll() {[12]
             rtrn = [];
             for (i = 0; i < leftSoldiers && i < rightSoldiers; i++) {
                 rtrn[i] = (6 * Math.random() + 1) | 0;
@@ -85,13 +85,13 @@
                 state = state.substring(0, 5 * prevIndex + 4) + "0" + state.substring(5 * prevIndex + 5, state.length);
                 state = state.substring(0, 5 * nextIndex) + state.charAt(5 * prevIndex) + state.substring(5 * nextIndex + 1, state.length);
                 state = state.substring(0, 5 * prevIndex) + "0" + state.substring(5 * prevIndex + 1, state.length);
-                goTo = 'advance.html?GRS=' + sURLVariables[0].split('=')[1] + '&yellow=' + sURLVariables[1].split('=')[1] + '&red=' + sURLVariables[2].split('=')[1] + '&blue=' + sURLVariables[3].split('=')[1] + '&wood=' + sURLVariables[4].split('=')[1] + '&stone=' + sURLVariables[5].split('=')[1] + '&iron=' + sURLVariables[6].split('=')[1]+ '&board=' + state + '&space=' + sURLVariables[8].split('=')[1] + '&turn=' + sURLVariables[9].split('=')[1] + '&players=' + sURLVariables[10].split('=')[1] + '&green=' + sURLVariables[11].split('=')[1];
+                goTo = 'advance.html?GRS=' + sURLVariables[0].split('=')[1] + '&yellow=' + sURLVariables[1].split('=')[1] + '&red=' + sURLVariables[2].split('=')[1] + '&blue=' + sURLVariables[3].split('=')[1] + '&wood=' + sURLVariables[4].split('=')[1] + '&stone=' + sURLVariables[5].split('=')[1] + '&iron=' + sURLVariables[6].split('=')[1]+ '&board=' + state + '&space=' + sURLVariables[8].split('=')[1] + '&turn=' + sURLVariables[9].split('=')[1] + '&players=' + sURLVariables[10].split('=')[1] + '&green=' + sURLVariables[11].split('=')[1] + "&required=" + sURLVariables[12].split('=')[1] + "&civNum=" + sURLVariables[13].split('=')[1];
             }
             else if (nextLeft == 0) {
                 state = state.substring(0, 5 * prevIndex) + "0" + state.substring(5 * prevIndex + 1, state.length);
-                goTo = 'advance.html?GRS=' + sURLVariables[0].split('=')[1] + '&yellow=' + sURLVariables[1].split('=')[1] + '&red=' + sURLVariables[2].split('=')[1] + '&blue=' + sURLVariables[3].split('=')[1] + '&wood=' + sURLVariables[4].split('=')[1] + '&stone=' + sURLVariables[5].split('=')[1] + '&iron=' + sURLVariables[6].split('=')[1]+ '&board=' + state + '&space=' + sURLVariables[8].split('=')[1] + '&turn=' + sURLVariables[9].split('=')[1] + '&players=' + sURLVariables[10].split('=')[1] + '&green=' + sURLVariables[11].split('=')[1];
+                goTo = 'advance.html?GRS=' + sURLVariables[0].split('=')[1] + '&yellow=' + sURLVariables[1].split('=')[1] + '&red=' + sURLVariables[2].split('=')[1] + '&blue=' + sURLVariables[3].split('=')[1] + '&wood=' + sURLVariables[4].split('=')[1] + '&stone=' + sURLVariables[5].split('=')[1] + '&iron=' + sURLVariables[6].split('=')[1]+ '&board=' + state + '&space=' + sURLVariables[8].split('=')[1] + '&turn=' + sURLVariables[9].split('=')[1] + '&players=' + sURLVariables[10].split('=')[1] + '&green=' + sURLVariables[11].split('=')[1] + "&required=" + sURLVariables[12].split('=')[1] + "&civNum=" + sURLVariables[13].split('=')[1];
             } 
-            else goTo = 'combat.html?GRS=' + sURLVariables[0].split('=')[1] + '&yellow=' + sURLVariables[1].split('=')[1] + '&red=' + sURLVariables[2].split('=')[1] + '&blue=' + sURLVariables[3].split('=')[1] + '&wood=' + sURLVariables[4].split('=')[1] + '&stone=' + sURLVariables[5].split('=')[1] + '&iron=' + sURLVariables[6].split('=')[1]+ '&board=' + state + '&space=' + sURLVariables[8].split('=')[1] + '&turn=' + sURLVariables[9].split('=')[1] + '&players=' + sURLVariables[10].split('=')[1] + '&green=' + sURLVariables[11].split('=')[1]+ '&next=' + sURLVariables[12].split('=')[1];
+            else goTo = 'combat.html?GRS=' + sURLVariables[0].split('=')[1] + '&yellow=' + sURLVariables[1].split('=')[1] + '&red=' + sURLVariables[2].split('=')[1] + '&blue=' + sURLVariables[3].split('=')[1] + '&wood=' + sURLVariables[4].split('=')[1] + '&stone=' + sURLVariables[5].split('=')[1] + '&iron=' + sURLVariables[6].split('=')[1]+ '&board=' + state + '&space=' + sURLVariables[8].split('=')[1] + '&turn=' + sURLVariables[9].split('=')[1] + '&players=' + sURLVariables[10].split('=')[1] + '&green=' + sURLVariables[11].split('=')[1] + "&required=" + sURLVariables[12].split('=')[1] + "&civNum=" + sURLVariables[13].split('=')[1] + '&next=' + sURLVariables[14].split('=')[1];
             document.getElementById("continue").innerHTML = '<button onClick= window.location.replace("' + goTo + '")>Continue</button>';
         }
         function auto(){
@@ -123,7 +123,7 @@
                 if (newFrom == 0) state = state.substring(0, 5 * prevIndex) + "0" + state.substring(5 * prevIndex + 1, state.length);
             }
             alert(toDisplay);
-            window.location.href = 'advance.html?GRS=' + grs + '&yellow=' + sURLVariables[1].split('=')[1] + '&red=' + sURLVariables[2].split('=')[1] + '&blue=' + ars + '&wood=' + sURLVariables[4].split('=')[1] + '&stone=' + sURLVariables[5].split('=')[1] + '&iron=' + sURLVariables[6].split('=')[1]+ '&board=' + state + '&space=' + sURLVariables[8].split('=')[1] + '&turn=' + sURLVariables[9].split('=')[1] + '&players=' + sURLVariables[10].split('=')[1] + '&green=' + sURLVariables[11].split('=')[1];
+            window.location.href = 'advance.html?GRS=' + grs + '&yellow=' + sURLVariables[1].split('=')[1] + '&red=' + sURLVariables[2].split('=')[1] + '&blue=' + ars + '&wood=' + sURLVariables[4].split('=')[1] + '&stone=' + sURLVariables[5].split('=')[1] + '&iron=' + sURLVariables[6].split('=')[1]+ '&board=' + state + '&space=' + sURLVariables[8].split('=')[1] + '&turn=' + sURLVariables[9].split('=')[1] + '&players=' + sURLVariables[10].split('=')[1] + '&green=' + sURLVariables[11].split('=')[1] + "&required=" + sURLVariables[12].split('=')[1] + "&civNum=" + sURLVariables[13].split('=')[1];
         }
     </script>
     <footer  style = "position: fixed;

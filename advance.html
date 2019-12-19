@@ -17,7 +17,7 @@
             <option>4</option>
             <option>5</option>
         </select> Soldier(s) to pink space.
-        <button onClick = "initSoldiers(document.getElementById('init-soldiers').options[document.getElementById('init-soldiers').selectedIndex].value, (parseInt(sURLVariables[9].split('=')[1]) - 1) % 2 + 1);">Submit</button>
+        <button onClick = "initSoldiers(document.getElementById('init-soldiers').options[document.getElementById('init-soldiers').selectedIndex].value, (parseInt(sURLVariables[9].split('=')[1]) - 1) % (sURLVariables[10].split('=')[1].length / 11) + 1);">Submit</button>
         </p>
         <div id = "soldier-amount"></div>
         <p style="color: red">Don't forget to save RS for mountain advancement!</p>
@@ -66,7 +66,7 @@
         sPageURL = window.location.search.substring(1);
         var sURLVariables = sPageURL.split('&');
         turn = parseInt(sURLVariables[9].split('=')[1]) + 1;
-        player = (parseInt(sURLVariables[9].split('=')[1]) - 1) % 2 + 1;
+        player = (parseInt(sURLVariables[9].split('=')[1]) - 1) % (sURLVariables[10].split('=')[1].length / 11) + 1;
         document.getElementById("player").innerHTML = "Player " + player + " Advance (Non-Mountain)";
         document.getElementById("Generic RS").innerHTML = "Generic RS: " + sURLVariables[0].split('=')[1];
         document.getElementById("Buy RS").innerHTML = "Buy RS: " + sURLVariables[1].split('=')[1];

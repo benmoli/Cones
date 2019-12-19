@@ -7,15 +7,31 @@ else if (window.location.pathname.split("/").pop() === "advance.html"){ currentS
 else if (window.location.pathname.split("/").pop() === "advance2.html"){ currentSpace = parseInt(sURLVariables[8].split('=')[1]); turn = sURLVariables[9].split('=')[1];}
 else if (window.location.pathname.split("/").pop() === "action.html"){ currentSpace = parseInt(sURLVariables[8].split('=')[1]); turn = sURLVariables[9].split('=')[1]; }
 selected = -1;
-
-if (turn % 8 == 1) spaceIndex = 0;
-if (turn % 8 == 2) spaceIndex = 3;
-if (turn % 8 == 3) spaceIndex = 17;
-if (turn % 8 == 4) spaceIndex = 46;
-if (turn % 8 == 5) spaceIndex = 73;
-if (turn % 8 == 6) spaceIndex = 70;
-if (turn % 8 == 7) spaceIndex = 56;
-if (turn % 8 == 0) spaceIndex = 27;
+root = window.location.pathname.split("/").pop();
+if (root === "roll.html") var boardState = sURLVariables[0].split('=')[1];
+else if (root === "challenge.html") var boardState = sURLVariables[0].split('=')[1];
+else if (root === "buy.html") var boardState = sURLVariables[4].split('=')[1];
+else var boardState = sURLVariables[7].split('=')[1];
+if (boardState.length == 370) {
+    if (turn % 8 == 1) spaceIndex = 0;
+    if (turn % 8 == 2) spaceIndex = 3;
+    if (turn % 8 == 3) spaceIndex = 17;
+    if (turn % 8 == 4) spaceIndex = 46;
+    if (turn % 8 == 5) spaceIndex = 73;
+    if (turn % 8 == 6) spaceIndex = 70;
+    if (turn % 8 == 7) spaceIndex = 56;
+    if (turn % 8 == 0) spaceIndex = 27;
+}
+else {
+    if (turn % 8 == 1) spaceIndex = 0;
+    if (turn % 8 == 2) spaceIndex = 2;
+    if (turn % 8 == 3) spaceIndex = 7;
+    if (turn % 8 == 4) spaceIndex = 19;
+    if (turn % 8 == 5) spaceIndex = 27;
+    if (turn % 8 == 6) spaceIndex = 25;
+    if (turn % 8 == 7) spaceIndex = 20;
+    if (turn % 8 == 0) spaceIndex = 8;
+}
 
 myCanvas.addEventListener('click', function(e) {
     var rect = myCanvas.getBoundingClientRect();
@@ -24,39 +40,48 @@ myCanvas.addEventListener('click', function(e) {
     for (i = 0; i < spaces.length; i++) {
         if (!(spaces[i].color === "white")) {
             if (x > spaces[i].xcoordinates[0] && x < spaces[i].xcoordinates[5] && y > spaces[i].ycoordinates[0] && y < spaces[i].ycoordinates[2]) {
-                window.location.href = (window.location.pathname.split("/").pop() + '?GRS=' + sURLVariables[0].split('=')[1] + '&yellow=' + sURLVariables[1].split('=')[1] + '&red=' + sURLVariables[2].split('=')[1] + '&blue=' + sURLVariables[3].split('=')[1] + '&wood=' + sURLVariables[4].split('=')[1] + '&stone=' + sURLVariables[5].split('=')[1] + '&iron=' + sURLVariables[6].split('=')[1]+ '&board=' + sURLVariables[7].split('=')[1] + '&space=' + i + '&turn=' + sURLVariables[9].split('=')[1] + '&players=' + sURLVariables[10].split('=')[1] + '&green=' + sURLVariables[11].split('=')[1]);
+                window.location.href = (window.location.pathname.split("/").pop() + '?GRS=' + sURLVariables[0].split('=')[1] + '&yellow=' + sURLVariables[1].split('=')[1] + '&red=' + sURLVariables[2].split('=')[1] + '&blue=' + sURLVariables[3].split('=')[1] + '&wood=' + sURLVariables[4].split('=')[1] + '&stone=' + sURLVariables[5].split('=')[1] + '&iron=' + sURLVariables[6].split('=')[1]+ '&board=' + sURLVariables[7].split('=')[1] + '&space=' + i + '&turn=' + sURLVariables[9].split('=')[1] + '&players=' + sURLVariables[10].split('=')[1] + '&green=' + sURLVariables[11].split('=')[1] + "&required=" + sURLVariables[12].split('=')[1] + "&civNum=" + sURLVariables[13].split('=')[1]);
             }
         }
     }
     // alert(rect.right - rect.left + ", " + rect.top - rect.bottom);
     //alert(x + ", " + y);
 });
-var colors = [ "green", "blue", "red", "blue",
-    "blue", "red", "yellow", "green", "yellow", "blue",
-    "yellow", "green", "black", "red", "black", "red", "yellow", "red",
-    "red", "black", "blue", "yellow", "green", "blue", "green", "blue", "green",
-    "yellow", "green", "red", "white", "black", "grey", "red", "black", "yellow", "blue",
-    "blue", "yellow", "black", "red", "grey", "black", "white", "red", "green", "yellow",
-    "green", "blue", "green", "blue", "green", "yellow", "blue", "black", "red",
-        "red", "yellow", "red", "black", "red", "black", "green", "yellow",
-        "blue", "yellow", "green", "yellow", "red", "blue",
-        "blue", "red", "blue", "green"];
+if (boardState.length == 370) {
+    var colors = [ "green", "blue", "red", "blue",
+        "blue", "red", "yellow", "green", "yellow", "blue",
+        "yellow", "green", "black", "red", "black", "red", "yellow", "red",
+        "red", "black", "blue", "yellow", "green", "blue", "green", "blue", "green",
+        "yellow", "green", "red", "white", "black", "grey", "red", "black", "yellow", "blue",
+        "blue", "yellow", "black", "red", "grey", "black", "white", "red", "green", "yellow",
+        "green", "blue", "green", "blue", "green", "yellow", "blue", "black", "red",
+            "red", "yellow", "red", "black", "red", "black", "green", "yellow",
+            "blue", "yellow", "green", "yellow", "red", "blue",
+            "blue", "red", "blue", "green"];
+    big = true;
+}
+else {
+    var colors = ["green", "red", "blue",
+                "blue", "yellow", "black", "green", "red",
+                "yellow", "red", "blue", "grey", "yellow", "green",
+                "green", "yellow", "white", "blue", "red", "yellow",
+                "red", "green", "black", "yellow", "blue", "blue", "red", "green"];
+    big = false;
+}
 spaces = [];
 index = 0;
-root = window.location.pathname.split("/").pop();
-if (root === "roll.html") var boardState = sURLVariables[0].split('=')[1];
-else if (root === "challenge.html") var boardState = sURLVariables[0].split('=')[1];
-else if (root === "buy.html") var boardState = sURLVariables[4].split('=')[1];
-else var boardState = sURLVariables[7].split('=')[1];
 draw();
 if (window.location.pathname.split("/").pop() === "advance2.html") document.getElementById("moves").innerHTML = mountainMoves();
 spaces[spaceIndex].drawInit();
 function draw(){
-    for (j = 0; j < 10; j++) {
+    for (j = 0; (!big && j < 6) || (big && j < 10); j++) {
         row = 0;
-        for (i = 0; i < 11; i++) {
-            if ((i > 3 && j == 0) || (i > 5 && j == 1) || (i > 7 && j == 2) || (i > 8 && j == 3) || (i > 9 && j == 4)
-                || (i < 7 && j == 9) || (i < 5 && j == 8) || (i < 3 && j == 7) || (i < 2 && j == 6) || (i < 1 && j == 5))
+        for (i = 0; (!big && i < 7) || (big && i < 11) ; i++) {
+            if (big && ((i > 3 && j == 0) || (i > 5 && j == 1) || (i > 7 && j == 2) || (i > 8 && j == 3) || (i > 9 && j == 4)
+                || (i < 7 && j == 9) || (i < 5 && j == 8) || (i < 3 && j == 7) || (i < 2 && j == 6) || (i < 1 && j == 5)))
+                continue;
+            else if (!big && ((i > 2 && j == 0) || (i > 4 && j == 1) || (i > 5 && j == 2)
+                || (i < 4 && j == 5) || (i < 2 && j == 4) || (i < 1 && j == 3)))
                 continue;
             //if (index == 30 || index == 42) i++;
             //ctx.lineWidth = 10;
@@ -65,21 +90,24 @@ function draw(){
             building1 = setBuilding(spaceState[1]);
             building2 = setBuilding(spaceState[2]);
             building3 = setBuilding(spaceState[3]);
+
             soldiers = spaceState[4];
             if (player == '-' || spaceState[1] == '-' || spaceState[2] == '-' || spaceState[3] == '-' || soldiers == '-') {
                 alert("Error in loading board");
                 window.history.back();
             }
             height = 0;
-            if (index == 20 || index == 23 || index == 50 || index == 53) height = 1;
-            else if (index == 21 || index == 22 || index == 51 || index == 52) height = 2;
-            else if (index == 31 || index == 42) height = 3;
-            else if (index == 33 || index == 40) height = 4;
-            else if (index == 32 || index == 41) height = 5;
-            // else {
-            //     index++;
-            //     continue;
-            // }
+            if (big) {
+                if (index == 20 || index == 23 || index == 50 || index == 53) height = 1;
+                else if (index == 21 || index == 22 || index == 51 || index == 52) height = 2;
+                else if (index == 31 || index == 42) height = 3;
+                else if (index == 33 || index == 40) height = 4;
+                else if (index == 32 || index == 41) height = 5;
+            }
+            else {
+                if (index == 10 || index == 17) height = 1;
+                else if (index == 11 || index == 16) height = 2;
+            }
             spaces[index] = new Space(index, i, j, height, colors[index], player, building1, building2, building3, soldiers);
             index++;
             row++;
@@ -88,9 +116,9 @@ function draw(){
 }
 if (currentSpace != -1) select(currentSpace);
 function select(i) {
-    if (spaces[i].player != (parseInt(sURLVariables[9].split('=')[1]) -  1) % 2 + 1) return;
+    if (spaces[i].player != (parseInt(sURLVariables[9].split('=')[1]) -  1) % (sURLVariables[10].split('=')[1].length / 11) + 1) {return;}
     if (window.location.pathname.split("/").pop() === "build.html") {
-        if (selected == -1 && spaces[i].player == (parseInt(sURLVariables[9].split('=')[1]) -  1) % 2 + 1) {
+        if (selected == -1 && spaces[i].player == (parseInt(sURLVariables[9].split('=')[1]) -  1) % (sURLVariables[10].split('=')[1].length / 11) + 1) {
             spaces[i].select();
             selected = i;
             spaces[i].buildMenu();                
@@ -143,7 +171,7 @@ function select(i) {
                                 prev = array[0]; next = array[1]; moved = array[2];
                                 state = sURLVariables[7].split('=')[1].substring(0, 5 * asdf + 4) + next + sURLVariables[7].split('=')[1].substring(5 * asdf + 5, sURLVariables[7].split('=')[1].length);
                                 state = state.substring(0, 5 * i + 4) + prev + state.substring(5 * i + 5, state.length);
-                                playerNum = (parseInt(sURLVariables[9].split('=')[1]) -  1) % 2 + 1;
+                                playerNum = (parseInt(sURLVariables[9].split('=')[1]) -  1) % (sURLVariables[10].split('=')[1].length / 11) + 1;
                                 state = state.substring(0, 5 * asdf) + playerNum + state.substring(5 * asdf + 1, state.length);
                                 if (state.charAt(5 * i + 4) === "0") state = state.substring(0, 5 * i) + "0" + state.substring(5 * i + 1, state.length);
                                 advRS = parseInt(sURLVariables[3].split('=')[1]);
@@ -160,7 +188,7 @@ function select(i) {
                                 goTo = 'advance.html?GRS=' + GRS + '&yellow=' + sURLVariables[1].split('=')[1] + '&red=' + sURLVariables[2].split('=')[1] + '&blue=' + advRS + 
                                 '&wood=' + sURLVariables[4].split('=')[1] + '&stone=' + sURLVariables[5].split('=')[1] + '&iron=' + sURLVariables[6].split('=')[1]+ 
                                 '&board=' + state + '&space=' + asdf + '&turn=' + sURLVariables[9].split('=')[1] + '&players=' + sURLVariables[10].split('=')[1] +
-                                '&green=' + sURLVariables[11].split('=')[1];
+                                '&green=' + sURLVariables[11].split('=')[1] + "&required=" + sURLVariables[12].split('=')[1] + "&civNum=" + sURLVariables[13].split('=')[1];
                                 window.location.href = (goTo);
                             } 
                         }
@@ -212,14 +240,19 @@ function initSoldiers(num, p) {
         grs = grs - num + ars;
     }
     initNum = parseInt(num) + parseInt(spaces[spaceIndex].soldiers);
-    playerNum = (parseInt(sURLVariables[9].split('=')[1]) -  1) % 2 + 1;
+    playerNum = (parseInt(sURLVariables[9].split('=')[1]) -  1) % (sURLVariables[10].split('=')[1].length / 11) + 1;
     soldierNum = parseInt(sURLVariables[10].split('=')[1].substring(11 * (playerNum - 1) + 3, 11 * (playerNum - 1) + 6));
+    if (soldierNum - num < 0) {
+        alert("Not enough soldiers");
+        return;
+    }
     soldierNum -= num;
     soldierString = "";
     if (soldierNum < 100) soldierString += "0"
     if (soldierNum < 10) soldierString += "0";
     soldierString += soldierNum;
     if (spaces[spaceIndex].player != p && spaces[spaceIndex].player != 0) {
+        alert(p);
         var state = sURLVariables[7].split('=')[1];
         left = num;
         right = spaces[spaceIndex].soldiers;
@@ -239,20 +272,20 @@ function initSoldiers(num, p) {
             state = state.substring(0, 5 * spaceIndex) + p + state.substring(5 * spaceIndex + 1, state.length);
         }
         alert(toDisplay);
-        window.location.href = ('advance.html?GRS=' + grs + '&yellow=' + sURLVariables[1].split('=')[1] + '&red=' + sURLVariables[2].split('=')[1] + '&blue=' + ars + '&wood=' + sURLVariables[4].split('=')[1] + '&stone=' + sURLVariables[5].split('=')[1] + '&iron=' + sURLVariables[6].split('=')[1]+ '&board=' + state + '&space=' + spaceIndex + '&turn=' + sURLVariables[9].split('=')[1] + '&players=' + sURLVariables[10].split('=')[1].substring(0, 11 * (playerNum - 1) + 3) + soldierString + sURLVariables[10].split('=')[1].substring(11 * (playerNum - 1) + 6,  sURLVariables[10].split('=')[1].length) + '&green=' + sURLVariables[11].split('=')[1]);
+        window.location.href = ('advance.html?GRS=' + grs + '&yellow=' + sURLVariables[1].split('=')[1] + '&red=' + sURLVariables[2].split('=')[1] + '&blue=' + ars + '&wood=' + sURLVariables[4].split('=')[1] + '&stone=' + sURLVariables[5].split('=')[1] + '&iron=' + sURLVariables[6].split('=')[1]+ '&board=' + state + '&space=' + spaceIndex + '&turn=' + sURLVariables[9].split('=')[1] + '&players=' + sURLVariables[10].split('=')[1].substring(0, 11 * (playerNum - 1) + 3) + soldierString + sURLVariables[10].split('=')[1].substring(11 * (playerNum - 1) + 6,  sURLVariables[10].split('=')[1].length) + '&green=' + sURLVariables[11].split('=')[1] + "&required=" + sURLVariables[12].split('=')[1] + "&civNum=" + sURLVariables[13].split('=')[1]);
         return;
     }
     if (num > 5 - spaces[spaceIndex].soldiers){
         alert("Too many soldiers on start space");
         return;
-    }                
-    window.location.href = ('advance.html?GRS=' + grs + '&yellow=' + sURLVariables[1].split('=')[1] + '&red=' + sURLVariables[2].split('=')[1] + '&blue=' + ars + '&wood=' + sURLVariables[4].split('=')[1] + '&stone=' + sURLVariables[5].split('=')[1] + '&iron=' + sURLVariables[6].split('=')[1]+ '&board=' + sURLVariables[7].split('=')[1].substring(0, 5 * spaceIndex) + playerNum + sURLVariables[7].split('=')[1].substring(5 * spaceIndex + 1, 5 * spaceIndex + 4) + initNum + sURLVariables[7].split('=')[1].substring(5 * spaceIndex + 5, sURLVariables[7].split('=')[1].length) + '&space=' + spaceIndex + '&turn=' + sURLVariables[9].split('=')[1] + '&players=' + sURLVariables[10].split('=')[1].substring(0, 11 * (playerNum - 1) + 3) + soldierString + sURLVariables[10].split('=')[1].substring(11 * (playerNum - 1) + 6,  sURLVariables[10].split('=')[1].length) + '&green=' + sURLVariables[11].split('=')[1]);
+    }
+    window.location.href = ('advance.html?GRS=' + grs + '&yellow=' + sURLVariables[1].split('=')[1] + '&red=' + sURLVariables[2].split('=')[1] + '&blue=' + ars + '&wood=' + sURLVariables[4].split('=')[1] + '&stone=' + sURLVariables[5].split('=')[1] + '&iron=' + sURLVariables[6].split('=')[1]+ '&board=' + sURLVariables[7].split('=')[1].substring(0, 5 * spaceIndex) + playerNum + sURLVariables[7].split('=')[1].substring(5 * spaceIndex + 1, 5 * spaceIndex + 4) + initNum + sURLVariables[7].split('=')[1].substring(5 * spaceIndex + 5, sURLVariables[7].split('=')[1].length) + '&space=' + spaceIndex + '&turn=' + sURLVariables[9].split('=')[1] + '&players=' + sURLVariables[10].split('=')[1].substring(0, 11 * (playerNum - 1) + 3) + soldierString + sURLVariables[10].split('=')[1].substring(11 * (playerNum - 1) + 6,  sURLVariables[10].split('=')[1].length) + '&green=' + sURLVariables[11].split('=')[1] + "&required=" + sURLVariables[12].split('=')[1] + "&civNum=" + sURLVariables[13].split('=')[1]);
 }
 function mountainMoves() {
     rtrn = "";
-    playerNum = (parseInt(sURLVariables[9].split('=')[1]) -  1) % 2 + 1;
-    for (j = 11; j < 63; j++) {
-        for (k = 11; k < 63; k++) {
+    playerNum = (parseInt(sURLVariables[9].split('=')[1]) -  1) % (sURLVariables[10].split('=')[1].length / 11) + 1;
+    for (j = 0; j < spaces.length; j++) {
+        for (k = 0; k < spaces.length; k++) {
             if ((spaces[j].height > 0 || spaces[k].height > 0) && playerNum == parseInt(spaces[k].player)) {
                 if (j == k) continue;
                 if (spaces[k].height <= spaces[j].height + 1 && spaces[k].height >= spaces[j].height - 1 
@@ -261,7 +294,11 @@ function mountainMoves() {
                     && !(spaces[k].j < spaces[j].j && spaces[k].i > spaces[j].i)
                     && !(spaces[k].j > spaces[j].j && spaces[k].i < spaces[j].i)
                     && spaces[j].color !== "white") {
-                    rtrn += '<div></div><p>Move <select id = "move' + spaces[k].index + 'to' + spaces[j].index + '" value = >';
+                    addCharFrom = "";
+                    addCharTo = "";
+                    if (k < 10) addCharFrom += "0";
+                    if (j < 10) addCharTo += "0";
+                    rtrn += '<div></div><p>Move <select id = "move' + addCharFrom + spaces[k].index + 'to' + addCharTo + spaces[j].index + '" value = >';
                     for (l = 0; l <= spaces[k].soldiers; l++) {
                         rtrn += '<option value = "' + l + '">' + l + '</option>';
                     }
@@ -280,7 +317,7 @@ function checkForCones(player) {
     lavaWorm = 0;
     minotaur = 0;
     kraken = 0;
-    if (sURLVariables[10].split('=')[1].charAt(11 * ((parseInt(sURLVariables[9].split('=')[1]) -  1) % 2) + 10) == '1') {
+    if (sURLVariables[10].split('=')[1].charAt(11 * ((parseInt(sURLVariables[9].split('=')[1]) -  1) % (sURLVariables[10].split('=')[1].length / 11)) + 10) == '1' || sURLVariables[13].split('=')[1] === "false") {
         for (j = 0; j < spaces.length; j++){
             if (player == spaces[j].player) {
                 if (spaces[j].color === "green") {   
@@ -350,13 +387,13 @@ function checkForCones(player) {
             }
         }
     }
-    if (dragon >= 6) rtrn[0] = true;
+    if (dragon >= parseInt(sURLVariables[13].split('=')[1])) rtrn[0] = true;
     // else (alert("dragon: " + dragon));
-    if (lavaWorm >= 6) rtrn[1] = true;
+    if (lavaWorm >= parseInt(sURLVariables[13].split('=')[1])) rtrn[1] = true;
     // else (alert("lavaWorm: " + lavaWorm));
-    if (minotaur >= 6) rtrn[2] = true;
+    if (minotaur >= parseInt(sURLVariables[13].split('=')[1])) rtrn[2] = true;
     // else (alert("minotaur: " + minotaur));
-    if (kraken >= 6) rtrn[3] = true;
+    if (kraken >= parseInt(sURLVariables[13].split('=')[1])) rtrn[3] = true;
     // else (alert("kraken: " + kraken));
     return rtrn;
 }
@@ -381,44 +418,24 @@ function checkMountain(p) {
     // alert(p);
     // if (spaces[32].player == p) alert("1");
     // if (spaces[41].player == p) alert("2");
-    if (spaces[32].player == p || spaces[41].player == p) return true;
+    if (spaces[11].player == p || spaces[16].player == p) return true;
     else return false;
 }
 
-function largestCiv(p) {
+function randomCiv(p) {
     view = [];
+    length = 0;
     for (d = 0; d < spaces.length; d++) {
-        if (spaces[d].player != 0 && spaces[d].player != p && spaces[d].height == 0) {
-            civ = 0;
-            if (spaces[d].building1 === "barracks") civ++;
-            if (spaces[d].building1 === "farm") civ += 2;
-            if (spaces[d].building1 === "fort") civ += 3;
-            if (spaces[d].building2 === "barracks") civ++;
-            if (spaces[d].building2 === "farm") civ += 2;
-            if (spaces[d].building2 === "fort") civ += 3;
-            if (spaces[d].building3 === "barracks") civ++;
-            if (spaces[d].building3 === "farm") civ += 2;
-            if (spaces[d].building3 === "fort") civ += 3;
-            view[d] = civ;
-        }
-        else view[d] = -1;
+        if (spaces[d].player != 0 && spaces[d].player != p && spaces[d].height == 0){
+            view[length] = d;
+            length++;
+        } 
     }
-    largest = [];
-    max = -1;
-    for (h = 0; h < view.length; h++) {
-        if (view[h] > max) {
-            largest = [];
-            max = view[h];
-        }
-        if (view[h] == max) {
-            largest[largest.length] = h;
-        }
-    }
-    if (largest.length == 0) {
+    if (length == 0) {
         alert("No player has soldiers or civilizations on board");
         return -1;
     }
     else {
-        return largest[(largest.length * Math.random()) | 0];
+        return view[(Math.random() * length) | 0];
     }
 }

@@ -11,7 +11,7 @@
         <p>Select an ability based on the cones you currently have</p>
         </br>
         <p>Green: Rare cards more likely</p>
-        <p>Red: build cost decreases by 5 RS</p>
+        <p>Red: Build cost decreases by 5 RS per building</p>
         <p>Yellow: 3 Agriculture tokens (3 free random resources)</p>
         <p>Blue: Offense dice increase by 1</p>
         </br>
@@ -64,7 +64,7 @@
     <script type="text/javascript" src='space.js'> </script>
     <script type="text/javascript" src='board.js'> </script>
     <script>
-        player = (parseInt(sURLVariables[2].split('=')[1]) - 1) % 2 + 1;
+        player = (parseInt(sURLVariables[2].split('=')[1]) - 1) % (sURLVariables[3].split('=')[1].length / 11) + 1;
         document.getElementById("player").innerHTML = "Player " + player + " Challenge Play";
         document.getElementById("Wood").innerHTML = "Wood: " + sURLVariables[3].split('=')[1].charAt(11 * (player - 1));
         document.getElementById("Stone").innerHTML = "Stone: " + sURLVariables[3].split('=')[1].charAt(11 * (player - 1) + 1);
@@ -72,23 +72,23 @@
         document.getElementById("Soldiers").innerHTML = sURLVariables[3].split('=')[1].substring(11 * (player - 1) + 3, 11 * (player - 1) + 6) + " soldiers";
         document.getElementById("cones").innerHTML = coneDivs(2);
         colorDiv = "";
-        if (sURLVariables[3].split('=')[1].charAt( 11 * ((player -  1) % 2) + 6) != '0')
+        if (sURLVariables[3].split('=')[1].charAt( 11 * ((player -  1) % (sURLVariables[3].split('=')[1].length / 11)) + 6) != '0')
         colorDiv += '<option value = "green">Green</option>';
-        if (sURLVariables[3].split('=')[1].charAt( 11 * ((player -  1) % 2) + 7) != '0')
+        if (sURLVariables[3].split('=')[1].charAt( 11 * ((player -  1) % (sURLVariables[3].split('=')[1].length / 11)) + 7) != '0')
         colorDiv += '<option value = "red">Red</option>';
-        if (sURLVariables[3].split('=')[1].charAt( 11 * ((player -  1) % 2) + 8) != '0')
+        if (sURLVariables[3].split('=')[1].charAt( 11 * ((player -  1) % (sURLVariables[3].split('=')[1].length / 11)) + 8) != '0')
         colorDiv += '<option value = "yellow">Yellow</option>';
-        if (sURLVariables[3].split('=')[1].charAt( 11 * ((player -  1) % 2) + 9) != '0')
+        if (sURLVariables[3].split('=')[1].charAt( 11 * ((player -  1) % (sURLVariables[3].split('=')[1].length / 11)) + 9) != '0')
         colorDiv += '<option value = "blue">Blue</option>';
         document.getElementById("colors").innerHTML = colorDiv;
         function submit() {
             players = sURLVariables[3].split('=')[1];
             color = document.getElementById("colors").options[document.getElementById("colors").selectedIndex].value;
-            if (color === "green") players = players.substring(0, 11 * ((parseInt(sURLVariables[2].split('=')[1]) -  1) % 2) + 6) + "2" + players.substring(11 * ((parseInt(sURLVariables[2].split('=')[1]) -  1) % 2) + 7, players.length);
-            if (color === "red") players = players.substring(0, 11 * ((parseInt(sURLVariables[2].split('=')[1]) -  1) % 2) + 7) + "2" + players.substring(11 * ((parseInt(sURLVariables[2].split('=')[1]) -  1) % 2) + 8, players.length);
-            if (color === "yellow") players = players.substring(0, 11 * ((parseInt(sURLVariables[2].split('=')[1]) -  1) % 2) + 8) + "2" + players.substring(11 * ((parseInt(sURLVariables[2].split('=')[1]) -  1) % 2) + 9, players.length);
-            if (color === "blue") players = players.substring(0, 11 * ((parseInt(sURLVariables[2].split('=')[1]) -  1) % 2) + 9) + "2" + players.substring(11 * ((parseInt(sURLVariables[2].split('=')[1]) -  1) % 2) + 10, players.length);
-            window.location.href = 'roll.html?board=' + sURLVariables[0].split('=')[1] + '&space=-1&turn=' + sURLVariables[2].split('=')[1] + '&players=' + players;
+            if (color === "green") players = players.substring(0, 11 * ((parseInt(sURLVariables[2].split('=')[1]) -  1) % (sURLVariables[3].split('=')[1].length / 11)) + 6) + "2" + players.substring(11 * ((parseInt(sURLVariables[2].split('=')[1]) -  1) % (sURLVariables[3].split('=')[1].length / 11)) + 7, players.length);
+            if (color === "red") players = players.substring(0, 11 * ((parseInt(sURLVariables[2].split('=')[1]) -  1) % (sURLVariables[3].split('=')[1].length / 11)) + 7) + "2" + players.substring(11 * ((parseInt(sURLVariables[2].split('=')[1]) -  1) % (sURLVariables[3].split('=')[1].length / 11)) + 8, players.length);
+            if (color === "yellow") players = players.substring(0, 11 * ((parseInt(sURLVariables[2].split('=')[1]) -  1) % (sURLVariables[3].split('=')[1].length / 11)) + 8) + "2" + players.substring(11 * ((parseInt(sURLVariables[2].split('=')[1]) -  1) % (sURLVariables[3].split('=')[1].length / 11)) + 9, players.length);
+            if (color === "blue") players = players.substring(0, 11 * ((parseInt(sURLVariables[2].split('=')[1]) -  1) % (sURLVariables[3].split('=')[1].length / 11)) + 9) + "2" + players.substring(11 * ((parseInt(sURLVariables[2].split('=')[1]) -  1) % (sURLVariables[3].split('=')[1].length / 11)) + 10, players.length);
+            window.location.href = 'roll.html?board=' + sURLVariables[0].split('=')[1] + '&space=-1&turn=' + sURLVariables[2].split('=')[1] + '&players=' + players + "&required=" + sURLVariables[4].split('=')[1] + "&civNum=" + sURLVariables[5].split('=')[1];
         }
     </script>
 </body>

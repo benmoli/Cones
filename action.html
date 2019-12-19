@@ -65,7 +65,7 @@
         var buy = sURLVariables[1].split('=')[1];
         var build = sURLVariables[2].split('=')[1];
         var advance = sURLVariables[3].split('=')[1];
-        player = (parseInt(sURLVariables[9].split('=')[1]) -  1) % 2 + 1;
+        player = (parseInt(sURLVariables[9].split('=')[1]) -  1) % (sURLVariables[10].split('=')[1].length / 11) + 1;
         document.getElementById("player").innerHTML = "Player " + player + " Action";
         document.getElementById("Generic RS").innerHTML = "Generic RS: " + sURLVariables[0].split('=')[1];
         document.getElementById("Buy RS").innerHTML = "Buy RS: " + sURLVariables[1].split('=')[1];

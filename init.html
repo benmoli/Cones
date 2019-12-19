@@ -1,0 +1,97 @@
+<head>
+    <link rel="stylesheet" href="styles.css">
+    <title>Cones of Dunshire</title>
+    <meta charset="utf-8" />
+    <script type="text/javascript" src='cones.js'> </script>
+</head>
+<body style = "zoom: 125%">
+    <script>
+        playerNum = 1;
+        size = "";
+        civNum = 0;
+        required = false;
+        function boardSize(num){
+            playerNum = num;
+            document.getElementById("board size").innerHTML = 
+            "<h2>Board Size</h2><p>Small board not recommended for 8 players</p><img src = 'smallBoard.png' width = '100px'><img src = 'bigBoard.png' width = '100px'></img></br>&nbsp;<button onClick = 'civs(`small`);'>Small</button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<button onClick = 'civs(`original`);'>Original</button>"
+        }
+        function civs(param) {
+            size = param;
+            idk = 16;
+            if (size === "small") idk /= 2;
+            start = idk / (playerNum * 2);
+            if (start < 2) start = 2
+            setCivs = "<h2>Civilizations</h2><p>Civilizations required per cone</p><select id = 'civ-select'>";
+            for (i = start; i == 2 || (i <= idk / playerNum && i <= 8); i++) setCivs += "<option>" + i + "</option>";
+            setCivs += "</select><button onClick = 'decision();''>Submit</button>";
+            document.getElementById("civilizations").innerHTML = setCivs;
+        }
+        function decision(){
+            civNum = document.getElementById('civ-select').options[document.getElementById('civ-select').selectedIndex].value;
+            document.getElementById("decision").innerHTML =
+            "<h2>Cone of Decision</h2><input type = 'radio' name = 'decision' value = 'required' checked>Required to get other cones.</br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Recommended for 2 players.<br><input type = 'radio' name = 'decision' value = 'double'>Doubles RS.</br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Recommended for 4 - 8 players.<br></br><button onClick = 'if (document.getElementsByName(`decision`)[0].checked) required = true; characters();'>Submit</button>"
+        }
+        function characters() {
+            document.getElementById("characters").innerHTML = "<h2>Characters</h2><p>Type player numbers in text boxes. Can also choose to not play as a specific character. Please note there can only be one Arbitor.<p></br>"
+                + "<b>Wizard </b>Possesses green cone</p><input id = 'wizard' type = 'text'/>"
+                + "<p><b>Maverick </b>Possesses yellow cone and starts with 3 of each resource</p><input id = 'maverick' type = 'text'/>"
+                + "<p><b>The Arbitor </b>Possesses cone of decision</p><input id = 'arbitor' type = 'text'/>"
+                + "<p><b>Corporal </b>Possesses blue cone starts with twice as many troops</p><input id = 'corporal' type = 'text'/>"
+                + "<p><b>Warrior </b>Possesses red cone and starts with half as many troops</p><input id = 'warrior' type = 'text'/>"
+                + "</br></br><button onClick = 'submit()'>Start Game!</button>";
+        }
+        function submit() {
+            var characterArray = Array(8).fill("");
+            function parsePlayers(characterName) {
+                strng = document.getElementById(characterName).value;
+                for (l = 0; l < strng.length; l++) {
+                    if (!isNaN(strng.charAt(l) + "")) {
+                        characterArray[parseInt(strng.charAt(l)) - 1] = characterName;
+                    }
+                }
+            }
+
+            parsePlayers("wizard");
+            parsePlayers("maverick");
+            parsePlayers("arbitor");
+            parsePlayers("corporal");
+            parsePlayers("warrior");
+            soldiers = 160 / playerNum;
+            if (size === "small") {
+                soldiers /= 2;
+                board = "00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000";
+            }
+            else board = "0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000";
+            players = "";
+            root = "roll";
+            if (characterArray[0] === "wizard" || characterArray[0] === "maverick" || characterArray[0] === "arbitor" ||characterArray[0] === "corporal") root = "challenge";
+            for (j = 0; j < playerNum; j++) {
+                if (characterArray[j] === "wizard"){players += "0000" + soldiers + "10000"; alert(j);} 
+                else if (characterArray[j] === "maverick") players += "3330" + soldiers + "00100";
+                else if (characterArray[j] === "arbitor") players += "0000" + soldiers + "00001";
+                else if (characterArray[j] === "corporal") {
+                    if (soldiers * 2 > 100) players += "000" + soldiers * 2 + "00010";
+                    else players += "0000" + soldiers * 2 + "00010";
+                }
+                else if (characterArray[j] === "warrior") players += "0000" + soldiers / 2 + "01000";
+                else players += "0000" + soldiers + "00000"
+            } 
+            window.location.href = root + ".html?board=" + board + "&space=-1&turn=1&players=" + players + "&required=" + required + "&civNum=" + civNum;
+        }
+    </script>
+    <h1>Game Settings</h1>
+    <div class="row">
+        <div class="column">
+            <h2>Players</h2>
+            <button onClick = "boardSize(2);">2</button>
+            <button onClick = "boardSize(4);">4</button>
+            <button onClick = "boardSize(8);">8</button>
+            <div id = "board size"></div>
+            <div id = "civilizations"></div>
+            <div id = "decision"></div>
+        </div>
+        <div class="column">
+            <div id = "characters"></div>
+        </div>
+    </div>
+</body>

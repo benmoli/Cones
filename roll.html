@@ -8,6 +8,7 @@
 <body>
     <div class = "split left" style = "width: 400px; margin-left: 10px">
         <h1 id = "player"></h1>
+        <div id = "double"></div>
         <button onClick = "preroll()">PreRoll</button>
         <p id = "preroll title"></p>
         <p id = "preroll roll"></p>
@@ -67,12 +68,12 @@
     <script type="text/javascript" src='space.js'> </script>
     <script type="text/javascript" src='board.js'> </script>
     <script>
-        player = (parseInt(sURLVariables[2].split('=')[1]) - 1) % 2 + 1;
+        player = (parseInt(sURLVariables[2].split('=')[1]) - 1) % (sURLVariables[3].split('=')[1].length / 11) + 1;
         document.getElementById("player").innerHTML = "Player " + player + " Roll";
         wood = parseInt(sURLVariables[3].split('=')[1].charAt(11 * (player - 1)));
         stone = parseInt(sURLVariables[3].split('=')[1].charAt(11 * (player - 1) + 1));
         iron = parseInt(sURLVariables[3].split('=')[1].charAt(11 * (player - 1) + 2));
-        if (sURLVariables[3].split('=')[1].charAt(8) == '2' && !(wood == 9 && stone == 9 && iron == 9)){
+        if (sURLVariables[3].split('=')[1].charAt(11 * (player - 1) + 8) == '2' && !(wood == 9 && stone == 9 && iron == 9)){
             for (i = 0; i < 3; i++) {
                 rando = Math.random() * 3;
                 if (rando > 2) {
@@ -100,5 +101,6 @@
         document.getElementById("Iron").innerHTML = "Iron: " + iron;
         document.getElementById("Soldiers").innerHTML = sURLVariables[3].split('=')[1].substring(11 * (player - 1) + 3, 11 * (player - 1) + 6) + " soldiers";
         document.getElementById("cones").innerHTML = coneDivs(2);
+        if (sURLVariables[4].split('=')[1] === "true" && sURLVariables[3].split('=')[1].charAt(11 * player - 1) == '1') document.getElementById("double").innerHTML = "<p style = 'color: red'>RS shown is doubled!</p>";
     </script>
 </body>

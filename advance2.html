@@ -53,7 +53,7 @@
         sPageURL = window.location.search.substring(1);
         var sURLVariables = sPageURL.split('&');
         turn = parseInt(sURLVariables[9].split('=')[1]) + 1;
-        player = (parseInt(sURLVariables[9].split('=')[1]) - 1) % 2 + 1;
+        player = (parseInt(sURLVariables[9].split('=')[1]) - 1) % (sURLVariables[10].split('=')[1].length / 11) + 1;
         if (sURLVariables[10].split('=')[1].charAt( 11 * (player - 1) + 9) == '2') challenge = true;
         else challenge = false;
         document.getElementById("player").innerHTML = "Player " + player + " Mountain Advance";
@@ -72,8 +72,12 @@
     <script type="text/javascript" src='space.js'> </script>
     <script type="text/javascript" src='board.js'> </script>
     <script>
-        totalSoldierNum = soldiersOnBoard((parseInt(sURLVariables[9].split('=')[1]) - 1) % 2 + 1) + soldierNum;
-        document.getElementById("Soldiers Total").innerHTML = totalSoldierNum + "/80 soldiers total";
+        var state = sURLVariables[7].split('=')[1];
+        players = sURLVariables[10].split('=')[1];
+        max = 160 / (players.length / 11);
+        if (state.length < 150) max /= 2;
+        totalSoldierNum = soldiersOnBoard((parseInt(sURLVariables[9].split('=')[1]) - 1) % (sURLVariables[10].split('=')[1].length / 11) + 1) + soldierNum;
+        document.getElementById("Soldiers Total").innerHTML = totalSoldierNum + "/" + max + " soldiers total";
         function check(toCheck) {return toCheck;}
         function doMountainMoves() {
             grs = parseInt(sURLVariables[0].split('=')[1]);
@@ -147,29 +151,32 @@
             }
             //alert(count);
             turn = parseInt(sURLVariables[9].split('=')[1]) + 1;
-            if (totalSoldierNum > 77) soldierNum += 80 - totalSoldierNum;
+            players = sURLVariables[10].split('=')[1];
+            max = 160 / (players.length / 11);
+            if (state.length < 150) max /= 2;
+            if (totalSoldierNum > max - 4) soldierNum += max - totalSoldierNum;
             else soldierNum += 4;
             soldierString = "";
             if (soldierNum < 100) soldierString += "0";
             if (soldierNum < 10) soldierString += "0";
             soldierString += soldierNum;
-            players = sURLVariables[10].split('=')[1].substring(0, 11 * ((parseInt(sURLVariables[9].split('=')[1]) -  1) % 2)) 
+            player = (parseInt(sURLVariables[9].split('=')[1]) - 1) % (sURLVariables[10].split('=')[1].length / 11) + 1;
+            players = sURLVariables[10].split('=')[1].substring(0, 11 * (player - 1)) 
             + sURLVariables[4].split('=')[1] 
             + sURLVariables[5].split('=')[1]
             + sURLVariables[6].split('=')[1]
             + soldierString
-            + sURLVariables[10].split('=')[1].substring(11 * ((parseInt(sURLVariables[9].split('=')[1]) -  1) % 2) + 6, sURLVariables[10].split('=')[1].length);
+            + sURLVariables[10].split('=')[1].substring(11 * (player - 1) + 6, sURLVariables[10].split('=')[1].length);
             goToChallenge = false;
             for (x = 6; x < 10; x++) {
-                if (players.charAt(11 * (parseInt(sURLVariables[2].split('=')[1]) % 2) + x) == '2'){
-                    players = players.substring(0, 11 * (parseInt(sURLVariables[2].split('=')[1]) % 2) + x) + "1" + players.substring(11 * (parseInt(sURLVariables[2].split('=')[1]) % 2) + x + 1, players.length);
-                    goToChallenge = true;
+                if (players.charAt(11 * (player - 1) + x) == '2'){
+                    players = players.substring(0, 11 * (player - 1) + x) + "1" + players.substring(11 * (player - 1) + x + 1, players.length);
                 } 
-                else if (players.charAt(11 * (parseInt(sURLVariables[2].split('=')[1]) % 2) + x) == '1') goToChallenge = true;
+                else if (players.charAt(11 * (player % (sURLVariables[10].split('=')[1].length / 11)) + x) == '1') goToChallenge = true;
             }
             if (goToChallenge) page = "challenge";
             else page = "roll";
-            window.location.href = page + '.html?board=' + state + '&space=-1&turn=' + turn + '&players=' + players;
+            window.location.href = page + '.html?board=' + state + '&space=-1&turn=' + turn + '&players=' + players + "&required=" + sURLVariables[12].split('=')[1] + "&civNum=" + sURLVariables[13].split('=')[1];
         }    
     </script>
 </body>

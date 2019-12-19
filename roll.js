@@ -56,15 +56,23 @@ function specialDiceRoll(genericRS) {
     document.getElementById("blue").innerHTML = blue + " blue = " + 5 * blue + " Advance RS";
     document.getElementById("green").innerHTML = green + " green = " + 5 * green + " Action RS";
     GRS = genericRS;
-    player = (parseInt(sURLVariables[2].split('=')[1]) - 1) % 2 + 1;
+    player = (parseInt(sURLVariables[2].split('=')[1]) - 1) % (sURLVariables[3].split('=')[1].length / 11) + 1;
     players = sURLVariables[3].split('=')[1];
     if (checkMountain(player)) {
-        if (player == 1) otherPlayer = 2;
-        else otherPlayer = 1;
-        if (!checkMountain(otherPlayer)) players = players.substring(0, 11 * ((parseInt(sURLVariables[2].split('=')[1]) -  1) % 2) + 10) + "1" + players.substring(11 * ((parseInt(sURLVariables[2].split('=')[1]) -  1) % 2) + 11, players.length);
-        players = players.substring(0, 11 * ((parseInt(sURLVariables[2].split('=')[1])) % 2) + 10) + "0" + players.substring(11 * ((parseInt(sURLVariables[2].split('=')[1])) % 2) + 11, players.length);
-        //CHANGE THIS FOR MORE THAN 2 PLAYERS
+        for (d = 0; d < players.length / 11; d++) {
+            if (player == d - 1) insert = '1';
+            else insert = '0';
+            players = players.substring(0, 11 * d + 10) + insert + players.substring(11 * d + 11, players.length);
+        }
     }
-    document.getElementById("continue").innerHTML = '<a href = "buy.html?GRS=' + GRS + '&yellow=' + 5 * yellow + '&red=' + 5 * red + '&blue=' + 5 * blue + '&board=' + sURLVariables[0].split('=')[1] + '&space=-1&turn=' + sURLVariables[2].split('=')[1] + '&players=' + players + '&green=' + 5 * green + '">Continue</a>';
+    players = players.substring(0, 11 * (player - 1)) + wood + stone + iron + players.substring(11 * (player - 1) + 3, players.length);
+    if (sURLVariables[4].split('=')[1] === "true" && sURLVariables[3].split('=')[1].charAt(11 * player - 1) == '1') {
+        GRS *= 2;
+        yellow *= 2;
+        red *= 2;
+        blue *= 2;
+        green *= 2;
+    }
+    document.getElementById("continue").innerHTML = '<a href = "buy.html?GRS=' + GRS + '&yellow=' + 5 * yellow + '&red=' + 5 * red + '&blue=' + 5 * blue + '&board=' + sURLVariables[0].split('=')[1] + '&space=-1&turn=' + sURLVariables[2].split('=')[1] + '&players=' + players + '&green=' + 5 * green + "&required=" + sURLVariables[4].split('=')[1] + "&civNum=" + sURLVariables[5].split('=')[1] + '">Continue</a>';
     play("brrrap.wav");
 }
