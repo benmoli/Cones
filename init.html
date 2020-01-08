@@ -66,15 +66,16 @@
             root = "roll";
             if (characterArray[0] === "wizard" || characterArray[0] === "maverick" || characterArray[0] === "arbitor" ||characterArray[0] === "corporal") root = "challenge";
             for (j = 0; j < playerNum; j++) {
-                if (characterArray[j] === "wizard"){players += "0000" + soldiers + "10000"; alert(j);} 
-                else if (characterArray[j] === "maverick") players += "3330" + soldiers + "00100";
-                else if (characterArray[j] === "arbitor") players += "0000" + soldiers + "00001";
+                if (soldiers < 100) players += "0";
+                if (characterArray[j] === "wizard"){players += "000" + soldiers + "10000"; alert(j);} 
+                else if (characterArray[j] === "maverick") players += "333" + soldiers + "00100";
+                else if (characterArray[j] === "arbitor") players += "000" + soldiers + "00001";
                 else if (characterArray[j] === "corporal") {
                     if (soldiers * 2 > 100) players += "000" + soldiers * 2 + "00010";
-                    else players += "0000" + soldiers * 2 + "00010";
+                    else players += "000" + soldiers * 2 + "00010";
                 }
                 else if (characterArray[j] === "warrior") players += "0000" + soldiers / 2 + "01000";
-                else players += "0000" + soldiers + "00000"
+                else players += "000" + soldiers + "00000"
             } 
             window.location.href = root + ".html?board=" + board + "&space=-1&turn=1&players=" + players + "&required=" + required + "&civNum=" + civNum;
         }
