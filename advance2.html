@@ -154,6 +154,7 @@
             players = sURLVariables[10].split('=')[1];
             max = 240 / (players.length / 11);
             if (state.length < 150) max /= 2.5;
+            
             if (totalSoldierNum > max - 4) soldierNum += max - totalSoldierNum;
             else soldierNum += 4;
             soldierString = "";

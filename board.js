@@ -252,7 +252,7 @@ function initSoldiers(num, p) {
     if (soldierNum < 10) soldierString += "0";
     soldierString += soldierNum;
     if (spaces[spaceIndex].player != p && spaces[spaceIndex].player != 0) {
-        alert(p);
+        // alert(p);
         var state = sURLVariables[7].split('=')[1];
         left = num;
         right = spaces[spaceIndex].soldiers;

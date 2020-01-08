@@ -61,14 +61,14 @@ function playCard() {
         if (resource.toLowerCase() === "wood") wood = 9;
         if (resource.toLowerCase() === "stone") stone = 9;
         if (resource.toLowerCase() === "iron") iron = 9;
-        window.location.href = ('action.html?GRS=' + generic + '&yellow=' + buy + '&red=' + build + '&blue=' + advance + '&wood=' + wood + '&stone=' + stone + '&iron=' + iron + '&board=' + sURLVariables[7].split('=')[1] + '&space=-1&turn=' + sURLVariables[9].split('=')[1] + '&players=' + sURLVariables[10].split('=')[1] + '&green=' + action);
+        window.location.href = ('action.html?GRS=' + generic + '&yellow=' + buy + '&red=' + build + '&blue=' + advance + '&wood=' + wood + '&stone=' + stone + '&iron=' + iron + '&board=' + sURLVariables[7].split('=')[1] + '&space=-1&turn=' + sURLVariables[9].split('=')[1] + '&players=' + sURLVariables[10].split('=')[1] + '&green=' + action + '&required' + sURLVariables[12].split('=')[1] + "&civNum=" + sURLVariables[13].split('=')[1]);
     } 
     else if ((!challenge && rando > 12) || (challenge && rando > 16)) {
         max = 240 / (sURLVariables[10].split('=')[1].length / 11);
         if (sURLVariables[10].split('=')[1].length / 5 < 30) max /= 2.5;
         alert("Recruitment Season\nGain 5 soldiers (max total soldiers including on board is " + max + " per player)");
         players = sURLVariables[10].split('=')[1];
-        if (parseInt(players.substring(11 * (player - 1) + 3, 11 * (player - 1) + 6)) + soldiersOnBoard(player) > max - 5) insert = 120 / (sURLVariables[10].split('=')[1].length / 11) - soldiersOnBoard((parseInt(sURLVariables[9].split('=')[1]) -  1) % (sURLVariables[10].split('=')[1].length / 11) + 1);
+        if (parseInt(players.substring(11 * (player - 1) + 3, 11 * (player - 1) + 6)) + soldiersOnBoard(player) > max - 5) insert = max;
         else insert = parseInt(players.substring(11 * (player - 1) + 3, 11 * (player - 1) + 6)) + 5;
         if (insert < 100) stringInsert = "0" + insert;
         else stringInsert = insert;

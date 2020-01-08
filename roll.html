@@ -101,6 +101,6 @@
         document.getElementById("Iron").innerHTML = "Iron: " + iron;
         document.getElementById("Soldiers").innerHTML = sURLVariables[3].split('=')[1].substring(11 * (player - 1) + 3, 11 * (player - 1) + 6) + " soldiers";
         document.getElementById("cones").innerHTML = coneDivs(2);
-        if (sURLVariables[4].split('=')[1] === "true" && sURLVariables[3].split('=')[1].charAt(11 * player - 1) == '1') document.getElementById("double").innerHTML = "<p style = 'color: red'>RS shown is doubled!</p>";
+        if (sURLVariables[4].split('=')[1] === "false" && sURLVariables[3].split('=')[1].charAt(11 * player - 1) == '1') document.getElementById("double").innerHTML = "<p style = 'color: red'>RS shown is doubled!</p>";
     </script>
 </body>

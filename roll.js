@@ -60,13 +60,13 @@ function specialDiceRoll(genericRS) {
     players = sURLVariables[3].split('=')[1];
     if (checkMountain(player)) {
         for (d = 0; d < players.length / 11; d++) {
-            if (player == d - 1) insert = '1';
+            if (player == d + 1) insert = '1';
             else insert = '0';
             players = players.substring(0, 11 * d + 10) + insert + players.substring(11 * d + 11, players.length);
         }
     }
     players = players.substring(0, 11 * (player - 1)) + wood + stone + iron + players.substring(11 * (player - 1) + 3, players.length);
-    if (sURLVariables[4].split('=')[1] === "true" && sURLVariables[3].split('=')[1].charAt(11 * player - 1) == '1') {
+    if (sURLVariables[4].split('=')[1] === "false" && sURLVariables[3].split('=')[1].charAt(11 * player - 1) == '1') {
         GRS *= 2;
         yellow *= 2;
         red *= 2;

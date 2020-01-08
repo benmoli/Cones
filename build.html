@@ -27,7 +27,7 @@
             if (setCone(i) == '0') end = false;
         }
         player = (parseInt(sURLVariables[9].split('=')[1]) -  1) % (sURLVariables[10].split('=')[1].length / 11) + 1;
-        if (end) window.location.href = ('endgame.html?player=' + (parseInt(sURLVariables[9].split('=')[1]) -  1) % (sURLVariables[10].split('=')[1].length / 11) + 1);
+        if (end){toSend = (parseInt(sURLVariables[9].split('=')[1]) -  1) % (sURLVariables[10].split('=')[1].length / 11) + 1; window.location.href = ('endgame.html?player=' + toSend);}
         else window.location.href = ('advance.html?GRS=' + sURLVariables[0].split('=')[1] + '&yellow=' + sURLVariables[1].split('=')[1] + '&red=' + sURLVariables[2].split('=')[1] + '&blue=' + sURLVariables[3].split('=')[1] + '&wood=' + sURLVariables[4].split('=')[1] + '&stone=' + sURLVariables[5].split('=')[1] + '&iron=' + sURLVariables[6].split('=')[1]+ '&board=' + sURLVariables[7].split('=')[1] + '&space=-1&turn=' + sURLVariables[9].split('=')[1] +
          '&players=' + sURLVariables[10].split('=')[1].substring(0, 11 * (player - 1) + 6) + setCone(0) + setCone(1) + setCone(2) + setCone(3) + sURLVariables[10].split('=')[1].substring(11 * (player - 1) + 10, sURLVariables[10].split('=')[1].length) + '&green=' + sURLVariables[11].split('=')[1] + '&required=' + sURLVariables[12].split('=')[1] + '&civNum=' + sURLVariables[13].split('=')[1])">Continue</button>
     </div>
