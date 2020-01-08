@@ -71,7 +71,7 @@
                 else if (characterArray[j] === "maverick") players += "333" + soldiers + "00100";
                 else if (characterArray[j] === "arbitor") players += "000" + soldiers + "00001";
                 else if (characterArray[j] === "corporal") {
-                    if (soldiers * 2 > 100) players += "000" + soldiers * 2 + "00010";
+                    if (soldiers * 2 > 100 && soldiers < 100) players += "00" + soldiers * 2 + "00010";
                     else players += "000" + soldiers * 2 + "00010";
                 }
                 else if (characterArray[j] === "warrior") players += "0000" + soldiers / 2 + "01000";
