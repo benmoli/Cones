@@ -5,7 +5,7 @@ function preroll() {
     sum = roll1 + roll2 + roll3;
     if (sum > 10) smallDiceNum = 10;
     else smallDiceNum = sum;
-    dropdown = '<select id = "small selection">';
+    dropdown = '<select id = "small selection" onClick = "play(`benny.wav`)">';
     for (i = 0; i <= smallDiceNum; i++){
         dropdown += '<option value = "' + i + '">' + i + '</option>';
     }
@@ -29,7 +29,7 @@ function smallDiceRoll(sum) {
     document.getElementById("small dice roll").innerHTML = display;
     if (sum - document.getElementById("small selection").options[document.getElementById("small selection").selectedIndex].value > 6) specialDiceNum = 6;
     else specialDiceNum = sum - document.getElementById("small selection").options[document.getElementById("small selection").selectedIndex].value;
-    dropdown = '<select id = "special selection">';
+    dropdown = '<select id = "special selection" onClick = "play(`benny.wav`)">';
     for (i = 0; i <= specialDiceNum; i++){
         dropdown += '<option value = "' + i + '">' + i + '</option>';
     }

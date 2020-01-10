@@ -1,6 +1,7 @@
 <head>
     <link rel="stylesheet" href="styles.css">
     <script type="text/javascript" src='cones.js'> </script>
+    <script type="text/javascript" src='audio.js'> </script>
     <title>Cones of Dunshire</title><meta charset="utf-8"/>
 </head>
 <body>
@@ -154,8 +155,8 @@
             players = sURLVariables[10].split('=')[1];
             max = 240 / (players.length / 11);
             if (state.length < 150) max /= 2.5;
-            
-            if (totalSoldierNum > max - 4) soldierNum += max - totalSoldierNum;
+            if (soldierNum > max);
+            else if (totalSoldierNum > max - 4) soldierNum += max - totalSoldierNum;
             else soldierNum += 4;
             soldierString = "";
             if (soldierNum < 100) soldierString += "0";

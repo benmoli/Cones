@@ -2,6 +2,7 @@
     <link rel="stylesheet" href="styles.css">
     <title>Cones of Dunshire</title><meta charset="utf-8"/>
     <script type="text/javascript" src='cones.js'> </script>
+    <script type="text/javascript" src='audio.js'> </script>
 </head>
 <body>
     <div class = "split left" style = "width: 400px; margin-left: 10px">
@@ -10,7 +11,7 @@
         <p>Use keys shown above to move 1 increment in the specified direction</p>
         <p>Costs 1 RS to move 1 soldier 1 space.</p>
         <p>Initialize 
-        <select id = "init-soldiers">
+        <select id = "init-soldiers" onClick = "play('benny.wav')">
             <option>1</option>
             <option>2</option>
             <option>3</option>

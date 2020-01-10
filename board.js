@@ -127,7 +127,7 @@ function select(i) {
     }
     else if (window.location.pathname.split("/").pop() === "advance.html" && spaces[i].soldiers > 0) {
         if (spaces[i].height > 0) return;
-        soldierMenu = '<p>Select number of soldiers to move <select id = "selecta">';
+        soldierMenu = '<p>Select number of soldiers to move <select id = "selecta" onClick = "play(`benny.wav`)">';
         //soldierMenu += '<option>' + sURLVariables[7].split('=')[1].charAt(5 * i + 4);
         for (j = parseInt(sURLVariables[7].split('=')[1].charAt(5 * i + 4)); j > 0; j--) {
             soldierMenu += '<option>' + j + '</option>'
@@ -298,7 +298,7 @@ function mountainMoves() {
                     addCharTo = "";
                     if (k < 10) addCharFrom += "0";
                     if (j < 10) addCharTo += "0";
-                    rtrn += '<div></div><p>Move <select id = "move' + addCharFrom + spaces[k].index + 'to' + addCharTo + spaces[j].index + '" value = >';
+                    rtrn += '<div></div><p>Move <select onClick = "play(`benny.wav`) id = "move' + addCharFrom + spaces[k].index + 'to' + addCharTo + spaces[j].index + '" value = >';
                     for (l = 0; l <= spaces[k].soldiers; l++) {
                         rtrn += '<option value = "' + l + '">' + l + '</option>';
                     }

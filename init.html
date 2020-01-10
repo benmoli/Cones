@@ -66,9 +66,13 @@
             root = "roll";
             if (characterArray[0] === "wizard" || characterArray[0] === "maverick" || characterArray[0] === "arbitor" ||characterArray[0] === "corporal") root = "challenge";
             for (j = 0; j < playerNum; j++) {
-                if (soldiers < 100) players += "0";
+                if (soldiers < 100 && characterArray[j] !== "maverick") players += "0";
                 if (characterArray[j] === "wizard"){players += "000" + soldiers + "10000"; alert(j);} 
-                else if (characterArray[j] === "maverick") players += "333" + soldiers + "00100";
+                else if (characterArray[j] === "maverick") {
+                    players += "333";
+                    if (soldiers < 100) players += "0";
+                    players += soldiers + "00100";
+                }
                 else if (characterArray[j] === "arbitor") players += "000" + soldiers + "00001";
                 else if (characterArray[j] === "corporal") {
                     if (soldiers * 2 > 100 && soldiers < 100) players += "00" + soldiers * 2 + "00010";

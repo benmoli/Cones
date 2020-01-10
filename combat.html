@@ -1,5 +1,6 @@
 <head>
     <link rel="stylesheet" href="styles.css">
+    <script type="text/javascript" src='audio.js'> </script>
     <title>Cones of Dunshire</title><meta charset="utf-8"/>
 </head>
 <body style = "zoom: 150%">
@@ -10,7 +11,8 @@
             <p id = "p1-soldiers"></p>
             <button onClick = 
                 "offRoll = roll();
-                document.getElementById('off-roll').innerHTML = offRoll;"
+                document.getElementById('off-roll').innerHTML = offRoll;
+                play('brrrap.wav')"
                 >Roll</button>
             <p id = "off-roll">
         </div>
@@ -48,6 +50,7 @@
             }
             document.getElementById('def-roll-button').innerHTML = `<button onClick = "defRoll = roll();
                 document.getElementById('def-roll').innerHTML = defRoll;
+                play('brrrap.wav');
                 result();">Roll</button>`;
             return rtrn;
         }

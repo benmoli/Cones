@@ -88,19 +88,19 @@
         document.getElementById("stone-cost").innerHTML = "Buy Stone (Black). Cost: " + stone + " RS";
         document.getElementById("iron-cost").innerHTML = "Buy Iron (White). Cost: " + iron + " RS";
         dropdown = '<select id = "wood selection" onClick = "play(`benny.wav`)">';
-        for (i = 0; i <= (parseInt(sURLVariables[1].split('=')[1]) + parseInt(sURLVariables[0].split('=')[1])) / wood; i++){
+        for (i = 0; i <= (parseInt(sURLVariables[1].split('=')[1]) + parseInt(sURLVariables[0].split('=')[1])) / wood && i < 10 - parseInt(sURLVariables[7].split('=')[1].charAt(11 * (player - 1))); i++){
             dropdown += '<option value = "' + i + '">' + i + '</option>';
         }
         dropdown += '</select>';
         document.getElementById("wood").innerHTML = dropdown;
         dropdown = '<select id = "stone selection" onClick = "play(`benny.wav`)">';
-        for (i = 0; i <= (parseInt(sURLVariables[1].split('=')[1]) + parseInt(sURLVariables[0].split('=')[1])) / stone; i++){
+        for (i = 0; i <= (parseInt(sURLVariables[1].split('=')[1]) + parseInt(sURLVariables[0].split('=')[1])) / stone && i < 10 - parseInt(sURLVariables[7].split('=')[1].charAt(11 * (player - 1) + 1)); i++){
             dropdown += '<option value = "' + i + '">' + i + '</option>';
         }
         dropdown += '</select>';
         document.getElementById("stone").innerHTML = dropdown;
         dropdown = '<select id = "iron selection" onClick = "play(`benny.wav`)">';
-        for (i = 0; i <= (parseInt(sURLVariables[1].split('=')[1]) + parseInt(sURLVariables[0].split('=')[1])) / iron; i++){
+        for (i = 0; i <= (parseInt(sURLVariables[1].split('=')[1]) + parseInt(sURLVariables[0].split('=')[1])) / iron && i < 10 - parseInt(sURLVariables[7].split('=')[1].charAt(11 * (player - 1) + 2)); i++){
             dropdown += '<option value = "' + i + '">' + i + '</option>';
         }
         dropdown += '</select>';
